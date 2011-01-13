@@ -33,7 +33,7 @@ class Genesis_Featured_Widget_Amplified extends WP_Widget {
      * @version 0.2
      */
     function Genesis_Featured_Widget_Amplified() {
-        $widget_ops = array( 'classname' => 'featuredpost', 'description' => __( 'Displays featured posts with thumbnails', GFWA_TEXTDOMAIN ) );
+        $widget_ops = array( 'classname' => 'featuredpost', 'description' => __( 'Displays featured posts types with thumbnails', GFWA_TEXTDOMAIN ) );
         $control_ops = array( 'width' => 505, 'height' => 350, 'id_base' => 'featured-post' );
         $this->WP_Widget( 'featured-post', __( 'Genesis - Featured Widget Amplified', GFWA_TEXTDOMAIN ), $widget_ops, $control_ops );
     }
@@ -300,7 +300,7 @@ class Genesis_Featured_Widget_Amplified extends WP_Widget {
                 ?>
             </select></p>
 
-        <p><label for="<?php echo $this->get_field_id( 'exclude_terms' ); ?>"><?php echo __( 'Exclude Terms by ID', GFWA_TEXTDOMAIN) .'<br />'. __( '(comma separated list)', GFWA_TEXTDOMAIN ); ?>:</label>
+        <p><label for="<?php echo $this->get_field_id( 'exclude_terms' ); ?>"><?php printf( __( 'Exclude Terms by ID %s (comma separated list)', GFWA_TEXTDOMAIN ), '<br />'); ?>:</label>
             <input type="text" id="<?php echo $this->get_field_id( 'exclude_terms' ); ?>" name="<?php echo $this->get_field_name( 'exclude_terms' ); ?>" value="<?php echo esc_attr( $instance['exclude_terms'] ); ?>" style="width:95%;" /></p>
 
         <p><label for="<?php echo $this->get_field_id( 'meta_key' ); ?>"><?php _e( 'Meta Key', GFWA_TEXTDOMAIN ); ?>:</label>

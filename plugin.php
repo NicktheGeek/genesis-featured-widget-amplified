@@ -39,14 +39,14 @@ function gfwa_activation_check() {
 
     if ( basename( TEMPLATEPATH ) != 'genesis' ) {
         deactivate_plugins( plugin_basename( __FILE__ ) ); // Deactivate ourself
-        wp_die( __('Sorry, you can\'t activate unless you have installed', GFWA_TEXTDOMAIN) . ' <a href="http://www.studiopress.com/themes/genesis">' .__('Genesis', GFWA_TEXTDOMAIN) .'</a>' );
+        wp_die( sprintf(__('Sorry, you can\'t activate unless you have installed %1$sGenesis%2$s', GFWA_TEXTDOMAIN),'<a href="http://designsbynickthegeek.com/go/genesis">' ,'</a>' ));
     }
 
     $version = gfwa_truncate( $theme_info['Version'], 3 );
 
     if ( version_compare( $version, $latest, '<' ) ) {
         deactivate_plugins( plugin_basename( __FILE__ ) ); // Deactivate ourself
-        wp_die( __('Sorry, you can\'t activate without', GFWA_TEXTDOMAIN) . ' <a href="http://www.studiopress.com/themes/genesis">' .__('Genesis', GFWA_TEXTDOMAIN) . $latest .'</a> '. __('or greater', GFWA_TEXTDOMAIN) );
+        wp_die( sprintf(__('Sorry, you can\'t activate without %1$sGenesis %2$s%3$s or greater', GFWA_TEXTDOMAIN), '<a href="http://designsbynickthegeek.com/go/genesis">', $latest, '</a>' ));
     }
 }
 
