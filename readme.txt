@@ -12,36 +12,36 @@ Genesis Featured Posts with support for custom post types, taxonomies, and so mu
 
 Genesis Featured Widget Amplified adds additional functionality to the Genesis Featured Posts Widget.  Specifically it:
 
--Supports Custom Post Types
--Supports Custom Taxonomies
--Exclude Term by ID field
--Supports Pagination
--Supports Meta Key Values
--Supports Sorting by Meta Key
--Multiple Hooks and Filters for adding additional content
+* Supports Custom Post Types
+* Supports Custom Taxonomies
+* Exclude Term by ID field
+* Supports Pagination
+* Supports Meta Key Values
+* Supports Sorting by Meta Key
+* Multiple Hooks and Filters for adding additional content
 
 This plugin requires the [Genesis Theme Framework](http://designsbynickthegeek.com/go/genesis) aff link
 
 == Installation ==
 
 1. Upload the entire `genesis-featured-widget-amplified` folder to the `/wp-content/plugins/` directory
-2. Activate the plugin through the 'Plugins' menu in WordPress
-3. Go Widget Screen
-4. Drag Widget to desired sidebar
-5. Fill in widget settings
+1. Activate the plugin through the 'Plugins' menu in WordPress
+1. Go Widget Screen
+1. Drag Widget to desired sidebar
+1. Fill in widget settings
 
 == Change Log ==
 0.4 (1-12-2011 : current)
--Changed Widget to replace Genesis Featured Posts Widget instead of working along side of it
--Removed Beta Designation
+* Changed Widget to replace Genesis Featured Posts Widget instead of working along side of it
+* Removed Beta Designation
 
 0.3b (1-12-2011)
--Improved internal documentation
--Made all text strings translatable
--Added Support for Pagination and Offset to work at the same time
+* Improved internal documentation
+* Made all text strings translatable
+* Added Support for Pagination and Offset to work at the same time
 
 0.2b (1-7-2011)
--First Public Release
+* First Public Release
 
 == Special Thanks ==
 I owe a huge debt of gratitude to all the folks at StudioPress, their themes make my life easier.
