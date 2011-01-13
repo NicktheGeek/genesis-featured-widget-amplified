@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: genesis, genesiswp, studiopress, featured post, custom post type, pagination
 Requires at least: 3.0
 Tested up to: 3.0.4
-Stable tag: 0.3
+Stable tag: 0.4
 
 Genesis Featured Posts with support for custom post types, taxonomies, and so much more
 
@@ -31,8 +31,11 @@ This plugin requires the [Genesis Theme Framework](http://www.shareasale.com/r.c
 5. Fill in widget settings
 
 == Change Log ==
+0.4 (1-12-2011 : current)
+-Changed Widget to replace Genesis Featured Posts Widget instead of working along side of it
+-Removed Beta Designation
 
-0.3b (1-12-2011 : current)
+0.3b (1-12-2011)
 -Improved internal documentation
 -Made all text strings translatable
 -Added Support for Pagination and Offset to work at the same time

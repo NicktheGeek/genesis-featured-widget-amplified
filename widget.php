@@ -12,6 +12,14 @@ if ( !defined( 'ABSPATH' ) ) {
     wp_die( __( "Sorry, you are not allowed to access this page directly.", GFWA_TEXTDOMAIN ) );
 }
 
+// Remove the current widget
+add_action( 'widgets_init', 'gfwa_unregister_widgets', 20 );
+/** 
+ * Removes Genesis Featured Post Widget
+ */
+function gfwa_unregister_widgets() {
+    unregister_widget( 'Genesis_Featured_Post' );
+}
 add_action( 'widgets_init', create_function( '', "register_widget('Genesis_Featured_Widget_Amplified');" ) );
 
 class Genesis_Featured_Widget_Amplified extends WP_Widget {
@@ -26,8 +34,8 @@ class Genesis_Featured_Widget_Amplified extends WP_Widget {
      */
     function Genesis_Featured_Widget_Amplified() {
         $widget_ops = array( 'classname' => 'featuredpost', 'description' => __( 'Displays featured posts with thumbnails', GFWA_TEXTDOMAIN ) );
-        $control_ops = array( 'width' => 505, 'height' => 350, 'id_base' => 'featured-widget-amplified' );
-        $this->WP_Widget( 'featured-widget-amplified', __( 'Genesis - Featured Widget Amplified', GFWA_TEXTDOMAIN ), $widget_ops, $control_ops );
+        $control_ops = array( 'width' => 505, 'height' => 350, 'id_base' => 'featured-post' );
+        $this->WP_Widget( 'featured-post', __( 'Genesis - Featured Widget Amplified', GFWA_TEXTDOMAIN ), $widget_ops, $control_ops );
     }
 
     /**
