@@ -20,7 +20,7 @@ Genesis Featured Widget Amplified adds additional functionality to the Genesis F
 -Supports Sorting by Meta Key
 -Multiple Hooks and Filters for adding additional content
 
-This plugin requires the [Genesis Theme Framework](http://www.shareasale.com/r.cfm?B=242694&U=468249&M=28169)
+This plugin requires the [Genesis Theme Framework](http://designsbynickthegeek.com/go/genesis) aff link
 
 == Installation ==
 
