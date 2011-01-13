@@ -37,7 +37,7 @@ This plugin requires the [Genesis Theme Framework](http://www.shareasale.com/r.c
 -Made all text strings translatable
 -Added Support for Pagination and Offset to work at the same time
 
-0.2b (1-7-2011 : current)
+0.2b (1-7-2011)
 -First Public Release
 
 == Special Thanks ==
