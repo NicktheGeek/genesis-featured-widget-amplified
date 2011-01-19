@@ -3,13 +3,20 @@
 /*
   Plugin Name: Genesis Featured Widget Amplified
   Plugin URI: http://DesignsByNicktheGeek.com
-  Version: 0.4
-  Author: Nick Croft
+  Version: 0.5
+  Author: Nick_theGeek
+  Contributor: GaryJ
   Author URI: http://DesignsByNicktheGeek.com
-  Description: Adds additional Featured Post widget to the Genesis Theme Framework which allows support for custom post types, taxonomies, and extends the flexibility of the widget via action hooks to allow the elements to be repositioned or other elements to be added. This requires WordPress 3.0+ and Genesis 1.4+.
+  Description: Replaces Genesis Featured Post widget for additional functionality which allows support for custom post types, taxonomies, and extends the flexibility of the widget via action hooks to allow the elements to be repositioned or other elements to be added. This requires WordPress 3.0+ and Genesis 1.4+.
  */
 
-//To Do: Fix all text strings to be translatable
+/*
+ * To Do:
+ *      Create and setup screen shots
+ *      Create Faq
+ *      Document hooks 
+ */
+
 
 define( 'GFWA_PLUGIN_DIR', dirname( __FILE__ ) );
 define( 'GFWA_TEXTDOMAIN', 'GFWA' );
@@ -25,9 +32,7 @@ register_activation_hook( __FILE__, 'gfwa_activation_check' );
  * Checks for minimum Genesis Theme version before allowing plugin to activate
  *
  * @author Nathan Rice
- * @uses get_theme_data()
  * @uses gfwa_truncate()
- * @uses version_compare()
  * @since 0.1
  * @version 0.2
  */
@@ -76,7 +81,6 @@ function gfwa_truncate( $str, $length=10 ) {
  * Does Widget Action "gfwa_before_loop"
  *
  * @author Nick Croft
- * @uses do_action()
  * @since 0.1
  * @version 0.2
  * @param array $instance Values set in widget isntance
@@ -89,7 +93,6 @@ function gfwa_before_loop( $instance ) {
  * Does Widget Action "gfwa_before_post_content"
  *
  * @author Nick Croft
- * @uses do_action()
  * @since 0.1
  * @version 0.2
  * @param array $instance Values set in widget isntance
@@ -102,7 +105,6 @@ function gfwa_before_post_content( $instance ) {
  * Does Widget Action "gfwa_post_content"
  *
  * @author Nick Croft
- * @uses do_action()
  * @since 0.1
  * @version 0.2
  * @param array $instance Values set in widget isntance
@@ -115,7 +117,6 @@ function gfwa_post_content( $instance ) {
  * Does Widget Action "gfwa_after_post_content"
  *
  * @author Nick Croft
- * @uses do_action()
  * @since 0.1
  * @version 0.2
  * @param array $instance Values set in widget isntance
@@ -128,7 +129,6 @@ function gfwa_after_post_content( $instance ) {
  * Does Widget Action "gfwa_endwhile"
  *
  * @author Nick Croft
- * @uses do_action()
  * @since 0.1
  * @version 0.2
  * @param array $instance Values set in widget isntance
@@ -141,7 +141,6 @@ function gfwa_endwhile( $instance ) {
  * Does Widget Action "gfwa_after_loop"
  *
  * @author Nick Croft
- * @uses do_action()
  * @since 0.1
  * @version 0.2
  * @param array $instance Values set in widget isntance
@@ -154,7 +153,6 @@ function gfwa_after_loop( $instance ) {
  * Does Widget Action "gfwa_list_items"
  *
  * @author Nick Croft
- * @uses do_action()
  * @since 0.1
  * @version 0.2
  * @param array $instance Values set in widget isntance
@@ -167,7 +165,6 @@ function gfwa_list_items( $instance ) {
  * Does Widget Action "gfwa_print_list_items"
  *
  * @author Nick Croft
- * @uses do_action()
  * @since 0.1
  * @version 0.2
  * @param array $instance Values set in widget isntance
@@ -180,7 +177,6 @@ function gfwa_print_list_items( $instance ) {
  * Does Widget Action "gfwa_category_more"
  *
  * @author Nick Croft
- * @uses do_action()
  * @since 0.1
  * @version 0.2
  * @param array $instance Values set in widget isntance
@@ -193,7 +189,6 @@ function gfwa_category_more( $instance ) {
  * Does Widget Action "gfwa_after_category_more"
  *
  * @author Nick Croft
- * @uses do_action()
  * @since 0.1
  * @version 0.2
  * @param array $instance Values set in widget isntance
@@ -206,7 +201,6 @@ function gfwa_after_category_more( $instance ) {
  * Does Widget Action "gfwa_form_first_colum"
  *
  * @author Nick Croft
- * @uses do_action()
  * @since 0.1
  * @version 0.2
  * @param array $instance Values set in widget isntance
@@ -219,7 +213,6 @@ function gfwa_form_first_column( $instance ) {
  * Does Widget Action "gfwa_form_second_colum"
  *
  * @author Nick Croft
- * @uses do_action()
  * @since 0.1
  * @version 0.2
  * @param array $instance Values set in widget isntance
@@ -232,7 +225,6 @@ function gfwa_form_second_column( $instance ) {
  * Used to exclude taxonomies and related terms from list of available terms/taxonomies in widget form()
  *
  * @author Nick Croft
- * @uses apply_filters()
  * @since 0.1
  * @version 0.2
  * @param string $taxonomy 'taxonomy' being tested
@@ -248,7 +240,6 @@ function gfwa_exclude_taxonomies( $taxonomy ) {
  * Used to exclude post types from list of available post_types in widget form()
  *
  * @author Nick Croft
- * @uses apply_filters()
  * @since 0.1
  * @version 0.2
  * @param string $type 'post_type' being tested

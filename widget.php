@@ -1,10 +1,12 @@
 <?php
 /**
  * To Do:
- *      Fix all text strings to be translatable
- *      Edit html in <options> to allow <optgroup>
  *      Edit html to allow external style sheet instead of inline styles
- *      Create external stylesheet
+ *      Create external stylesheet for widget
+ *      Make content float options with 2, 3, or 4 side by side clearing after the row (v0.6)
+ *      Add support for sticky posts (v0.6)
+ *      Add support for post_status (v0.6)
+ *      Add additional post list format option (ul, ol,  or dropdown) (v0.6)
  */
 
 /* Prevent direct access to the plugin */
@@ -43,7 +45,7 @@ class Genesis_Featured_Widget_Amplified extends WP_Widget {
      *
      * @author Nick Croft
      * @since 0.1
-     * @version 0.2
+     * @version 0.5
      * @param array $args
      * @param array $instance
      */
@@ -57,20 +59,26 @@ class Genesis_Featured_Widget_Amplified extends WP_Widget {
                     'posts_term' => '',
                     'exclude_terms' => '',
                     'exclude_cat' => '',
+                    'include_exclude' => '',
+                    'post_id' => '',
                     'posts_num' => 1,
                     'posts_offset' => 0,
                     'orderby' => '',
                     'order' => '',
                     'meta_key' => '',
+                    'show_sticky' => '',
                     'paged' => '',
                     'show_paged' => '',
+                    'post_align' => '',
                     'show_image' => 0,
+                    'image_position' => 'before-title',
                     'image_alignment' => '',
                     'image_size' => '',
                     'show_gravatar' => 0,
                     'gravatar_alignment' => '',
                     'gravatar_size' => '',
                     'show_title' => 0,
+                    'title_limit' => '',
                     'show_byline' => 0,
                     'post_info' => '[post_date] ' . __( 'By', GFWA_TEXTDOMAIN ) . ' [post_author_posts_link] [post_comments]',
                     'show_content' => 'excerpt',
@@ -78,6 +86,7 @@ class Genesis_Featured_Widget_Amplified extends WP_Widget {
                     'more_text' => __( '[Read More...]', GFWA_TEXTDOMAIN ),
                     'extra_num' => '',
                     'extra_title' => '',
+                    'extra_format' => 'li',
                     'more_from_category' => '',
                     'more_from_category_text' => __( 'More Posts from this Taxonomy', GFWA_TEXTDOMAIN )
                         ) );
@@ -123,12 +132,19 @@ class Genesis_Featured_Widget_Amplified extends WP_Widget {
             $term_args['offset'] = $myOffset;
         }
 
+        if(!empty($instance['post_id'])){
+            $IDs = explode(',', str_replace(' ', '', $instance['post_id']));
+            if($instance['include_exclude'] == 'include')
+                $term_args['post__in'] = $IDs;
+            else
+                $term_args['post__not_in '] = $IDs;
+        }
 
         $query_args = array_merge( $term_args, array( 'post_type' => $instance['post_type'], 'showposts' => $instance['posts_num'], 'orderby' => $instance['orderby'], 'order' => $instance['order'], 'meta_key' => $instance['meta_key'], 'paged' => $page ) );
         $query_args = apply_filters( 'gfwa_query_args', $query_args, $instance );
 
-        $featured_posts = new WP_Query( $query_args );
-        if ( $featured_posts->have_posts() ) : while ( $featured_posts->have_posts() ) : $featured_posts->the_post();
+        query_posts( $query_args );
+        if ( have_posts() ) : while ( have_posts() ) : the_post();
 
                 echo '<div ';
                 post_class();
@@ -158,7 +174,7 @@ class Genesis_Featured_Widget_Amplified extends WP_Widget {
         if ( !empty( $instance['extra_num'] ) ) {
 
             if ( !empty( $instance['extra_title'] ) )
-                echo $before_title . esc_html( $instance['extra_title'] ) . $after_title;
+                echo str_replace( '>', ' class="additional-posts-title">', $before_title ) . esc_html( $instance['extra_title'] ) . $after_title;
 
             $offset = intval( $instance['posts_num'] ) + intval( $instance['posts_offset'] );
             $extra_posts_args = array_merge( $term_args, array( 'showposts' => $instance['extra_num'], 'offset' => $offset, 'post_type' => $instance['post_type'], 'orderby' => $instance['orderby'], 'order' => $instance['order'], 'meta_key' => $instance['meta_key'], 'paged' => $page ) );
@@ -187,9 +203,9 @@ class Genesis_Featured_Widget_Amplified extends WP_Widget {
             endif;
         }
 
-        if ( !empty( $instance['more_from_category'] ) && !empty( $instance['posts_cat'] ) ) {
+        if ( !empty( $instance['more_from_category'] ) && !empty( $instance['posts_term'] ) ) {
             gfwa_category_more( $instance );
-            echo '<p class="more-from-category"><a href="' . get_category_link( $instance['posts_cat'] ) . '" title="' . get_cat_name( $instance['posts_cat'] ) . '">' . esc_html( $instance['more_from_category_text'] ) . '</a></p>';
+            echo '<p class="more-from-category"><a href="' . get_category_link( $posts_term['1'] ) . '" title="' . get_cat_name( $posts_term['1'] ) . '">' . esc_html( $instance['more_from_category_text'] ) . '</a></p>';
         }
 
         gfwa_after_category_more( $instance );
@@ -218,7 +234,7 @@ class Genesis_Featured_Widget_Amplified extends WP_Widget {
      *
      * @author Nick Croft
      * @since 0.1
-     * @version 0.2
+     * @version 0.5
      * @param array $instance Values set in widget isntance
      */
     function form( $instance ) {
@@ -229,20 +245,27 @@ class Genesis_Featured_Widget_Amplified extends WP_Widget {
                     'post_type' => 'post',
                     'posts_term' => '',
                     'exclude_terms' => '',
-                    'posts_num' => 0,
+                    'exclude_cat' => '',
+                    'include_exclude' => '',
+                    'post_id' => '',
+                    'posts_num' => 1,
                     'posts_offset' => 0,
                     'orderby' => '',
                     'order' => '',
                     'meta_key' => '',
+                    'show_sticky' => '',
                     'paged' => '',
                     'show_paged' => '',
+                    'post_align' => '',
                     'show_image' => 0,
+                    'image_position' => 'before-title',
                     'image_alignment' => '',
                     'image_size' => '',
                     'show_gravatar' => 0,
                     'gravatar_alignment' => '',
                     'gravatar_size' => '',
                     'show_title' => 0,
+                    'title_limit' => '',
                     'show_byline' => 0,
                     'post_info' => '[post_date] ' . __( 'By', GFWA_TEXTDOMAIN ) . ' [post_author_posts_link] [post_comments]',
                     'show_content' => 'excerpt',
@@ -250,8 +273,9 @@ class Genesis_Featured_Widget_Amplified extends WP_Widget {
                     'more_text' => __( '[Read More...]', GFWA_TEXTDOMAIN ),
                     'extra_num' => '',
                     'extra_title' => '',
+                    'extra_format' => 'li',
                     'more_from_category' => '',
-                    'more_from_category_text' => __( 'More Posts from this Category', GFWA_TEXTDOMAIN )
+                    'more_from_category_text' => __( 'More Posts from this Taxonomy', GFWA_TEXTDOMAIN )
                         ) );
 ?>
 
@@ -302,6 +326,16 @@ class Genesis_Featured_Widget_Amplified extends WP_Widget {
 
         <p><label for="<?php echo $this->get_field_id( 'exclude_terms' ); ?>"><?php printf( __( 'Exclude Terms by ID %s (comma separated list)', GFWA_TEXTDOMAIN ), '<br />'); ?>:</label>
             <input type="text" id="<?php echo $this->get_field_id( 'exclude_terms' ); ?>" name="<?php echo $this->get_field_name( 'exclude_terms' ); ?>" value="<?php echo esc_attr( $instance['exclude_terms'] ); ?>" style="width:95%;" /></p>
+
+        <p><label for="<?php echo $this->get_field_id( 'include_exclude' ); ?>"><?php _e( 'Include or Exclude by Post-Type ID', GFWA_TEXTDOMAIN ); ?>:</label>
+            <select id="<?php echo $this->get_field_id( 'include_exclude' ); ?>" name="<?php echo $this->get_field_name( 'include_exclude' ); ?>">
+                <option style="padding-right:10px;" value="" <?php selected( '', $instance['include_exclude'] ); ?>><?php _e( 'Select', GFWA_TEXTDOMAIN ); ?></option>
+                <option style="padding-right:10px;" value="include" <?php selected( 'include', $instance['include_exclude'] ); ?>><?php _e( 'Include', GFWA_TEXTDOMAIN ); ?></option>
+                <option style="padding-right:10px;" value="exclude" <?php selected( 'exclude', $instance['include_exclude'] ); ?>><?php _e( 'Exclude', GFWA_TEXTDOMAIN ); ?></option>
+            </select></p>
+
+        <p><label for="<?php echo $this->get_field_id( 'post_id' ); ?>"><?php _e( 'Post Type ID', GFWA_TEXTDOMAIN ); ?>:</label>
+            <input type="text" id="<?php echo $this->get_field_id( 'post_id' ); ?>" name="<?php echo $this->get_field_name( 'post_id' ); ?>" value="<?php echo esc_attr( $instance['post_id'] ); ?>" style="width:95%;" /></p>
 
         <p><label for="<?php echo $this->get_field_id( 'meta_key' ); ?>"><?php _e( 'Meta Key', GFWA_TEXTDOMAIN ); ?>:</label>
             <input type="text" id="<?php echo $this->get_field_id( 'meta_key' ); ?>" name="<?php echo $this->get_field_name( 'meta_key' ); ?>" value="<?php echo esc_attr( $instance['meta_key'] ); ?>" style="width:95%;" /></p>
@@ -365,7 +399,9 @@ class Genesis_Featured_Widget_Amplified extends WP_Widget {
 
                     <p><input id="<?php echo $this->get_field_id( 'show_image' ); ?>" type="checkbox" name="<?php echo $this->get_field_name( 'show_image' ); ?>" value="1" <?php checked( 1, $instance['show_image'] ); ?>/> <label for="<?php echo $this->get_field_id( 'show_image' ); ?>"><?php _e( 'Show Featured Image', GFWA_TEXTDOMAIN ); ?></label></p>
 
-            <p><label for="<?php echo $this->get_field_id( 'image_size' ); ?>"><?php _e( 'Image Size', GFWA_TEXTDOMAIN ); ?>:</label>
+                    
+
+                    <p><label for="<?php echo $this->get_field_id( 'image_size' ); ?>"><?php _e( 'Image Size', GFWA_TEXTDOMAIN ); ?>:</label>
                 <?php $sizes = genesis_get_additional_image_sizes(); ?>
             <select id="<?php echo $this->get_field_id( 'image_size' ); ?>" name="<?php echo $this->get_field_name( 'image_size' ); ?>">
                 <option style="padding-right:10px;" value="thumbnail">thumbnail (<?php echo get_option( 'thumbnail_size_w' ); ?>x<?php echo get_option( 'thumbnail_size_h' ); ?>)</option>
@@ -374,6 +410,13 @@ class Genesis_Featured_Widget_Amplified extends WP_Widget {
                     echo '<option style="padding-right: 10px;" value="' . esc_attr( $name ) . '" ' . selected( $name, $instance['image_size'], FALSE ) . '>' . esc_html( $name ) . ' (' . $size['width'] . 'x' . $size['height'] . ')</option>';
                 }
                 ?>
+            </select></p>
+
+            <p><label for="<?php echo $this->get_field_id( 'image_position' ); ?>"><?php _e( 'Image Placement', GFWA_TEXTDOMAIN ); ?>:</label>
+            <select id="<?php echo $this->get_field_id( 'image_position' ); ?>" name="<?php echo $this->get_field_name( 'image_position' ); ?>">
+                <option style="padding-right:10px;" value="before-title" <?php selected( 'before-title', $instance['image_position'] ); ?>><?php _e( 'Before Title', GFWA_TEXTDOMAIN ); ?></option>
+                <option style="padding-right:10px;" value="after-title" <?php selected( 'after-title', $instance['image_position'] ); ?>><?php _e( 'After Title', GFWA_TEXTDOMAIN ); ?></option>
+                <option style="padding-right:10px;" value="after-content" <?php selected( 'after-content', $instance['image_position'] ); ?>><?php _e( 'After Content', GFWA_TEXTDOMAIN ); ?></option>
             </select></p>
 
         <p><label for="<?php echo $this->get_field_id( 'image_alignment' ); ?>"><?php _e( 'Image Alignment', GFWA_TEXTDOMAIN ); ?>:</label>
@@ -387,7 +430,8 @@ class Genesis_Featured_Widget_Amplified extends WP_Widget {
 
     <div style="background: #f1f1f1; border: 1px solid #DDD; padding: 10px 10px 0px 10px; margin-top: 10px;">
 
-        <p><input id="<?php echo $this->get_field_id( 'show_title' ); ?>" type="checkbox" name="<?php echo $this->get_field_name( 'show_title' ); ?>" value="1" <?php checked( 1, $instance['show_title'] ); ?>/> <label for="<?php echo $this->get_field_id( 'show_title' ); ?>"><?php _e( 'Show Post Title', GFWA_TEXTDOMAIN ); ?></label></p>
+        <p><input id="<?php echo $this->get_field_id( 'show_title' ); ?>" type="checkbox" name="<?php echo $this->get_field_name( 'show_title' ); ?>" value="1" <?php checked( 1, $instance['show_title'] ); ?>/> <label for="<?php echo $this->get_field_id( 'show_title' ); ?>"><?php _e( 'Show Post Title', GFWA_TEXTDOMAIN ); ?></label>
+        <br /><label for="<?php echo $this->get_field_id( 'title_limit' ); ?>"><?php _e( 'Limit title to', GFWA_TEXTDOMAIN ); ?></label> <input type="text" id="<?php echo $this->get_field_id( 'title_limit' ); ?>" name="<?php echo $this->get_field_name( 'title_limit' ); ?>" value="<?php echo esc_attr( intval( $instance['title_limit'] ) ); ?>" size="3" /> <?php _e( 'characters', GFWA_TEXTDOMAIN ); ?></p>
 
         <p><input id="<?php echo $this->get_field_id( 'show_byline' ); ?>" type="checkbox" name="<?php echo $this->get_field_name( 'show_byline' ); ?>" value="1" <?php checked( 1, $instance['show_byline'] ); ?>/> <label for="<?php echo $this->get_field_id( 'show_byline' ); ?>"><?php _e( 'Show Post Info', GFWA_TEXTDOMAIN ); ?></label>
 
@@ -436,17 +480,34 @@ class Genesis_Featured_Widget_Amplified extends WP_Widget {
 
 }
 
-add_action( 'gfwa_before_post_content', 'gfwa_do_post_image', 10, 1 );
+add_action('gfwa_before_loop', 'gfwa_post_image_position', 10, 1);
 /**
- * Inserts Post Image if option is selected
+ * Checks Image Position and runs appropriate action to load image
+ *
+ * @author Nick Croft
+ * @since 0.5
+ * @version 0.5
+ * @param array $instance Widget Instance Values
+ */
+function gfwa_post_image_position($instance){
+    if(!empty( $instance['show_image'] ) && $instance['image_position'] == 'before-title')
+        add_action( 'gfwa_before_post_content', 'gfwa_do_post_image', 5, 1 );
+    elseif(!empty( $instance['show_image'] ) && $instance['image_position'] == 'after-title')
+        add_action( 'gfwa_before_post_content', 'gfwa_do_post_image', 15, 1 );
+    elseif(!empty( $instance['show_image'] ) )
+        add_action( 'gfwa_after_post_content', 'gfwa_do_post_image', 10, 1 );
+}
+
+
+/**
+ * Inserts Post Image
  *
  * @author Nick Croft
  * @since 0.1
- * @version 0.2
+ * @version 0.5
  * @param array $instance Values set in widget isntance
  */
 function gfwa_do_post_image( $instance ) {
-    if ( !empty( $instance['show_image'] ) )
         printf( '<a href="%s" title="%s" class="%s">%s</a>', get_permalink(), the_title_attribute( 'echo=0' ), esc_attr( $instance['image_alignment'] ), genesis_get_image( array( 'format' => 'html', 'size' => $instance['image_size'] ) ) );
 }
 
@@ -455,8 +516,6 @@ add_action( 'gfwa_before_post_content', 'gfwa_do_gravatar', 10, 1 );
  * Inserts Author Gravatar is option is selects
  *
  * @author Nick Croft
- * @uses get_avatar()
- * @uses get_the_author_meta()
  * @since 0.1
  * @version 0.2
  * @param array $instance Values set in widget isntance
@@ -474,14 +533,14 @@ add_action( 'gfwa_before_post_content', 'gfwa_do_post_title', 10, 1 );
  * Outputs Post Title if option is selects
  *
  * @author Nick Croft
- * @uses get_permalink()
- * @uses the_title_attribute()
  * @since 0.1
  * @version 0.2
  * @param array $instance Values set in widget isntance
  */
 function gfwa_do_post_title( $instance ) {
-    if ( !empty( $instance['show_title'] ) )
+    if ( !empty( $instance['show_title'] ) && !empty ( $instance['title_limit'] ) )
+        printf( '<h2><a href="%s" title="%s">%s</a></h2>', get_permalink(), the_title_attribute( 'echo=0' ), genesis_truncate_phrase( the_title_attribute( 'echo=0' ), $instance['title_limit'] ) );
+    elseif ( !empty( $instance['show_title'] ) )
         printf( '<h2><a href="%s" title="%s">%s</a></h2>', get_permalink(), the_title_attribute( 'echo=0' ), the_title_attribute( 'echo=0' ) );
 }
 
@@ -490,7 +549,6 @@ add_action( 'gfwa_before_post_content', 'gfwa_do_byline', 10, 1 );
  * Outputs byline if option is selects and anything is in the post info field
  *
  * @author Nick Croft
- * @uses dp_shortcode()
  * @since 0.1
  * @version 0.2
  * @param array $instance Values set in widget isntance
@@ -505,9 +563,6 @@ add_action( 'gfwa_post_content', 'gfwa_do_post_content', 10, 1 );
  * Outputs the selected content option if any
  *
  * @author Nick Croft
- * @uses the_excerpt()
- * @uses the_content_limit()
- * @uses the_content()
  * @since 0.1
  * @version 0.2
  * @param array $instance Values set in widget isntance
