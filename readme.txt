@@ -51,9 +51,11 @@ This plugin requires the [Genesis Theme Framework](http://designsbynickthegeek.c
 == Change Log ==
 
 0.6.1 (1-26-2011 : current)
+
 * Fixed extra list default
 
 0.6 (1-26-2011)
+
 * Ajaxified Widget Form
 * Form no longer shows options that will not be supported based on other option selections
 * Added support for post meta (category and tags)
@@ -63,6 +65,7 @@ This plugin requires the [Genesis Theme Framework](http://designsbynickthegeek.c
 
 
 0.5 (1-18-2011)
+
 * Fixed pagination issue due to different reading setting and widget setting
 * Fixed Archive link from not showing when enabled and category selected
 * Added include/exclude fields for post_type ID
@@ -71,15 +74,18 @@ This plugin requires the [Genesis Theme Framework](http://designsbynickthegeek.c
 * Added Title Limit
 
 0.4 (1-12-2011)
+
 * Changed Widget to replace Genesis Featured Posts Widget instead of working along side of it
 * Removed Beta Designation
 
 0.3b (1-12-2011)
+
 * Improved internal documentation
 * Made all text strings translatable
 * Added Support for Pagination and Offset to work at the same time
 
 0.2b (1-7-2011)
+
 * First Public Release
 
 
