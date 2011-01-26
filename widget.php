@@ -91,7 +91,7 @@ class Genesis_Featured_Widget_Amplified extends WP_Widget {
                     'more_text' => __( '[Read More...]', GFWA_TEXTDOMAIN ),
                     'extra_num' => '',
                     'extra_title' => '',
-                    'extra_format' => 'li',
+                    'extra_format' => 'ul',
                     'more_from_category' => '',
                     'more_from_category_text' => __( 'More Posts from this Taxonomy', GFWA_TEXTDOMAIN )
                         ) );
@@ -306,7 +306,7 @@ class Genesis_Featured_Widget_Amplified extends WP_Widget {
                     'more_text' => __( '[Read More...]', GFWA_TEXTDOMAIN ),
                     'extra_num' => '',
                     'extra_title' => '',
-                    'extra_format' => 'li',
+                    'extra_format' => 'ul',
                     'more_from_category' => '',
                     'more_from_category_text' => __( 'More Posts from this Taxonomy', GFWA_TEXTDOMAIN )
                         ) );

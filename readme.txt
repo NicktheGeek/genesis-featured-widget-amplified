@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: genesis, genesiswp, studiopress, featured post, custom post type, pagination
 Requires at least: 3.0
 Tested up to: 3.0.4
-Stable tag: 0.6
+Stable tag: 0.6.1
 
 Genesis Featured Posts with support for custom post types, taxonomies, and so much more
 
@@ -50,22 +50,25 @@ This plugin requires the [Genesis Theme Framework](http://designsbynickthegeek.c
 
 == Change Log ==
 
-0.6 (1-26-2011 : current)
-- Ajaxified Widget Form
-- Form no longer shows options that will not be supported based on other option selections
-- Added support for post meta (category and tags)
-- Added drop down list of pages if page is selected
-- Allowed the first loop to be skipped by setting "Number of Posts to Show" to 0
-- Added additional post list format option (ul, ol,  or dropdown)
+0.6.1 (1-26-2011 : current)
+* Fixed extra list default
+
+0.6 (1-26-2011)
+* Ajaxified Widget Form
+* Form no longer shows options that will not be supported based on other option selections
+* Added support for post meta (category and tags)
+* Added drop down list of pages if page is selected
+* Allowed the first loop to be skipped by setting "Number of Posts to Show" to 0
+* Added additional post list format option (ul, ol,  or dropdown)
 
 
 0.5 (1-18-2011)
-- Fixed pagination issue due to different reading setting and widget setting
-- Fixed Archive link from not showing when enabled and category selected
-- Added include/exclude fields for post_type ID
-- Added easy position selector for the image relative to the title
-- Added class for additional post title
-- Added Title Limit
+* Fixed pagination issue due to different reading setting and widget setting
+* Fixed Archive link from not showing when enabled and category selected
+* Added include/exclude fields for post_type ID
+* Added easy position selector for the image relative to the title
+* Added class for additional post title
+* Added Title Limit
 
 0.4 (1-12-2011)
 * Changed Widget to replace Genesis Featured Posts Widget instead of working along side of it
@@ -79,12 +82,6 @@ This plugin requires the [Genesis Theme Framework](http://designsbynickthegeek.c
 0.2b (1-7-2011)
 * First Public Release
 
-Planned Revisions (not currently available)
-0.6 (Committed)
-* Make content float options with 2, 3, or 4 side by side clearing after the row (v0.6)
-* Add support for sticky posts (v0.6)
-* Add support for post_status (v0.6)
-* Add additional post list format option (ul, ol,  or dropdown) (v0.6)
 
 == Upgrade Notice ==
 0.5 Image action hooks were changed. `add_action( 'gfwa_before_post_content', 'gfwa_do_post_image', 10, 1 );` is replaced with `add_action( 'gfwa_before_post_content', 'gfwa_do_post_image', 5, 1 );`
