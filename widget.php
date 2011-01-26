@@ -210,7 +210,7 @@ class Genesis_Featured_Widget_Amplified extends WP_Widget {
                 endwhile;
 
                 if ( strlen( $listitems ) > 0 && ('drop_down' != $instance['extra_format']) )
-                    printf( '<%s>%s</$s>', $instance['extra_format'], $listitems, $instance['extra_format'] );
+                    printf( '<%s>%s</%s>', $instance['extra_format'], $listitems, $instance['extra_format'] );
                 elseif ( strlen( $listitems ) > 0 ) {
                     printf( '<select onchange="onDropChange()" id="%s" value="%s"><option value="none">%s %s</option>%s</select>', $this->get_field_id( 'extra_format' ), get_permalink(), __( 'Select', GFWA_TEXTDOMAIN ), $instance['post_type'], $listitems );
 ?>
