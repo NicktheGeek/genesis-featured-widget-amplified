@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: genesis, genesiswp, studiopress, featured post, custom post type, pagination
 Requires at least: 3.0
 Tested up to: 3.0.4
-Stable tag: 0.6.2
+Stable tag: 0.6.3
 
 Genesis Featured Posts with support for custom post types, taxonomies, and so much more
 
@@ -52,6 +52,12 @@ This plugin requires the [Genesis Theme Framework](http://designsbynickthegeek.c
 
 0.6.2 (1-26-2011 : current)
 
+* Fixed Ajax widget control loading for IE, Safari, and Chrome
+* Fixed multiple image bug when showing more than one image position in different widgets on a page
+* Updated Post Extras Dropdown list script
+
+0.6.2 (1-26-2011)
+
 * Fixed extra list output typo
 
 0.6.1 (1-26-2011)
@@ -94,7 +100,9 @@ This plugin requires the [Genesis Theme Framework](http://designsbynickthegeek.c
 
 
 == Upgrade Notice ==
-0.5 Image action hooks were changed. `add_action( 'gfwa_before_post_content', 'gfwa_do_post_image', 10, 1 );` is replaced with `add_action( 'gfwa_before_post_content', 'gfwa_do_post_image', 5, 1 );`
+0.5 Image action hooks were changed. `add_action( 'gfwa_before_post_content', 'gfwa_do_post_image', 10, 1 );` is replaced with `add_action( 'gfwa_before_post_content', 'gfwa_do_post_image', 5, 1 );
+
+0.6.3 Image Action Hooks were changed. `add_action( 'gfwa_before_post_content', 'gfwa_do_post_image', 15, 1 );` is replaced with `add_action( 'gfwa_post_content', 'gfwa_do_post_image', 5, 1 );`
 
 == Screenshots ==
 To Do: Take and add screen shots

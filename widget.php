@@ -7,6 +7,7 @@
  *      Add support for post_status (v0.7)
  *      Add support for Post Formats (v0.7)
  *      Make content float options with 2, 3, or 4 side by side clearing after the row (v0.7)
+ *      Add even/odd class (v0.7)
  *      Create Simple Hooks interface (1.0)
  *
  */
@@ -204,7 +205,7 @@ class Genesis_Featured_Widget_Amplified extends WP_Widget {
                     if ( 'drop_down' != $instance['extra_format'] )
                         $listitems .= sprintf( '<li><a href="%s" title="%s">%s</a></li>', get_permalink(), the_title_attribute( 'echo=0' ), get_the_title() );
                     else
-                        $listitems .= sprintf( '<option value="%s">%s</option>', get_permalink(), get_the_title() );
+                        $listitems .= sprintf( '<option onclick="javascript:window.location=\'%s\';" value="%s">%s</option>', get_permalink(), get_permalink(), get_the_title() );
 
 
                 endwhile;
@@ -212,20 +213,8 @@ class Genesis_Featured_Widget_Amplified extends WP_Widget {
                 if ( strlen( $listitems ) > 0 && ('drop_down' != $instance['extra_format']) )
                     printf( '<%s>%s</%s>', $instance['extra_format'], $listitems, $instance['extra_format'] );
                 elseif ( strlen( $listitems ) > 0 ) {
-                    printf( '<select onchange="onDropChange()" id="%s" value="%s"><option value="none">%s %s</option>%s</select>', $this->get_field_id( 'extra_format' ), get_permalink(), __( 'Select', GFWA_TEXTDOMAIN ), $instance['post_type'], $listitems );
-?>
-                    <script type="text/javascript">
-                        /* <![CDATA[ */
-                        var dropdown = document.getElementById("<?php echo $this->get_field_id( 'extra_format' ); ?>");
-                        function onDropChange() {
-                            if ( dropdown.options[dropdown.selectedIndex].value != "none" ) {
-                                location = dropdown.options[dropdown.selectedIndex].value;
-                            }
-                        }
+                    printf( '<select id="%s" value="%s"><option value="none">%s %s</option>%s</select>', $this->get_field_id( 'extra_format' ), get_permalink(), __( 'Select', GFWA_TEXTDOMAIN ), $instance['post_type'], $listitems );
 
-                        /* ]]> */
-                    </script>
-<?php
                 }
 
                 gfwa_print_list_items( $instance );
@@ -320,7 +309,7 @@ class Genesis_Featured_Widget_Amplified extends WP_Widget {
             <div style="background: #f1f1f1; border: 1px solid #DDD; padding: 10px 10px 0px 10px;">
 
                 <p><label for="<?php echo $this->get_field_id( 'post_type' ); ?>"><?php _e( 'Post Type', GFWA_TEXTDOMAIN ); ?>:</label>
-                    <select id="<?php echo $this->get_field_id( 'post_type' ); ?>" name="<?php echo $this->get_field_name( 'post_type' ); ?>">
+                    <select class="widget-control-save" id="<?php echo $this->get_field_id( 'post_type' ); ?>" name="<?php echo $this->get_field_name( 'post_type' ); ?>">
                 <?php
                 $args = array(
                     'public' => true
@@ -332,18 +321,18 @@ class Genesis_Featured_Widget_Amplified extends WP_Widget {
 
                 foreach ( $post_types as $post_type ) {
                 ?>
-                    <option class="widget-control-save" style="padding-right:10px;" value="<?php echo esc_attr( $post_type ); ?>" <?php selected( esc_attr( $post_type ), $instance['post_type'] ); ?>><?php echo esc_attr( $post_type ); ?></option><?php } ?>
+                    <option style="padding-right:10px;" value="<?php echo esc_attr( $post_type ); ?>" <?php selected( esc_attr( $post_type ), $instance['post_type'] ); ?>><?php echo esc_attr( $post_type ); ?></option><?php } ?>
 
             </select></p>
 
         <p style="<?php gfwa_display_option( $instance, 'post_type', 'page', false ); ?>"><label for="<?php echo $this->get_field_id( 'page_id' ); ?>"><?php _e( 'Page', 'genesis' ); ?>:</label>
-            <select id="<?php echo $this->get_field_id( 'page_id' ); ?>" name="<?php echo $this->get_field_name( 'page_id' ); ?>">
-                <option class="widget-control-save" value="" <?php selected( '', $instance['page_id'] ); ?>><?php echo attribute_escape( __( 'Select page', GFWA_TEXTDOMAIN ) ); ?></option>
+            <select class="widget-control-save" id="<?php echo $this->get_field_id( 'page_id' ); ?>" name="<?php echo $this->get_field_name( 'page_id' ); ?>">
+                <option value="" <?php selected( '', $instance['page_id'] ); ?>><?php echo attribute_escape( __( 'Select page', GFWA_TEXTDOMAIN ) ); ?></option>
                 <?php
                 $pages = get_pages();
                 foreach ( $pages as $page ) {
                 ?>
-                    <option class="widget-control-save" style="padding-right:10px;" value="<?php echo esc_attr( $page->ID ); ?>" <?php selected( esc_attr( $page->ID ), $instance['page_id'] ); ?>><?php echo esc_attr( $page->post_title ); ?></option><?php
+                    <option style="padding-right:10px;" value="<?php echo esc_attr( $page->ID ); ?>" <?php selected( esc_attr( $page->ID ), $instance['page_id'] ); ?>><?php echo esc_attr( $page->post_title ); ?></option><?php
                 }
                 ?>
             </select>
@@ -373,10 +362,10 @@ class Genesis_Featured_Widget_Amplified extends WP_Widget {
             <input type="text" id="<?php echo $this->get_field_id( 'exclude_terms' ); ?>" name="<?php echo $this->get_field_name( 'exclude_terms' ); ?>" value="<?php echo esc_attr( $instance['exclude_terms'] ); ?>" style="width:95%;" /></p>
 
         <p style="<?php gfwa_display_option( $instance, 'page_id', '', false ); ?>"><label for="<?php echo $this->get_field_id( 'include_exclude' ); ?>"><?php printf( __( 'Include or Exclude by %s ID', GFWA_TEXTDOMAIN ), $instance['post_type'] ); ?>:</label>
-            <select id="<?php echo $this->get_field_id( 'include_exclude' ); ?>" name="<?php echo $this->get_field_name( 'include_exclude' ); ?>">
-                <option class="widget-control-save" style="padding-right:10px;" value="" <?php selected( '', $instance['include_exclude'] ); ?>><?php _e( 'Select', GFWA_TEXTDOMAIN ); ?></option>
-                <option class="widget-control-save" style="padding-right:10px;" value="include" <?php selected( 'include', $instance['include_exclude'] ); ?>><?php _e( 'Include', GFWA_TEXTDOMAIN ); ?></option>
-                <option class="widget-control-save" style="padding-right:10px;" value="exclude" <?php selected( 'exclude', $instance['include_exclude'] ); ?>><?php _e( 'Exclude', GFWA_TEXTDOMAIN ); ?></option>
+            <select class="widget-control-save" id="<?php echo $this->get_field_id( 'include_exclude' ); ?>" name="<?php echo $this->get_field_name( 'include_exclude' ); ?>">
+                <option style="padding-right:10px;" value="" <?php selected( '', $instance['include_exclude'] ); ?>><?php _e( 'Select', GFWA_TEXTDOMAIN ); ?></option>
+                <option style="padding-right:10px;" value="include" <?php selected( 'include', $instance['include_exclude'] ); ?>><?php _e( 'Include', GFWA_TEXTDOMAIN ); ?></option>
+                <option style="padding-right:10px;" value="exclude" <?php selected( 'exclude', $instance['include_exclude'] ); ?>><?php _e( 'Exclude', GFWA_TEXTDOMAIN ); ?></option>
             </select></p>
 
         <p style="<?php gfwa_display_option( $instance, 'page_id', '', false );
@@ -487,11 +476,11 @@ class Genesis_Featured_Widget_Amplified extends WP_Widget {
         </p>
 
         <p><label for="<?php echo $this->get_field_id( 'show_content' ); ?>"><?php _e( 'Content Type', GFWA_TEXTDOMAIN ); ?>:</label>
-            <select id="<?php echo $this->get_field_id( 'show_content' ); ?>" name="<?php echo $this->get_field_name( 'show_content' ); ?>">
-                <option class="widget-control-save" value="content" <?php selected( 'content', $instance['show_content'] ); ?>><?php _e( 'Show Content', GFWA_TEXTDOMAIN ); ?></option>
-                <option class="widget-control-save" value="excerpt" <?php selected( 'excerpt', $instance['show_content'] ); ?>><?php _e( 'Show Excerpt', GFWA_TEXTDOMAIN ); ?></option>
-                <option class="widget-control-save" value="content-limit" <?php selected( 'content-limit', $instance['show_content'] ); ?>><?php _e( 'Show Content Limit', GFWA_TEXTDOMAIN ); ?></option>
-                <option class="widget-control-save" value="" <?php selected( '', $instance['show_content'] ); ?>><?php _e( 'No Content', GFWA_TEXTDOMAIN ); ?></option>
+            <select class="widget-control-save" id="<?php echo $this->get_field_id( 'show_content' ); ?>" name="<?php echo $this->get_field_name( 'show_content' ); ?>">
+                <option value="content" <?php selected( 'content', $instance['show_content'] ); ?>><?php _e( 'Show Content', GFWA_TEXTDOMAIN ); ?></option>
+                <option value="excerpt" <?php selected( 'excerpt', $instance['show_content'] ); ?>><?php _e( 'Show Excerpt', GFWA_TEXTDOMAIN ); ?></option>
+                <option value="content-limit" <?php selected( 'content-limit', $instance['show_content'] ); ?>><?php _e( 'Show Content Limit', GFWA_TEXTDOMAIN ); ?></option>
+                <option value="" <?php selected( '', $instance['show_content'] ); ?>><?php _e( 'No Content', GFWA_TEXTDOMAIN ); ?></option>
             </select>
             <span  style="<?php gfwa_display_option( $instance, 'show_content', 'content-limit', false ); ?>">
                 <br /><label for="<?php echo $this->get_field_id( 'content_limit' ); ?>"><?php _e( 'Limit content to', GFWA_TEXTDOMAIN ); ?></label> <input type="text" id="<?php echo $this->get_field_id( 'image_alignment' ); ?>" name="<?php echo $this->get_field_name( 'content_limit' ); ?>" value="<?php echo esc_attr( intval( $instance['content_limit'] ) ); ?>" size="3" /> <?php _e( 'characters', GFWA_TEXTDOMAIN ); ?></span></p>
@@ -517,10 +506,10 @@ class Genesis_Featured_Widget_Amplified extends WP_Widget {
             <input type="text" id="<?php echo $this->get_field_id( 'extra_num' ); ?>" name="<?php echo $this->get_field_name( 'extra_num' ); ?>" value="<?php echo esc_attr( $instance['extra_num'] ); ?>" size="2" /></p>
 
         <p style="<?php gfwa_display_option( $instance, 'extra_posts' ); ?>"><label for="<?php echo $this->get_field_id( 'extra_format' ); ?>"><?php _e( 'Extra Post Format', GFWA_TEXTDOMAIN ); ?>:</label>
-            <select id="<?php echo $this->get_field_id( 'extra_format' ); ?>" name="<?php echo $this->get_field_name( 'extra_format' ); ?>">
-                <option class="widget-control-save" value="ul" <?php selected( 'ul', $instance['extra_format'] ); ?>><?php _e( 'Unordered List', GFWA_TEXTDOMAIN ); ?></option>
-                <option class="widget-control-save" value="ol" <?php selected( 'ol', $instance['extra_format'] ); ?>><?php _e( 'Ordered List', GFWA_TEXTDOMAIN ); ?></option>
-                <option class="widget-control-save" value="drop_down" <?php selected( 'drop_down', $instance['extra_format'] ); ?>><?php _e( 'Drop Down', GFWA_TEXTDOMAIN ); ?></option>
+            <select class="widget-control-save" id="<?php echo $this->get_field_id( 'extra_format' ); ?>" name="<?php echo $this->get_field_name( 'extra_format' ); ?>">
+                <option value="ul" <?php selected( 'ul', $instance['extra_format'] ); ?>><?php _e( 'Unordered List', GFWA_TEXTDOMAIN ); ?></option>
+                <option value="ol" <?php selected( 'ol', $instance['extra_format'] ); ?>><?php _e( 'Ordered List', GFWA_TEXTDOMAIN ); ?></option>
+                <option value="drop_down" <?php selected( 'drop_down', $instance['extra_format'] ); ?>><?php _e( 'Drop Down', GFWA_TEXTDOMAIN ); ?></option>
             </select>
         </p>
 
@@ -543,25 +532,10 @@ class Genesis_Featured_Widget_Amplified extends WP_Widget {
 
 }
 
-add_action( 'gfwa_before_loop', 'gfwa_post_image_position', 10, 1 );
 
-/**
- * Checks Image Position and runs appropriate action to load image
- *
- * @author Nick Croft
- * @since 0.5
- * @version 0.5
- * @param array $instance Widget Instance Values
- */
-function gfwa_post_image_position( $instance ) {
-    if ( !empty( $instance['show_image'] ) && $instance['image_position'] == 'before-title' )
-        add_action( 'gfwa_before_post_content', 'gfwa_do_post_image', 5, 1 );
-    elseif ( !empty( $instance['show_image'] ) && $instance['image_position'] == 'after-title' )
-        add_action( 'gfwa_before_post_content', 'gfwa_do_post_image', 15, 1 );
-    elseif ( !empty( $instance['show_image'] ) )
-        add_action( 'gfwa_after_post_content', 'gfwa_do_post_image', 10, 1 );
-}
-
+add_action( 'gfwa_before_post_content', 'gfwa_do_post_image', 5, 1 );
+add_action( 'gfwa_post_content', 'gfwa_do_post_image', 5, 1 );
+add_action( 'gfwa_after_post_content', 'gfwa_do_post_image', 10, 1 );
 /**
  * Inserts Post Image
  *
@@ -571,7 +545,9 @@ function gfwa_post_image_position( $instance ) {
  * @param array $instance Values set in widget isntance
  */
 function gfwa_do_post_image( $instance ) {
-    printf( '<a href="%s" title="%s" class="%s">%s</a>', get_permalink(), the_title_attribute( 'echo=0' ), esc_attr( $instance['image_alignment'] ), genesis_get_image( array( 'format' => 'html', 'size' => $instance['image_size'] ) ) );
+    echo  current_filter() == 'gfwa_before_post_content'  &&  $instance['image_position'] == 'before-title' && !empty( $instance['show_image'] )  ? sprintf( '<a href="%s" title="%s" class="%s">%s</a>', get_permalink(), the_title_attribute( 'echo=0' ), esc_attr( $instance['image_alignment'] ), genesis_get_image( array( 'format' => 'html', 'size' => $instance['image_size'] ) ) ) : '';
+    echo  current_filter() == 'gfwa_post_content'  &&  $instance['image_position'] == 'after-title' && !empty( $instance['show_image'] )  ? sprintf( '<a href="%s" title="%s" class="%s">%s</a>', get_permalink(), the_title_attribute( 'echo=0' ), esc_attr( $instance['image_alignment'] ), genesis_get_image( array( 'format' => 'html', 'size' => $instance['image_size'] ) ) ) : '';
+    echo  current_filter() == 'gfwa_after_post_content'  &&  $instance['image_position'] == 'after-content' && !empty( $instance['show_image'] )  ? sprintf( '<a href="%s" title="%s" class="%s">%s</a>', get_permalink(), the_title_attribute( 'echo=0' ), esc_attr( $instance['image_alignment'] ), genesis_get_image( array( 'format' => 'html', 'size' => $instance['image_size'] ) ) ) : '';
 }
 
 add_action( 'gfwa_before_post_content', 'gfwa_do_gravatar', 10, 1 );
@@ -665,9 +641,16 @@ add_action( 'admin_print_footer_scripts', 'gfwa_form_submit' );
 
 function gfwa_form_submit() {
 ?>
-    <script type="text/javascript" language="JavaScript"><!--
-        (function(a){a("option.widget-control-save").live("click",function(){wpWidgets.save(a(this).closest("div.widget"),0,1,0);return false});})(jQuery);
-        //--></script>
+    <script type="text/javascript">
+
+(function(a) {
+                a('select.widget-control-save').live('change', function(){
+			wpWidgets.save( a(this).closest('div.widget'), 0, 1, 0 );
+			return false;
+		});
+})(jQuery);
+
+    </script>
 <?php
 }
 
