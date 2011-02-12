@@ -3,7 +3,7 @@
 /*
   Plugin Name: Genesis Featured Widget Amplified
   Plugin URI: http://DesignsByNicktheGeek.com
-  Version: 0.6.3
+  Version: 0.6.4
   Author: Nick_theGeek
   Contributor: GaryJ
   Author URI: http://DesignsByNicktheGeek.com
@@ -42,14 +42,14 @@ function gfwa_activation_check() {
 
     if ( basename( TEMPLATEPATH ) != 'genesis' ) {
         deactivate_plugins( plugin_basename( __FILE__ ) ); // Deactivate ourself
-        wp_die( sprintf(__('Sorry, you can\'t activate unless you have installed %1$sGenesis%2$s', GFWA_TEXTDOMAIN),'<a href="http://designsbynickthegeek.com/go/genesis">' ,'</a>' ));
+        wp_die( sprintf( __( 'Sorry, you can\'t activate unless you have installed %1$sGenesis%2$s', GFWA_TEXTDOMAIN ), '<a href="http://designsbynickthegeek.com/go/genesis">', '</a>' ) );
     }
 
     $version = gfwa_truncate( $theme_info['Version'], 3 );
 
     if ( version_compare( $version, $latest, '<' ) ) {
         deactivate_plugins( plugin_basename( __FILE__ ) ); // Deactivate ourself
-        wp_die( sprintf(__('Sorry, you can\'t activate without %1$sGenesis %2$s%3$s or greater', GFWA_TEXTDOMAIN), '<a href="http://designsbynickthegeek.com/go/genesis">', $latest, '</a>' ));
+        wp_die( sprintf( __( 'Sorry, you can\'t activate without %1$sGenesis %2$s%3$s or greater', GFWA_TEXTDOMAIN ), '<a href="http://designsbynickthegeek.com/go/genesis">', $latest, '</a>' ) );
     }
 }
 
@@ -231,7 +231,7 @@ function gfwa_form_second_column( $instance ) {
 function gfwa_exclude_taxonomies( $taxonomy ) {
     $filters = array( '', 'nav_menu' );
     $filters = apply_filters( 'gfwa_exclude_taxonomies', $filters );
-    return(!in_array( $taxonomy, $filters ));
+    return(!in_array( $taxonomy->name, $filters ));
 }
 
 /**
@@ -260,16 +260,16 @@ function gfwa_exclude_post_types( $type ) {
  * @param string $limit
  * @return string
  */
-function gfwa_post_limit($limit) {
-	global $paged, $myOffset;
-	if (empty($paged)) {
-			$paged = 1;
-	}
-	$postperpage = intval(get_option('posts_per_page'));
-	$pgstrt = ((intval($paged) -1) * $postperpage) + $myOffset . ', ';
-	$limit = 'LIMIT '.$pgstrt.$postperpage;
-	return $limit;
-} 
+function gfwa_post_limit( $limit ) {
+    global $paged, $myOffset;
+    if ( empty( $paged ) ) {
+        $paged = 1;
+    }
+    $postperpage = intval( get_option( 'posts_per_page' ) );
+    $pgstrt = ((intval( $paged ) - 1) * $postperpage) + $myOffset . ', ';
+    $limit = 'LIMIT ' . $pgstrt . $postperpage;
+    return $limit;
+}
 
 // Include files
 require_once(GFWA_PLUGIN_DIR . '/widget.php');
