@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: genesis, genesiswp, studiopress, featured post, custom post type, pagination
 Requires at least: 3.0
 Tested up to: 3.0.4
-Stable tag: 0.6.4
+Stable tag: 0.6.5
 
 Genesis Featured Posts with support for custom post types, taxonomies, and so much more
 
@@ -49,7 +49,11 @@ This plugin requires the [Genesis Theme Framework](http://designsbynickthegeek.c
 1. gfwa_exclude_taxonomies - used to prevent taxonomies and related terms from appearing in the terms and taxonomies list in the widget form
 
 == Change Log ==
-0.6.4 (2-12-2011 : current)
+0.6. (2-12-2011 : current)
+
+* Update to taxonomy output to compensate for 3.0 and 3.1 differences
+
+0.6.4 (2-12-2011)
 
 * Changed Terms and Taxonomies drop down output to reduce errors in terms not being built in Query and make output more user friendly
 * Fixed the tags query.
@@ -104,9 +108,14 @@ This plugin requires the [Genesis Theme Framework](http://designsbynickthegeek.c
 
 
 == Upgrade Notice ==
-0.5 Image action hooks were changed. `add_action( 'gfwa_before_post_content', 'gfwa_do_post_image', 10, 1 );` is replaced with `add_action( 'gfwa_before_post_content', 'gfwa_do_post_image', 5, 1 );
+
+0.6.5 Make sure you resave widget settings for terms and taxonomies
 
 0.6.3 Image Action Hooks were changed. `add_action( 'gfwa_before_post_content', 'gfwa_do_post_image', 15, 1 );` is replaced with `add_action( 'gfwa_post_content', 'gfwa_do_post_image', 5, 1 );`
+
+0.5 Image action hooks were changed. `add_action( 'gfwa_before_post_content', 'gfwa_do_post_image', 10, 1 );` is replaced with `add_action( 'gfwa_before_post_content', 'gfwa_do_post_image', 5, 1 );
+
+
 
 == Screenshots ==
 To Do: Take and add screen shots
