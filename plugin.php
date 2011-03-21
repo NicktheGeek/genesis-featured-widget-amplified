@@ -3,7 +3,7 @@
 /*
   Plugin Name: Genesis Featured Widget Amplified
   Plugin URI: http://DesignsByNicktheGeek.com
-  Version: 0.6.5
+  Version: 0.6.6
   Author: Nick_theGeek
   Contributor: GaryJ
   Author URI: http://DesignsByNicktheGeek.com

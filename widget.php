@@ -3,11 +3,13 @@
  * To Do:
  *      Edit html to allow external style sheet instead of inline styles
  *      Create external stylesheet for widget
+ *      Add option to link/not link post title (v0.7)
  *      Add support for sticky posts (v0.7)
  *      Add support for post_status (v0.7)
  *      Add support for Post Formats (v0.7)
  *      Make content float options with 2, 3, or 4 side by side clearing after the row (v0.7)
  *      Add even/odd class (v0.7)
+ *      Add support for child pages (selected or default to current page)(v0.7)
  *      Create Simple Hooks interface (1.0)
  *
  */
@@ -123,11 +125,14 @@ class Genesis_Featured_Widget_Amplified extends WP_Widget {
                 $term_args[$posts_term['0']] = $posts_term['1'];
         }
 
-        if ( !empty( $instance['exclude_terms'] ) ) {
-            if ( !empty( $posts_term['0'] ) )
-                $taxonomy = $posts_term['0'];
+                    if ( !empty( $posts_term['0'] ) ) {
+                if( $posts_term['0'] == 'category_name' ) $taxonomy = 'category';
+                else $taxonomy = $posts_term['0'];
+            }
             else
                 $taxonomy = 'category';
+
+        if ( !empty( $instance['exclude_terms'] ) ) {
             $exclude_terms = explode( ',', str_replace( ' ', '', $instance['exclude_terms'] ) );
             $term_args[$taxonomy . '__not_in'] = $exclude_terms;
         }
@@ -224,7 +229,8 @@ class Genesis_Featured_Widget_Amplified extends WP_Widget {
 
         if ( !empty( $instance['more_from_category'] ) && !empty( $instance['posts_term'] ) ) {
             gfwa_category_more( $instance );
-            echo '<p class="more-from-category"><a href="' . get_category_link( $posts_term['1'] ) . '" title="' . get_cat_name( $posts_term['1'] ) . '">' . esc_html( $instance['more_from_category_text'] ) . '</a></p>';
+            $term = get_term_by( 'slug', $posts_term['1'], $taxonomy );
+            echo '<p class="more-from-category"><a href="' . get_term_link( $posts_term['1'], $taxonomy  ) . '" title="' . $term->name . '">' . esc_html( $instance['more_from_category_text'] ) . '</a></p>';
         }
 
         gfwa_after_category_more( $instance );
@@ -344,9 +350,7 @@ class Genesis_Featured_Widget_Amplified extends WP_Widget {
                 <option style="padding-right:10px;" value="" <?php selected( '', $instance['posts_term'] ); ?>><?php _e( 'All Taxonomies and Terms', GFWA_TEXTDOMAIN ); ?></option>
                 <?php
                 $taxonomies = get_taxonomies( array( 'public' => true ), 'objects' );
-                //echo '<!--';
-                //print_r($taxonomies);
-                //echo '-->';
+
                 $taxonomies = array_filter( $taxonomies, 'gfwa_exclude_taxonomies' );
                 $test = get_taxonomies ( array( 'public' => true ), 'objects' );
 
@@ -364,10 +368,6 @@ class Genesis_Featured_Widget_Amplified extends WP_Widget {
                     $terms = get_terms( $taxonomy->name, 'orderby=name&hide_empty=1' );
                     foreach ( $terms as $term ) {
 
-               // echo '<!--';
-                //var_dump($test);
-               // print_r($term);
-               // echo '-->';
                 ?>
                         <option style="margin-left: 8px; padding-right:10px;" value="<?php echo esc_attr( $query_label ) . ',' . $term->slug; ?>" <?php selected( esc_attr( $query_label ) . ',' . $term->slug, $instance['posts_term'] ); ?>><?php echo '-' . esc_attr( $term->name ); ?></option><?php } ?>
                 </optgroup> <?php
