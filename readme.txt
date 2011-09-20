@@ -51,14 +51,15 @@ This plugin requires the [Genesis Theme Framework](http://www.studiopress.com/)
 == Change Log ==
 0.7 (9-20-2011 : current)
 
-* Add option to link/not link post title
-* Add option to link/not link post image
-* Fix tag archive link
-* Fix All %taxonomy% not showing "selected"
-* Fix exclude post by ID not working
-* Add custom field for $instance test on user added actions (v0.7) Complete
-* Add even/odd class (v0.7) Complete
-* Add counter variable to loop $gfwa_counter (v0.7) Complete
+* Added option to link/not link post title
+* Added option to link/not link post image
+* Fixed tag archive link
+* Fixed All %taxonomy% not showing "selected"
+* Fixed exclude post by ID not working
+* Added custom field for $instance test on user added actions (v0.7) Complete
+* Added even/odd class (v0.7) Complete
+* Added counter variable to loop $gfwa_counter (v0.7) Complete
+* Added Archive link url for all-taxonomies
 
 
 0.6.6 (3-21-2011)

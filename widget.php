@@ -6,7 +6,6 @@
  *      Fix extra posts showing if number of posts is filled in but check box isn't checked
  *      Add support for sticky posts 
  *      Add support for post_status 
- *      Add Archive link url for all-taxonomy
  *      Add support for Post Formats (v0.8)
  *      Add support for child pages (selected or default to current page)(v0.8)
  *      Add support for Grid Loop (0.8)
