@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: genesis, genesiswp, studiopress, featured post, custom post type, pagination
 Requires at least: 3.0
 Tested up to: 3.0.4
-Stable tag: 0.7
+Stable tag: 0.7.1
 
 Genesis Featured Posts with support for custom post types, taxonomies, and so much more
 
@@ -49,7 +49,12 @@ This plugin requires the [Genesis Theme Framework](http://www.studiopress.com/)
 1. gfwa_exclude_taxonomies - used to prevent taxonomies and related terms from appearing in the terms and taxonomies list in the widget form
 
 == Change Log ==
-0.7 (9-20-2011 : current)
+0.7.1 (9-20-2011 : current)
+
+* Fixed text domain for localization support
+* Fixed undefined index extra_posts notice
+
+0.7 (9-20-2011)
 
 * Added option to link/not link post title
 * Added option to link/not link post image

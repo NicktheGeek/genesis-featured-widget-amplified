@@ -3,7 +3,7 @@
 /*
   Plugin Name: Genesis Featured Widget Amplified
   Plugin URI: http://DesignsByNicktheGeek.com
-  Version: 0.7
+  Version: 0.7.1
   Author: Nick_theGeek
   Contributor: GaryJ
   Author URI: http://DesignsByNicktheGeek.com
@@ -15,13 +15,15 @@
  *      Create and setup screen shots
  */
 
+/** Load textdomain for translation */
+load_plugin_textdomain( 'gfwa', false, basename( dirname( __FILE__ ) ) . '/languages/' );
 
 define( 'GFWA_PLUGIN_DIR', dirname( __FILE__ ) );
-define( 'GFWA_TEXTDOMAIN', 'GFWA' );
+
 
 /* Prevent direct access to the plugin */
 if ( !defined( 'ABSPATH' ) ) {
-    wp_die( __( "Sorry, you are not allowed to access this page directly.", GFWA_TEXTDOMAIN ) );
+    wp_die( __( "Sorry, you are not allowed to access this page directly.", 'gfwa' ) );
 }
 
 register_activation_hook( __FILE__, 'gfwa_activation_check' );
@@ -42,14 +44,14 @@ function gfwa_activation_check() {
 
     if ( basename( TEMPLATEPATH ) != 'genesis' ) {
         deactivate_plugins( plugin_basename( __FILE__ ) ); // Deactivate ourself
-        wp_die( sprintf( __( 'Sorry, you can\'t activate unless you have installed %1$sGenesis%2$s', GFWA_TEXTDOMAIN ), '<a href="http://designsbynickthegeek.com/go/genesis">', '</a>' ) );
+        wp_die( sprintf( __( 'Sorry, you can\'t activate unless you have installed %1$sGenesis%2$s', 'gfwa' ), '<a href="http://designsbynickthegeek.com/go/genesis">', '</a>' ) );
     }
 
     $version = gfwa_truncate( $theme_info['Version'], 3 );
 
     if ( version_compare( $version, $latest, '<' ) ) {
         deactivate_plugins( plugin_basename( __FILE__ ) ); // Deactivate ourself
-        wp_die( sprintf( __( 'Sorry, you can\'t activate without %1$sGenesis %2$s%3$s or greater', GFWA_TEXTDOMAIN ), '<a href="http://designsbynickthegeek.com/go/genesis">', $latest, '</a>' ) );
+        wp_die( sprintf( __( 'Sorry, you can\'t activate without %1$sGenesis %2$s%3$s or greater', 'gfwa' ), '<a href="http://designsbynickthegeek.com/go/genesis">', $latest, '</a>' ) );
     }
 }
 
