@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: genesis, genesiswp, studiopress, featured post, custom post type, pagination
 Requires at least: 3.0
 Tested up to: 3.0.4
-Stable tag: 0.6.6
+Stable tag: 0.7
 
 Genesis Featured Posts with support for custom post types, taxonomies, and so much more
 
@@ -20,7 +20,7 @@ Genesis Featured Widget Amplified adds additional functionality to the Genesis F
 * Supports Sorting by Meta Key
 * Multiple Hooks and Filters for adding additional content
 
-This plugin requires the [Genesis Theme Framework](http://designsbynickthegeek.com/go/genesis) aff link
+This plugin requires the [Genesis Theme Framework](http://www.studiopress.com/)
 
 == Installation ==
 
@@ -49,7 +49,19 @@ This plugin requires the [Genesis Theme Framework](http://designsbynickthegeek.c
 1. gfwa_exclude_taxonomies - used to prevent taxonomies and related terms from appearing in the terms and taxonomies list in the widget form
 
 == Change Log ==
-0.6.6 (3-21-2011 : current)
+0.7 (9-20-2011 : current)
+
+* Add option to link/not link post title
+* Add option to link/not link post image
+* Fix tag archive link
+* Fix All %taxonomy% not showing "selected"
+* Fix exclude post by ID not working
+* Add custom field for $instance test on user added actions (v0.7) Complete
+* Add even/odd class (v0.7) Complete
+* Add counter variable to loop $gfwa_counter (v0.7) Complete
+
+
+0.6.6 (3-21-2011)
 
 * Bug Fix: Corrected taxonomy name for Categories, which resolves several smaller bugs including, exclude terms not working with specific category selected
 * Bug Fix: Corrected archive link creation
