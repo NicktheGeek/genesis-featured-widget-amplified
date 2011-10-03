@@ -9,6 +9,10 @@
  *      Add support for Post Formats (v0.8)
  *      Add support for child pages (selected or default to current page)(v0.8)
  *      Add support for Grid Loop (0.8)
+ *      Add option for "any" on post types. (0.8)
+ *      Add option for linking the gravatar
+ *      Add additional option for linking post title/image via custom field
+ *      Add option for showing image via custom field
  *      Make content float options with 2, 3, or 4 side by side clearing after the row (v0.9)
  *      Create Simple Hooks interface (1.0)
  *
@@ -289,7 +293,7 @@ class Genesis_Featured_Widget_Amplified extends WP_Widget {
      * @param array $instance Values set in widget isntance
      */
     function form( $instance ) {
-
+    
         // ensure value exists
         $instance = wp_parse_args( ( array ) $instance, array(
                     'title' => '',
@@ -336,6 +340,7 @@ class Genesis_Featured_Widget_Amplified extends WP_Widget {
                     'archive_link' => '',
                     'custom_field' => ''
                         ) );
+        
 ?>
 
         <p><label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title', 'gfwa' ); ?>:</label>
@@ -481,7 +486,10 @@ class Genesis_Featured_Widget_Amplified extends WP_Widget {
 
              <p><input class="widget-control-save" id="<?php echo $this->get_field_id( 'show_image' ); ?>" type="checkbox" name="<?php echo $this->get_field_name( 'show_image' ); ?>" value="1" <?php checked( 1, $instance['show_image'] ); ?>/> <label for="<?php echo $this->get_field_id( 'show_image' ); ?>"><?php _e( 'Show Featured Image', 'gfwa' ); ?></label></p>
 
-                    <p style="<?php gfwa_display_option( $instance, 'show_image' ); ?>"><input id="<?php echo $this->get_field_id( 'link_image' ); ?>" type="checkbox" name="<?php echo $this->get_field_name( 'link_image' ); ?>" value="1" <?php checked( 1, $instance['link_image'] ); ?>/> <label for="<?php echo $this->get_field_id( 'link_image' ); ?>"><?php _e( 'Link Image to Post', 'gfwa' ); ?></label></p>
+                    <p style="<?php gfwa_display_option( $instance, 'show_image' ); ?>"><select id="<?php echo $this->get_field_id( 'link_image' ); ?>" name="<?php echo $this->get_field_name( 'link_image' ); ?>">
+                     <option style="padding-right:10px;" value="1" <?php selected( '1', $instance['link_image'] ); ?>><?php _e( 'Link Image to Post', 'gfwa' ); ?></option>
+                     <option style="padding-right:10px;" value="2" <?php selected( '2', $instance['link_image'] ); ?>><?php _e( 'Don\'t Link Image', 'gfwa' ); ?></option>
+                 </select></p>
 
                     <p style="<?php gfwa_display_option( $instance, 'show_image' ); ?>"><label for="<?php echo $this->get_field_id( 'image_size' ); ?>"><?php _e( 'Image Size', 'gfwa' ); ?>:</label>
 <?php $sizes = genesis_get_additional_image_sizes(); ?>
@@ -515,7 +523,10 @@ class Genesis_Featured_Widget_Amplified extends WP_Widget {
         <p><input class="widget-control-save" id="<?php echo $this->get_field_id( 'show_title' ); ?>" type="checkbox" name="<?php echo $this->get_field_name( 'show_title' ); ?>" value="1" <?php checked( 1, $instance['show_title'] ); ?>/> <label for="<?php echo $this->get_field_id( 'show_title' ); ?>"><?php _e( 'Show Post Title', 'gfwa' ); ?></label>
             <span  style="<?php gfwa_display_option( $instance, 'show_title' ); ?>">
                 <br /><label for="<?php echo $this->get_field_id( 'title_limit' ); ?>"><?php _e( 'Limit title to', 'gfwa' ); ?></label> <input type="text" id="<?php echo $this->get_field_id( 'title_limit' ); ?>" name="<?php echo $this->get_field_name( 'title_limit' ); ?>" value="<?php echo esc_attr( intval( $instance['title_limit'] ) ); ?>" size="3" /> <?php _e( 'characters', 'gfwa' ); ?></span></p>
-        <p style="<?php gfwa_display_option( $instance, 'show_title' ); ?>"><input id="<?php echo $this->get_field_id( 'link_title' ); ?>" type="checkbox" name="<?php echo $this->get_field_name( 'link_title' ); ?>" value="1" <?php checked( 1, $instance['link_title'] ); ?>/> <label for="<?php echo $this->get_field_id( 'link_title' ); ?>"><?php _e( 'Link Title to Post', 'gfwa' ); ?></label></p>
+        <p style="<?php gfwa_display_option( $instance, 'show_title' ); ?>"><select id="<?php echo $this->get_field_id( 'link_title' ); ?>" name="<?php echo $this->get_field_name( 'link_title' ); ?>">
+                     <option style="padding-right:10px;" value="1" <?php selected( '1', $instance['link_title'] ); ?>><?php _e( 'Link Title to Post', 'gfwa' ); ?></option>
+                     <option style="padding-right:10px;" value="2" <?php selected( '2', $instance['link_title'] ); ?>><?php _e( 'Don\'t Link Title', 'gfwa' ); ?></option>
+                 </select></p>
 
         <p><input class="widget-control-save" id="<?php echo $this->get_field_id( 'show_byline' ); ?>" type="checkbox" name="<?php echo $this->get_field_name( 'show_byline' ); ?>" value="1" <?php checked( 1, $instance['show_byline'] ); ?>/> <label for="<?php echo $this->get_field_id( 'show_byline' ); ?>"><?php _e( 'Show Post Info', 'gfwa' ); ?></label>
             <span  style="<?php gfwa_display_option( $instance, 'show_byline' ); ?>">
