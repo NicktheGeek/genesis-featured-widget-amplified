@@ -2,9 +2,9 @@
 Contributors: Nick_theGeek
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=RGUXZDAKT7BDW
 Tags: genesis, genesiswp, studiopress, featured post, custom post type, pagination
-Requires at least: 3.2
-Tested up to: 3.2.1
-Stable tag: 0.7.2
+Requires at least: 3.3
+Tested up to: 3.3.1
+Stable tag: 0.8
 
 Genesis Featured Posts with support for custom post types, taxonomies, and so much more
 
@@ -20,7 +20,7 @@ Genesis Featured Widget Amplified adds additional functionality to the Genesis F
 * Supports Sorting by Meta Key
 * Multiple Hooks and Filters for adding additional content
 
-This plugin requires the [Genesis Theme Framework](http://www.studiopress.com/)
+This plugin requires the [Genesis Theme Framework](http://designsbynickthegeek.com/go/genesis)
 
 Thanks to David Decker, this plugin is translation ready.  German translation files included.
 
@@ -51,7 +51,22 @@ Thanks to David Decker, this plugin is translation ready.  German translation fi
 1. gfwa_exclude_taxonomies - used to prevent taxonomies and related terms from appearing in the terms and taxonomies list in the widget form
 
 == Change Log ==
-0.7.2 (10-3-2011 : current)
+0.8 (12-27-2012 : current)
+
+ * Fixed image alignment when not linked
+ * Added alignnone to output if no alignment is selected
+ * Added aligncenter to image options
+ * Dropped support for php 4, now requires php 5.2 like WordPress
+ * Simplified defaults to a single list instead of 2 lists
+ * Simplified widget form creation to allow easier option updates
+ * Fixed extra posts showing if number of posts is filled in but check box isn't checked
+ * Added option for "any" on post types.
+ * Added option for linking the gravatar
+ * Fixed some strings that were not internationalized correctly
+ * Added additional option for linking post title/image via custom field
+ * Added title cutoff symbol 
+
+0.7.2 (10-3-2011)
 
 * Fixed link to post image option
 * Fixed link to post title option
