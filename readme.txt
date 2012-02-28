@@ -51,7 +51,7 @@ Thanks to David Decker, this plugin is translation ready.  German translation fi
 1. gfwa_exclude_taxonomies - used to prevent taxonomies and related terms from appearing in the terms and taxonomies list in the widget form
 
 == Change Log ==
-0.8 (12-27-2012 : current)
+0.8 (2-27-2012 : current)
 
  * Fixed image alignment when not linked
  * Added alignnone to output if no alignment is selected
