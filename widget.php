@@ -320,6 +320,8 @@ class Genesis_Featured_Widget_Amplified extends WP_Widget {
 		$instance = wp_parse_args( (array) $instance, $this->defaults ); 
 		
 		$sizes = genesis_get_additional_image_sizes();
+		
+			$imageSize_opt['thumbnail'] = 'thumbnail ('. get_option( 'thumbnail_size_w' ) . 'x' . get_option( 'thumbnail_size_h' ) . ')';
 
 		foreach( ( array )$sizes as $name => $size ) 
 			$imageSize_opt[$name] = esc_html( $name ) . ' (' . $size['width'] . 'x' . $size['height'] . ')';
