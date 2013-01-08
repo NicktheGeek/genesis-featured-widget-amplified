@@ -2,9 +2,9 @@
 Contributors: Nick_theGeek
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=RGUXZDAKT7BDW
 Tags: genesis, genesiswp, studiopress, featured post, custom post type, pagination
-Requires at least: 3.3
-Tested up to: 3.3.1
-Stable tag: 0.8.1
+Requires at least: 3.5
+Tested up to: 3.5
+Stable tag: 0.9.0
 
 Genesis Featured Posts with support for custom post types, taxonomies, and so much more
 
