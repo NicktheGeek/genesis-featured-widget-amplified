@@ -1,0 +1,416 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Genesis Featured Widget Amplified Plugin\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/tags/genesis-featured-widget-amplified?forum_id=10\n"
+"POT-Creation-Date: 2011-09-22 16:39+0100\n"
+"PO-Revision-Date: 2011-09-22 16:44+0100\n"
+"Last-Translator: David Decker <deckerweb.mobil@googlemail.com>\n"
+"Language-Team: DECKERWEB <deckerweb.mobil@googlemail.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Poedit-Language: German\n"
+"X-Poedit-Country: GERMANY\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2\n"
+"X-Textdomain-Support: yes\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#@ gfwa
+#: plugin.php:26
+#: widget.php:18
+msgid "Sorry, you are not allowed to access this page directly."
+msgstr "Entschuldigung, aber Sie d&uuml;rfen nicht direkt auf diese Seite zugreifen."
+
+#@ gfwa
+#: plugin.php:47
+#, php-format
+msgid "Sorry, you can't activate unless you have installed %1$sGenesis%2$s"
+msgstr "Entschuldigung, aber Sie k&ouml;nnen dieses Plugin nicht aktivieren, solange Sie das %1$sGenesis Framework%2$s nicht installiert haben."
+
+#@ gfwa
+#: plugin.php:54
+#, php-format
+msgid "Sorry, you can't activate without %1$sGenesis %2$s%3$s or greater"
+msgstr "Entschuldigung, aber Sie k&ouml;nnen dieses Plugin nicht aktivieren, au&szlig;er Sie haben das %1$sGenesis Framework Version %2$s%3$s oder h&ouml;her installiert."
+
+#@ gfwa
+#: widget.php:43
+msgid "Displays featured posts types with thumbnails"
+msgstr "Zeigt Featured-Inhaltstypen (Custom Post Types) mit Vorschaubildern/ Artikelbildern an."
+
+#@ gfwa
+#: widget.php:45
+msgid "Genesis - Featured Widget Amplified"
+msgstr "Genesis - Featured Inhalte"
+
+#@ gfwa
+#: widget.php:95
+#: widget.php:324
+msgid "By"
+msgstr "von"
+
+#@ gfwa
+#: widget.php:101
+#: widget.php:329
+msgid "[Read More...]"
+msgstr "[Weiterlesen...]"
+
+#@ gfwa
+#: widget.php:107
+#: widget.php:335
+msgid "More Posts from this Taxonomy"
+msgstr "Mehr Beitr&auml;ge aus dieser Taxonomie"
+
+#@ gfwa
+#: widget.php:243
+#: widget.php:413
+msgid "Select"
+msgstr "Ausw&auml;hlen"
+
+#@ gfwa
+#: widget.php:341
+#: widget.php:434
+#: widget.php:550
+msgid "Title"
+msgstr "Titel"
+
+#@ gfwa
+#: widget.php:348
+msgid "Post Type"
+msgstr "Inhaltstyp"
+
+#@ genesis
+#: widget.php:365
+msgid "Page"
+msgstr "Seite"
+
+#@ gfwa
+#: widget.php:367
+msgid "Select page"
+msgstr "Seite ausw&auml;hlen"
+
+#@ gfwa
+#: widget.php:378
+msgid "Taxonomy and Terms"
+msgstr "Taxonomie und Terms"
+
+#@ gfwa
+#: widget.php:381
+msgid "All Taxonomies and Terms"
+msgstr "Alle Taxonomien und Terms"
+
+#@ gfwa
+#: widget.php:408
+#, php-format
+msgid "Exclude Terms by ID %s (comma separated list)"
+msgstr "Terms per ID %s ausschlie&szlig;en (kommagetrennte Liste)"
+
+#@ gfwa
+#: widget.php:411
+#, php-format
+msgid "Include or Exclude by %s ID"
+msgstr "Einschlie&szlig;en oder ausschlie&szlig;en nach %s ID"
+
+#@ gfwa
+#: widget.php:414
+msgid "Include"
+msgstr "Einschlie&szlig;en"
+
+#@ gfwa
+#: widget.php:415
+msgid "Exclude"
+msgstr "Ausschlie&szlig;en"
+
+#@ gfwa
+#: widget.php:419
+#: widget.php:436
+msgid "ID"
+msgstr "ID"
+
+#@ gfwa
+#: widget.php:422
+msgid "Meta Key"
+msgstr "Meta-Schl&uuml;ssel"
+
+#@ gfwa
+#: widget.php:425
+#: widget.php:553
+msgid "Number of Posts to Show"
+msgstr "Anzahl von Beitr&auml;gen zum Anzeigen"
+
+#@ gfwa
+#: widget.php:428
+msgid "Number of Posts to Offset"
+msgstr "Anzahl von Beitr&auml;gen, die &uuml;bersprungen werden sollen (Offset)"
+
+#@ gfwa
+#: widget.php:431
+msgid "Order By"
+msgstr "Sortieren nach"
+
+#@ gfwa
+#: widget.php:433
+msgid "Date"
+msgstr "Datum"
+
+#@ gfwa
+#: widget.php:435
+msgid "Parent"
+msgstr "&Uuml;bergeordn. Beitrag"
+
+#@ gfwa
+#: widget.php:437
+msgid "Comment Count"
+msgstr "Kommentaranzahl"
+
+#@ gfwa
+#: widget.php:438
+msgid "Random"
+msgstr "Zuf&auml;llig"
+
+#@ gfwa
+#: widget.php:439
+msgid "Meta Value"
+msgstr "Meta-Wert"
+
+#@ gfwa
+#: widget.php:440
+msgid "Numeric Meta Value"
+msgstr "Numerischer Meta-Wert"
+
+#@ gfwa
+#: widget.php:443
+msgid "Sort Order"
+msgstr "Reihenfolge"
+
+#@ gfwa
+#: widget.php:445
+msgid "Descending (3, 2, 1)"
+msgstr "Absteigend (3, 2, 1)"
+
+#@ gfwa
+#: widget.php:446
+msgid "Ascending (1, 2, 3)"
+msgstr "Aufsteigend (1, 2, 3)"
+
+#@ gfwa
+#: widget.php:449
+msgid "Work with Pagination"
+msgstr "Mit Paginierung arbeiten"
+
+#@ gfwa
+#: widget.php:451
+msgid "Show Page Navigation"
+msgstr "Seitennavigation anzeigen"
+
+#@ gfwa
+#: widget.php:456
+msgid "Show Author Gravatar"
+msgstr "Autoren-Gravaterbild anzeigen"
+
+#@ gfwa
+#: widget.php:458
+msgid "Gravatar Size"
+msgstr "Gravatargr&ouml;&szlig;e"
+
+#@ gfwa
+#: widget.php:460
+msgid "Small (45px)"
+msgstr "Klein (45 Pixel, small)"
+
+#@ gfwa
+#: widget.php:461
+msgid "Medium (65px)"
+msgstr "Mittel (65 Pixel, medium)"
+
+#@ gfwa
+#: widget.php:462
+msgid "Large (85px)"
+msgstr "Gro&szlig; (85 Pixel, large)"
+
+#@ gfwa
+#: widget.php:463
+msgid "Extra Large (125px)"
+msgstr "Extragro&szlig; (125 Pixel, extra large)"
+
+#@ gfwa
+#: widget.php:466
+msgid "Gravatar Alignment"
+msgstr "Gravatar-Ausrichtung"
+
+#@ gfwa
+#: widget.php:468
+#: widget.php:506
+msgid "None"
+msgstr "Keine"
+
+#@ gfwa
+#: widget.php:469
+#: widget.php:507
+msgid "Left"
+msgstr "Links"
+
+#@ gfwa
+#: widget.php:470
+#: widget.php:508
+msgid "Right"
+msgstr "Rechts"
+
+#@ gfwa
+#: widget.php:482
+msgid "Show Featured Image"
+msgstr "Featured-Bild anzeigen"
+
+#@ gfwa
+#: widget.php:484
+msgid "Link Image to Post"
+msgstr "Bild zum Beitrag verlinken"
+
+#@ gfwa
+#: widget.php:486
+msgid "Image Size"
+msgstr "Bildgr&ouml;&szlig;e"
+
+#@ gfwa
+#: widget.php:497
+msgid "Image Placement"
+msgstr "Bildanordnung"
+
+#@ gfwa
+#: widget.php:499
+msgid "Before Title"
+msgstr "Vor dem TItel"
+
+#@ gfwa
+#: widget.php:500
+msgid "After Title"
+msgstr "Nach dem Titel"
+
+#@ gfwa
+#: widget.php:501
+msgid "After Content"
+msgstr "Nach dem Inhalt"
+
+#@ gfwa
+#: widget.php:504
+msgid "Image Alignment"
+msgstr "Bildausrichtung"
+
+#@ gfwa
+#: widget.php:515
+msgid "Show Post Title"
+msgstr "Beitragstitel anzeigen"
+
+#@ gfwa
+#: widget.php:517
+msgid "Limit title to"
+msgstr "Inhalt beschr&auml;nken auf"
+
+#@ gfwa
+#: widget.php:517
+#: widget.php:534
+msgid "characters"
+msgstr "Zeichen"
+
+#@ gfwa
+#: widget.php:518
+msgid "Link Title to Post"
+msgstr "Titel zum Beitrag verlinken"
+
+#@ gfwa
+#: widget.php:520
+msgid "Show Post Info"
+msgstr "Beitrags-Info anzeigen (Byline)"
+
+#@ gfwa
+#: widget.php:526
+msgid "Content Type"
+msgstr "Inhaltstyp"
+
+#@ gfwa
+#: widget.php:528
+msgid "Show Content"
+msgstr "Inhalt anzeigen"
+
+#@ gfwa
+#: widget.php:529
+msgid "Show Excerpt"
+msgstr "Auszug anzeigen"
+
+#@ gfwa
+#: widget.php:530
+msgid "Show Content Limit"
+msgstr "Inhalts-Limit anzeigen"
+
+#@ gfwa
+#: widget.php:531
+msgid "No Content"
+msgstr "Kein Inhalt"
+
+#@ gfwa
+#: widget.php:534
+msgid "Limit content to"
+msgstr "Inhalt beschr&auml;nken auf"
+
+#@ gfwa
+#: widget.php:536
+msgid "Show Post Meta"
+msgstr "Beitrags-Meta anzeigen"
+
+#@ gfwa
+#: widget.php:542
+msgid "More Text (if applicable)"
+msgstr "Mehr-Text (falls verf&uuml;gbar)"
+
+#@ gfwa
+#: widget.php:548
+msgid "Display List of Additional Posts"
+msgstr "Liste weiterer Beitr&auml;ge anzeigen"
+
+#@ gfwa
+#: widget.php:556
+msgid "Extra Post Format"
+msgstr "Format der Zusatzbeitr&auml;ge"
+
+#@ gfwa
+#: widget.php:558
+msgid "Unordered List"
+msgstr "Ungeordnete Liste"
+
+#@ gfwa
+#: widget.php:559
+msgid "Ordered List"
+msgstr "Nummerierte Liste"
+
+#@ gfwa
+#: widget.php:560
+msgid "Drop Down"
+msgstr "Aufklappmen&uuml;"
+
+#@ gfwa
+#: widget.php:568
+msgid "Show Category Archive Link"
+msgstr "Kategorie-Archivlink anzeigen"
+
+#@ gfwa
+#: widget.php:570
+msgid "Link Text"
+msgstr "Link-Text"
+
+#@ gfwa
+#: widget.php:573
+msgid "Optional Archive Link"
+msgstr "Optionaler Archivlink"
+
+#@ gfwa
+#: widget.php:573
+msgid "Fill in this value with a URL if you wish to display an archive link when showing all terms or to override the normal archive link to another URL"
+msgstr "F&uuml;llen Sie diesen Wert mit einer URL aus, wenn Sie einen Archivlink anzeigen wollen, wenn alle Terms angezeigt werden, oder um den regul&auml;ren Archivlink mit einer anderen URL zu &uuml;berschreiben."
+
+#@ gfwa
+#: widget.php:580
+msgid "Instance Identification Field"
+msgstr "Feld zur Instanz-Identifizierung"
+
