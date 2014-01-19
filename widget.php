@@ -209,9 +209,13 @@ class Genesis_Featured_Widget_Amplified extends WP_Widget {
             query_posts( $query_args );
             if ( have_posts ( ) ) : while ( have_posts ( ) ) : the_post();
 
-                    echo '<div ';
-                    post_class();
-                    echo '>';
+                    $_genesis_displayed_ids[] = get_the_ID();
+
+					genesis_markup( array(
+						'html5'   => '<article %s>',
+						'xhtml'   => sprintf( '<div class="%s">', implode( ' ', get_post_class() ) ),
+						'context' => 'entry',
+					) );
 
 
                     gfwa_before_post_content( $instance );
@@ -220,7 +224,10 @@ class Genesis_Featured_Widget_Amplified extends WP_Widget {
 
                     gfwa_after_post_content( $instance );
 
-                    echo '</div><!--end post_class()-->' . "\n\n";
+                    genesis_markup( array(
+						'html5' => '</article>',
+						'xhtml' => '</div>',
+					) );
 
                     $gfwa_counter++;
 
@@ -1035,7 +1042,14 @@ class Genesis_Featured_Widget_Amplified extends WP_Widget {
 			$align = $instance['image_alignment'] ? esc_attr( $instance['image_alignment'] ) : 'alignnone';
 			$link = $instance['link_image_field'] && genesis_get_custom_field( $instance['link_image_field'] ) ? genesis_get_custom_field( $instance['link_image_field'] ) : get_permalink();
 			
-            $image = !empty( $instance['show_image'] ) ? genesis_get_image( array( 'format' => 'html', 'size' => $instance['image_size'], 'attr' => array( 'class' => $align ) ) ) : '';
+            $image = ! empty( $instance['show_image'] ) ? 
+	            genesis_get_image( array(
+					'format'  => 'html',
+					'size'    => $instance['image_size'],
+					'context' => 'featured-post-widget',
+					'attr'    => genesis_parse_attr( 'entry-image-widget' ),
+				) ) : '';
+            
             $image = $instance['link_image'] == 1 ? sprintf( '<a href="%s" title="%s" class="%s">%s</a>', $link, the_title_attribute( 'echo=0' ), $align, $image ) : $image;
 			
             echo current_filter() == 'gfwa_before_post_content' && $instance['image_position'] == 'before-title' && !empty( $instance['show_image'] ) ? $image : '';
@@ -1097,6 +1111,24 @@ class Genesis_Featured_Widget_Amplified extends WP_Widget {
          * @param array $instance Values set in widget isntance
          */
         function gfwa_do_post_title( $instance ) {
+        
+        /*if ( $instance['show_title'] )
+				echo genesis_html5() ? '<header class="entry-header">' : '';
+
+				if ( ! empty( $instance['show_title'] ) ) {
+					
+					if ( genesis_html5() )
+						printf( '<h2 class="entry-title"><a href="%s" title="%s">%s</a></h2>', get_permalink(), the_title_attribute( 'echo=0' ), get_the_title() );
+					else
+						printf( '<h2><a href="%s" title="%s">%s</a></h2>', get_permalink(), the_title_attribute( 'echo=0' ), get_the_title() );
+				
+				}
+
+				if ( ! empty( $instance['show_byline'] ) && ! empty( $instance['post_info'] ) )
+					printf( genesis_html5() ? '<p class="entry-meta">%s</p>' : '<p class="byline post-info">%s</p>', do_shortcode( $instance['post_info'] ) );
+
+			if ( $instance['show_title'] )
+				echo genesis_html5() ? '</header>' : '';*/
 			
 			$link = $instance['link_title_field'] && genesis_get_custom_field( $instance['link_title_field']) ? genesis_get_custom_field( $instance['link_title_field']) : get_permalink();
 
@@ -1135,15 +1167,33 @@ class Genesis_Featured_Widget_Amplified extends WP_Widget {
          * @param array $instance Values set in widget isntance
          */
         function gfwa_do_post_content( $instance ) {
-            if ( !empty( $instance['show_content'] ) ) {
+        
+        if ( ! empty( $instance['show_content'] ) ) {
 
-                if ( $instance['show_content'] == 'excerpt' )
-                    the_excerpt();
-                elseif ( $instance['show_content'] == 'content-limit' )
-                    the_content_limit( ( int ) $instance['content_limit'], esc_html( $instance['more_text'] ) );
-                else
-                    the_content( esc_html( $instance['more_text'] ) );
-            }
+				echo genesis_html5() ? '<div class="entry-content">' : '';
+
+					switch( $instance['show_content'] ){
+						case 'excerpt':
+							the_excerpt();
+							break;
+						case 'content-limit':
+							the_content_limit( (int) $instance['content_limit'], esc_html( $instance['more_text'] ) );
+							break;
+						default:
+							global $more;
+
+							$orig_more = $more;
+							$more = 0;
+		
+							the_content( esc_html( $instance['more_text'] ) );
+		
+							$more = $orig_more;
+					}
+
+				echo genesis_html5() ? '</div>' : '';
+
+			}
+			
         }
 
         add_action( 'gfwa_after_post_content', 'gfwa_do_post_meta', 10, 1 );
@@ -1158,7 +1208,8 @@ class Genesis_Featured_Widget_Amplified extends WP_Widget {
          */
         function gfwa_do_post_meta( $instance ) {
             if ( !empty( $instance['show_archive_line'] ) && !empty( $instance['post_meta'] ) )
-                printf( '<p class="post-meta">%s</p>', do_shortcode( esc_html( $instance['post_meta'] ) ) );
+				printf( genesis_html5() ? '<p class="entry-meta">%s</p>' : '<p class="byline post-meta">%s</p>', do_shortcode( $instance['post_meta'] ) );
+
         }
 
         add_action( 'admin_print_footer_scripts', 'gfwa_form_submit' );

@@ -1,13 +1,12 @@
 <?php
 
 /*
-  Plugin Name: Genesis Featured Widget Amplified
+  Plugin Name: Genesis Featured Widget Pro
   Plugin URI: http://DesignsByNicktheGeek.com
   Version: 0.9.0
   Author: Nick_theGeek
-  Contributor: GaryJ
   Author URI: http://DesignsByNicktheGeek.com
-  Description: Replaces Genesis Featured Post widget for additional functionality which allows support for custom post types, taxonomies, and extends the flexibility of the widget via action hooks to allow the elements to be repositioned or other elements to be added. This requires WordPress 3.5+ and Genesis 1.9+.
+  Description: Replaces Genesis Featured Post widget for additional functionality which allows support for custom post types, taxonomies, and extends the flexibility of the widget via action hooks to allow the elements to be repositioned or other elements to be added. This requires WordPress 3.7+ and Genesis 2.0+.
   Text Domain: gfwa
   Domain Path /languages/
  */
@@ -40,7 +39,7 @@ register_activation_hook( __FILE__, 'gfwa_activation_check' );
  */
 function gfwa_activation_check() {
 
-    $latest = '1.9';
+    $latest = '2.0';
 
     $theme_info = get_theme_data( TEMPLATEPATH . '/style.css' );
 
@@ -275,5 +274,7 @@ function gfwa_post_limit( $limit ) {
     return $limit;
 }
 
-// Include files
-require_once(GFWA_PLUGIN_DIR . '/widget.php');
+add_action( 'genesis_init', 'gfwp_init' );
+function gfwp_init() {
+	require_once(GFWA_PLUGIN_DIR . '/widget.php');
+}
