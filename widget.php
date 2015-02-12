@@ -3,6 +3,10 @@
  * To Do:
  *      Add support for Grid Loop (0.9)
  *      Make content float options with 2, 3, or 4 side by side clearing after the row (v0.9)
+ *		Fix dropdown selection issue in WordPress 3.5 (v0.9)
+ *		Create custom class from the widget custom field (v0.9)
+ *      Add support for post_status (v0.9)
+ *      Add support for Post Formats (v0.9)
  *      Create Simple Hooks interface (1.0)
  *      Edit html to allow external style sheet instead of inline styles 
  *      Add support for child pages (selected or default to current page)
@@ -99,7 +103,7 @@ class Genesis_Featured_Widget_Amplified extends WP_Widget {
 		);
 
 		$widget_ops = array(
-			'classname'   => 'featuredpost',
+			'classname'   => 'featured-content featuredpost',
 			'description' => __( 'Displays featured posts types with thumbnails', 'gfwa' ),
 		);
 
