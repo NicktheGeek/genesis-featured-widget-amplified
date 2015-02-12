@@ -3,7 +3,7 @@
 /*
   Plugin Name: Genesis Featured Widget Pro
   Plugin URI: http://DesignsByNicktheGeek.com
-  Version: 0.9.0
+  Version: 1.0.0
   Author: Nick_theGeek
   Author URI: http://DesignsByNicktheGeek.com
   Description: Replaces Genesis Featured Post widget for additional functionality which allows support for custom post types, taxonomies, and extends the flexibility of the widget via action hooks to allow the elements to be repositioned or other elements to be added. This requires WordPress 3.7+ and Genesis 2.0+.
