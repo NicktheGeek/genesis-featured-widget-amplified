@@ -103,7 +103,7 @@ class Genesis_Featured_Widget_Amplified extends WP_Widget {
 		);
 
 		$widget_ops = array(
-			'classname'   => 'featuredpost',
+			'classname'   => 'featured-content featuredpost',
 			'description' => __( 'Displays featured posts types with thumbnails', 'gfwa' ),
 		);
 
@@ -880,7 +880,7 @@ class Genesis_Featured_Widget_Amplified extends WP_Widget {
 				
 				foreach( $box as $fieldID => $args ){
 					
-					$class = $args['save']     ? 'class="widget-control-save" ' : '';
+					$class = $args['save']     ? 'class="widget-control-save-gfwa" ' : '';
 					$style = $args['requires'] ? ' style="'. gfwa_get_display_option( $instance, $args['requires'][0], $args['requires'][1], $args['requires'][2] ) .'"' : '';
 					
 					switch( $args['type'] ) {
@@ -1219,7 +1219,7 @@ class Genesis_Featured_Widget_Amplified extends WP_Widget {
             <script type="text/javascript">
 
                 (function(a) {
-                    a('select.widget-control-save').live('change', function(){
+                    a('select.widget-control-save-gfwa').live('change', function(){
                         wpWidgets.save( a(this).closest('div.widget'), 0, 1, 0 );
                         return false;
                     });
