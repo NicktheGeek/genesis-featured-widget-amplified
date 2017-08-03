@@ -4,19 +4,19 @@
  *      Add support for Grid Loop (0.9)
  *      Make content float options with 2, 3, or 4 side by side clearing after the row (v0.9)
  *      Create Simple Hooks interface (1.0)
- *      Edit html to allow external style sheet instead of inline styles 
+ *      Edit html to allow external style sheet instead of inline styles
  *      Add support for child pages (selected or default to current page)
  *      Add option for showing image via custom field
- *      Add support for sticky posts 
- *      Add support for post_status 
- *      Add support for Post Formats 
+ *      Add support for sticky posts
+ *      Add support for post_status
+ *      Add support for Post Formats
  *      Create external stylesheet for widget
  *      Create new widget for creating category thumbnails.
  *
  */
 /* Prevent direct access to the plugin */
 if ( !defined( 'ABSPATH' ) ) {
-    wp_die( __( "Sorry, you are not allowed to access this page directly.", 'gfwa' ) );
+	wp_die( __( "Sorry, you are not allowed to access this page directly.", 'gfwa' ) );
 }
 
 // Remove the current widget
@@ -26,13 +26,13 @@ add_action( 'widgets_init', 'gfwa_unregister_widgets', 20 );
  * Removes Genesis Featured Post Widget
  */
 function gfwa_unregister_widgets() {
-    unregister_widget( 'Genesis_Featured_Post' );
+	unregister_widget( 'Genesis_Featured_Post' );
 }
 
 add_action( 'widgets_init', create_function( '', "register_widget('Genesis_Featured_Widget_Amplified');" ) );
 
 class Genesis_Featured_Widget_Amplified extends WP_Widget {
-	
+
 	/**
 	 * Holds widget settings defaults, populated in constructor.
 	 *
@@ -115,215 +115,215 @@ class Genesis_Featured_Widget_Amplified extends WP_Widget {
 
 
 	/**
-     * Creates Widget Output
-     *
-     * @author Nick Croft
-     * @since 0.1
-     * @version 0.5
-     * @param array $args
-     * @param array $instance
-     */
-    function widget( $args, $instance ) {
-        global $gfwa_counter;
-        $gfwa_counter = 0;
+	 * Creates Widget Output
+	 *
+	 * @author Nick Croft
+	 * @since 0.1
+	 * @version 0.5
+	 * @param array $args
+	 * @param array $instance
+	 */
+	function widget( $args, $instance ) {
+		global $gfwa_counter;
+		$gfwa_counter = 0;
 
-        extract( $args );
+		extract( $args );
 
-        /** Merge with defaults */
+		/** Merge with defaults */
 		$instance = wp_parse_args( (array) $instance, $this->defaults );
 
-        echo $before_widget;
+		echo $before_widget;
 
-        add_filter( 'post_class', 'gfwa_post_class' );
+		add_filter( 'post_class', 'gfwa_post_class' );
 
-        if ( !empty( $instance['posts_offset'] ) && !empty( $instance['paged'] ) )
-            add_filter( 'post_limits', 'gfwa_post_limit' );
-        else
-            remove_filter( 'post_limits', 'gfwa_post_limit' );
+		if ( ! empty( $instance['posts_offset'] ) && ! empty( $instance['paged'] ) )
+			add_filter( 'post_limits', 'gfwa_post_limit' );
+		else
+			remove_filter( 'post_limits', 'gfwa_post_limit' );
 
-        // Set up the author bio
-        if ( !empty( $instance['title'] ) )
-            echo $before_title . apply_filters( 'widget_title', $instance['title'] ) . $after_title;
-
-
-
-        $term_args = array( );
-
-        if ( !empty( $instance['page_id'] ) )
-            $term_args['page_id'] = $instance['page_id'];
-
-        if ( !empty( $instance['posts_term'] ) ) {
-            $posts_term = explode( ',', $instance['posts_term'] );
-            if ( $posts_term['0'] == 'category' )
-                $posts_term['0'] = 'category_name';
-            if ( $posts_term['0'] == 'post_tag' )
-                $posts_term['0'] = 'tag';
-            if ( isset( $posts_term['1'] ) )
-                $term_args[$posts_term['0']] = $posts_term['1'];
-        }
-
-        if ( !empty( $posts_term['0'] ) ) {
-            if ( $posts_term['0'] == 'category_name' )
-                $taxonomy = 'category';
-            elseif ( $posts_term['0'] == 'tag' )
-                $taxonomy = 'post_tag';
-            else
-                $taxonomy = $posts_term['0'];
-        }
-        else
-            $taxonomy = 'category';
-
-        if ( !empty( $instance['exclude_terms'] ) ) {
-            $exclude_terms = explode( ',', str_replace( ' ', '', $instance['exclude_terms'] ) );
-            $term_args[$taxonomy . '__not_in'] = $exclude_terms;
-        }
-
-        $page = '';
-        if ( !empty( $instance['paged'] ) )
-            $page = get_query_var( 'paged' );
-
-        if ( !empty( $instance['posts_offset'] ) ) {
-            global $myOffset;
-            $myOffset = $instance['posts_offset'];
-            $term_args['offset'] = $myOffset;
-        }
-
-        if ( !empty( $instance['post_id'] ) ) {
-            $IDs = explode( ',', str_replace( ' ', '', $instance['post_id'] ) );
-            if ( $instance['include_exclude'] == 'include' )
-                $term_args['post__in'] = $IDs;
-            else
-                $term_args['post__not_in'] = $IDs;
-        }
-
-        gfwa_before_loop( $instance );
-
-        if ( $instance['posts_num'] != 0 ) {
-            $query_args = array_merge( $term_args, array( 'post_type' => $instance['post_type'], 'posts_per_page' => $instance['posts_num'], 'orderby' => $instance['orderby'], 'order' => $instance['order'], 'meta_key' => $instance['meta_key'], 'paged' => $page ) );
-            $query_args = apply_filters( 'gfwa_query_args', $query_args, $instance );
-
-            query_posts( $query_args );
-            if ( have_posts ( ) ) : while ( have_posts ( ) ) : the_post();
-
-                    echo '<div ';
-                    post_class();
-                    echo '>';
+		// Set up the author bio
+		if ( ! empty( $instance['title'] ) )
+			echo $before_title . apply_filters( 'widget_title', $instance['title'] ) . $after_title;
 
 
-                    gfwa_before_post_content( $instance );
 
-                    gfwa_post_content( $instance );
+		$term_args = array( );
 
-                    gfwa_after_post_content( $instance );
+		if ( ! empty( $instance['page_id'] ) )
+			$term_args['page_id'] = $instance['page_id'];
 
-                    echo '</div><!--end post_class()-->' . "\n\n";
+		if ( ! empty( $instance['posts_term'] ) ) {
+			$posts_term = explode( ',', $instance['posts_term'] );
+			if ( $posts_term['0'] == 'category' )
+				$posts_term['0'] = 'category_name';
+			if ( $posts_term['0'] == 'post_tag' )
+				$posts_term['0'] = 'tag';
+			if ( isset( $posts_term['1'] ) )
+				$term_args[$posts_term['0']] = $posts_term['1'];
+		}
 
-                    $gfwa_counter++;
+		if ( ! empty( $posts_term['0'] ) ) {
+			if ( $posts_term['0'] == 'category_name' )
+				$taxonomy = 'category';
+			elseif ( $posts_term['0'] == 'tag' )
+				$taxonomy = 'post_tag';
+			else
+				$taxonomy = $posts_term['0'];
+		}
+		else
+			$taxonomy = 'category';
 
-                endwhile;
+		if ( ! empty( $instance['exclude_terms'] ) ) {
+			$exclude_terms = explode( ',', str_replace( ' ', '', $instance['exclude_terms'] ) );
+			$term_args[$taxonomy . '__not_in'] = $exclude_terms;
+		}
 
-                if ( !empty( $instance['show_paged'] ) )
-                    genesis_posts_nav();
+		$page = '';
+		if ( ! empty( $instance['paged'] ) )
+			$page = get_query_var( 'paged' );
 
-                gfwa_endwhile( $instance );
+		if ( ! empty( $instance['posts_offset'] ) ) {
+			global $myOffset;
+			$myOffset = $instance['posts_offset'];
+			$term_args['offset'] = $myOffset;
+		}
 
-            endif;
+		if ( ! empty( $instance['post_id'] ) ) {
+			$IDs = explode( ',', str_replace( ' ', '', $instance['post_id'] ) );
+			if ( $instance['include_exclude'] == 'include' )
+				$term_args['post__in'] = $IDs;
+			else
+				$term_args['post__not_in'] = $IDs;
+		}
 
-            $gfwa_counter = '';
+		gfwa_before_loop( $instance );
 
-            gfwa_after_loop( $instance );
-        }
-        // The EXTRA Posts (list)
-        if ( $instance['extra_posts'] && $instance['extra_num'] ) {
+		if ( $instance['posts_num'] != 0 ) {
+			$query_args = array_merge( $term_args, array( 'post_type' => $instance['post_type'], 'posts_per_page' => $instance['posts_num'], 'orderby' => $instance['orderby'], 'order' => $instance['order'], 'meta_key' => $instance['meta_key'], 'paged' => $page ) );
+			$query_args = apply_filters( 'gfwa_query_args', $query_args, $instance );
 
-            if ( !empty( $instance['extra_title'] ) )
-                echo str_replace( '>', ' class="additional-posts-title">', $before_title ) . esc_html( $instance['extra_title'] ) . $after_title;
+			query_posts( $query_args );
+			if ( have_posts ( ) ) : while ( have_posts ( ) ) : the_post();
 
-            $offset = intval( $instance['posts_num'] ) + intval( $instance['posts_offset'] );
-            $extra_posts_args = array_merge( $term_args, array( 'showposts' => $instance['extra_num'], 'offset' => $offset, 'post_type' => $instance['post_type'], 'orderby' => $instance['orderby'], 'order' => $instance['order'], 'meta_key' => $instance['meta_key'], 'paged' => $page ) );
-            $extra_posts_args = apply_filters( 'gfwa_extra_post_args', $extra_posts_args, $instance );
-            query_posts( $extra_posts_args );
-
-            $listitems = '';
-
-            if ( have_posts ( ) ) :
-
-                while ( have_posts ( ) ) :
-
-                    the_post();
-
-                    gfwa_list_items( $instance );
-                    if ( 'drop_down' != $instance['extra_format'] )
-                        $listitems .= sprintf( '<li><a href="%s" title="%s">%s</a></li>', get_permalink(), the_title_attribute( 'echo=0' ), get_the_title() );
-                    else
-                        $listitems .= sprintf( '<option onclick="javascript:window.location=\'%s\';" value="%s">%s</option>', get_permalink(), get_permalink(), get_the_title() );
+				echo '<div ';
+			post_class();
+			echo '>';
 
 
-                endwhile;
+			gfwa_before_post_content( $instance );
 
-                if ( strlen( $listitems ) > 0 && ('drop_down' != $instance['extra_format']) )
-                    printf( '<%s>%s</%s>', $instance['extra_format'], $listitems, $instance['extra_format'] );
-                elseif ( strlen( $listitems ) > 0 ) {
-                    printf( '<select id="%s" value="%s"><option value="none">%s %s</option>%s</select>', $this->get_field_id( 'extra_format' ), get_permalink(), __( 'Select', 'gfwa' ), $instance['post_type'], $listitems );
-                }
+			gfwa_post_content( $instance );
 
-                gfwa_print_list_items( $instance );
+			gfwa_after_post_content( $instance );
 
-            endif;
-        }
+			echo '</div><!--end post_class()-->' . "\n\n";
 
-        if ( !empty( $instance['archive_link']) ){
-            echo '<p class="more-from-category"><a href="' . $instance['archive_link'] . '" title="' . esc_html( $instance['more_from_category_text'] ) . '">' . esc_html( $instance['more_from_category_text'] ) . '</a></p>';
-        }
-        elseif ( !empty( $instance['more_from_category'] ) && !empty( $posts_term['1'] ) ) {
-            gfwa_category_more( $instance );
-            $term = get_term_by( 'slug', $posts_term['1'], $taxonomy );
-            echo '<p class="more-from-category"><a href="' . get_term_link( $posts_term['1'], $taxonomy ) . '" title="' . $term->name . '">' . esc_html( $instance['more_from_category_text'] ) . '</a></p>';
-        }
+			$gfwa_counter++;
 
-        gfwa_after_category_more( $instance );
+			endwhile;
 
-        echo $after_widget;
+			if ( ! empty( $instance['show_paged'] ) )
+				genesis_posts_nav();
 
-        wp_reset_query();
-        remove_filter( 'post_class', 'gfwa_post_class' );
-        remove_filter( 'post_limits', 'gfwa_post_limit' );
-    }
+			gfwa_endwhile ( $instance );
 
-    /**
-     * Updates Widget Instance
-     *
-     * @author Nick Croft
-     * @since 0.1
-     * @version 0.2
-     * @param <type> $new_instance
-     * @param <type> $old_instance
-     * @return <type>
-     */
-    function update( $new_instance, $old_instance ) {
-        return $new_instance;
-    }
+			endif;
 
-    /**
-     * Creates Widget Form
-     *
-     * @author Nick Croft
-     * @since 0.1
-     * @version 0.5
-     * @param array $instance Values set in widget isntance
-     */
-    function form( $instance ) {
-		
-		
-    
-        /** Merge with defaults */
-		$instance = wp_parse_args( (array) $instance, $this->defaults ); 
-		
+			$gfwa_counter = '';
+
+			gfwa_after_loop( $instance );
+		}
+		// The EXTRA Posts (list)
+		if ( $instance['extra_posts'] && $instance['extra_num'] ) {
+
+			if ( ! empty( $instance['extra_title'] ) )
+				echo str_replace( '>', ' class="additional-posts-title">', $before_title ) . esc_html( $instance['extra_title'] ) . $after_title;
+
+			$offset = intval( $instance['posts_num'] ) + intval( $instance['posts_offset'] );
+			$extra_posts_args = array_merge( $term_args, array( 'showposts' => $instance['extra_num'], 'offset' => $offset, 'post_type' => $instance['post_type'], 'orderby' => $instance['orderby'], 'order' => $instance['order'], 'meta_key' => $instance['meta_key'], 'paged' => $page ) );
+			$extra_posts_args = apply_filters( 'gfwa_extra_post_args', $extra_posts_args, $instance );
+			query_posts( $extra_posts_args );
+
+			$listitems = '';
+
+			if ( have_posts ( ) ) :
+
+				while ( have_posts ( ) ) :
+
+					the_post();
+
+				gfwa_list_items( $instance );
+			if ( 'drop_down' != $instance['extra_format'] )
+				$listitems .= sprintf( '<li><a href="%s" title="%s">%s</a></li>', get_permalink(), the_title_attribute( 'echo=0' ), get_the_title() );
+			else
+				$listitems .= sprintf( '<option onclick="javascript:window.location=\'%s\';" value="%s">%s</option>', get_permalink(), get_permalink(), get_the_title() );
+
+
+			endwhile;
+
+			if ( strlen( $listitems ) > 0 && ('drop_down' != $instance['extra_format']) )
+				printf( '<%s>%s</%s>', $instance['extra_format'], $listitems, $instance['extra_format'] );
+			elseif ( strlen( $listitems ) > 0 ) {
+				printf( '<select id="%s" value="%s"><option value="none">%s %s</option>%s</select>', $this->get_field_id( 'extra_format' ), get_permalink(), __( 'Select', 'gfwa' ), $instance['post_type'], $listitems );
+			}
+
+			gfwa_print_list_items( $instance );
+
+			endif;
+		}
+
+		if ( ! empty( $instance['archive_link']) ) {
+			echo '<p class="more-from-category"><a href="' . $instance['archive_link'] . '" title="' . esc_html( $instance['more_from_category_text'] ) . '">' . esc_html( $instance['more_from_category_text'] ) . '</a></p>';
+		}
+		elseif ( ! empty( $instance['more_from_category'] ) && ! empty( $posts_term['1'] ) ) {
+			gfwa_category_more( $instance );
+			$term = get_term_by( 'slug', $posts_term['1'], $taxonomy );
+			echo '<p class="more-from-category"><a href="' . get_term_link( $posts_term['1'], $taxonomy ) . '" title="' . $term->name . '">' . esc_html( $instance['more_from_category_text'] ) . '</a></p>';
+		}
+
+		gfwa_after_category_more( $instance );
+
+		echo $after_widget;
+
+		wp_reset_query();
+		remove_filter( 'post_class', 'gfwa_post_class' );
+		remove_filter( 'post_limits', 'gfwa_post_limit' );
+	}
+
+	/**
+	 * Updates Widget Instance
+	 *
+	 * @author Nick Croft
+	 * @since 0.1
+	 * @version 0.2
+	 * @param <type> $new_instance
+	 * @param <type> $old_instance
+	 * @return <type>
+	 */
+	function update( $new_instance, $old_instance ) {
+		return $new_instance;
+	}
+
+	/**
+	 * Creates Widget Form
+	 *
+	 * @author Nick Croft
+	 * @since 0.1
+	 * @version 0.5
+	 * @param array $instance Values set in widget isntance
+	 */
+	function form( $instance ) {
+
+
+
+		/** Merge with defaults */
+		$instance = wp_parse_args( (array) $instance, $this->defaults );
+
 		$sizes = genesis_get_additional_image_sizes();
-		
-			$imageSize_opt['thumbnail'] = 'thumbnail ('. get_option( 'thumbnail_size_w' ) . 'x' . get_option( 'thumbnail_size_h' ) . ')';
 
-		foreach( ( array )$sizes as $name => $size ) 
+		$imageSize_opt['thumbnail'] = 'thumbnail ('. get_option( 'thumbnail_size_w' ) . 'x' . get_option( 'thumbnail_size_h' ) . ')';
+
+		foreach ( ( array )$sizes as $name => $size )
 			$imageSize_opt[$name] = esc_html( $name ) . ' (' . $size['width'] . 'x' . $size['height'] . ')';
 
 		$columns = array(
@@ -854,397 +854,379 @@ class Genesis_Featured_Widget_Amplified extends WP_Widget {
 				)
 			),
 		);
-		
+
 		echo '<p><label for="'. $this->get_field_id( 'title' ) .'">'. __( 'Title', 'gfwa' ) .':</label>
             <input type="text" id="'. $this->get_field_id( 'title' ) .'" name="'. $this->get_field_name( 'title' ) .'" value="'. esc_attr( $instance['title'] ) .'" style="width:99%;" /></p>';
-		
-		foreach( $columns as $column => $boxes ) {
-			if( 'col1' == $column )
+
+		foreach ( $columns as $column => $boxes ) {
+			if ( 'col1' == $column )
 				echo '<div style="float: left; width: 250px;">';
-				
-			else 
+
+			else
 				echo '<div style="float: right; width: 250px;">';
-			
-			foreach( $boxes as $box ){
-				
+
+			foreach ( $boxes as $box ) {
+
 				echo '<div style="background: #f1f1f1; border: 1px solid #DDD; padding: 10px 10px 0px 10px; margin-bottom: 5px;">';
-				
-				foreach( $box as $fieldID => $args ){
-					
+
+				foreach ( $box as $fieldID => $args ) {
+
 					$class = $args['save']     ? 'class="widget-control-save" ' : '';
 					$style = $args['requires'] ? ' style="'. gfwa_get_display_option( $instance, $args['requires'][0], $args['requires'][1], $args['requires'][2] ) .'"' : '';
-					
+
 					switch( $args['type'] ) {
-						
-						case 'post_type_select' :
-							
-							echo '<p><label for="'. $this->get_field_id( $fieldID ) .'">'. $args['label'] .':</label>
+
+					case 'post_type_select' :
+
+						echo '<p><label for="'. $this->get_field_id( $fieldID ) .'">'. $args['label'] .':</label>
 								<select '. $class .'id="'. $this->get_field_id( $fieldID ) .'" name="'. $this->get_field_name( $fieldID ) .'">';
-							
-							$args = array(
-								'public' => true
-							);
-							$output = 'names';
-							$operator = 'and';
-							$post_types = get_post_types( $args, $output, $operator );
-							$post_types = array_filter( $post_types, 'gfwa_exclude_post_types' );
 
-							foreach ( $post_types as $post_type ) 
-								echo '<option style="padding-right:10px;" value="'. esc_attr( $post_type ) .'" '. selected( esc_attr( $post_type ), $instance['post_type'], false ) .'>'. esc_attr( $post_type ) .'</option>'; 
+						$args = array(
+							'public' => true
+						);
+						$output = 'names';
+						$operator = 'and';
+						$post_types = get_post_types( $args, $output, $operator );
+						$post_types = array_filter( $post_types, 'gfwa_exclude_post_types' );
 
-								echo '<option style="padding-right:10px;" value="any" '. selected( 'any', $instance['post_type'], false ) .'>'. __( 'any', 'gfwa' ) .'</option>'; 
-								
-							echo '</select></p>';
-							
-							break;
-							
-						case 'page_select' :
-							
-							echo '<p'. $style .'><label for="'. $this->get_field_id( $fieldID ) .'">'. $args['label'] .':</label>
+						foreach ( $post_types as $post_type )
+							echo '<option style="padding-right:10px;" value="'. esc_attr( $post_type ) .'" '. selected( esc_attr( $post_type ), $instance['post_type'], false ) .'>'. esc_attr( $post_type ) .'</option>';
+
+						echo '<option style="padding-right:10px;" value="any" '. selected( 'any', $instance['post_type'], false ) .'>'. __( 'any', 'gfwa' ) .'</option>';
+
+						echo '</select></p>';
+
+						break;
+
+					case 'page_select' :
+
+						echo '<p'. $style .'><label for="'. $this->get_field_id( $fieldID ) .'">'. $args['label'] .':</label>
 								<select '. $class .' id="'. $this->get_field_id( $fieldID ) .'" name="'. $this->get_field_name( $fieldID ) .'">
 									<option value="" '. selected( '', $instance['page_id'], false ) .'>'. attribute_escape( __( 'Select page', 'gfwa' ) ) .'</option>';
 
-									$pages = get_pages();
-									foreach ( $pages as $page ) 
-										echo '<option style="padding-right:10px;" value="'. esc_attr( $page->ID ) .'" '. selected( esc_attr( $page->ID ), $instance['page_id'], false ) .'>'. esc_attr( $page->post_title ) .'</option>';
-									
-							echo '</select>
+						$pages = get_pages();
+						foreach ( $pages as $page )
+							echo '<option style="padding-right:10px;" value="'. esc_attr( $page->ID ) .'" '. selected( esc_attr( $page->ID ), $instance['page_id'], false ) .'>'. esc_attr( $page->post_title ) .'</option>';
+
+						echo '</select>
 							</p>';
-							
-							break;
-						
-						case 'select_taxonomy' :
-							
-							echo '<p'. $style .'"><label for="'. $this->get_field_id( $fieldID ) .'">'. $args['label'] .':</label>
+
+						break;
+
+					case 'select_taxonomy' :
+
+						echo '<p'. $style .'"><label for="'. $this->get_field_id( $fieldID ) .'">'. $args['label'] .':</label>
 
 								<select id="'. $this->get_field_id( $fieldID ) .'" name="'. $this->get_field_name( $fieldID ) .'">
 									<option style="padding-right:10px;" value="" '. selected( '', $instance['posts_term'], false ) .'>'. __( 'All Taxonomies and Terms', 'gfwa' ) .'</option>';
-									
-									$taxonomies = get_taxonomies( array( 'public' => true ), 'objects' );
 
-									$taxonomies = array_filter( $taxonomies, 'gfwa_exclude_taxonomies' );
-									$test = get_taxonomies( array( 'public' => true ), 'objects' );
+						$taxonomies = get_taxonomies( array( 'public' => true ), 'objects' );
 
-									foreach ( $taxonomies as $taxonomy ) {
-										$query_label = '';
-										if ( !empty( $taxonomy->query_var ) )
-											$query_label = $taxonomy->query_var;
-										else
-											$query_label = $taxonomy->name;
-										
-										echo '<optgroup label="'. esc_attr( $taxonomy->labels->name ) .'">
+						$taxonomies = array_filter( $taxonomies, 'gfwa_exclude_taxonomies' );
+						$test = get_taxonomies( array( 'public' => true ), 'objects' );
+
+						foreach ( $taxonomies as $taxonomy ) {
+							$query_label = '';
+							if ( ! empty( $taxonomy->query_var ) )
+								$query_label = $taxonomy->query_var;
+							else
+								$query_label = $taxonomy->name;
+
+							echo '<optgroup label="'. esc_attr( $taxonomy->labels->name ) .'">
 											<option style="margin-left: 5px; padding-right:10px;" value="'. esc_attr( $query_label ) .'" '. selected( esc_attr( $query_label ), $instance['posts_term'], false ) .'>'. $taxonomy->labels->all_items .'</option>';
-										
-										$terms = get_terms( $taxonomy->name, 'orderby=name&hide_empty=1' );
-										
-										foreach ( $terms as $term )
-											echo '<option style="margin-left: 8px; padding-right:10px;" value="'. esc_attr( $query_label ) . ',' . $term->slug .'" '. selected( esc_attr( $query_label ) . ',' . $term->slug, $instance['posts_term'], false ) .'>-' . esc_attr( $term->name ) .'</option>';
-											
-									echo '</optgroup>'; 
-									
-									}
-									
-								echo '</select></p>';
-							
-							break;
-							
-						case 'text' :
-							
-							echo $args['description'] ? '<p>'. $args['description'] .'</p>' : '';
 
-							echo '<p'. $style .'><label for="'. $this->get_field_id( $fieldID ) .'">'. $args['label'] .':</label>
+							$terms = get_terms( $taxonomy->name, 'orderby=name&hide_empty=1' );
+
+							foreach ( $terms as $term )
+								echo '<option style="margin-left: 8px; padding-right:10px;" value="'. esc_attr( $query_label ) . ',' . $term->slug .'" '. selected( esc_attr( $query_label ) . ',' . $term->slug, $instance['posts_term'], false ) .'>-' . esc_attr( $term->name ) .'</option>';
+
+							echo '</optgroup>';
+
+						}
+
+						echo '</select></p>';
+
+						break;
+
+					case 'text' :
+
+						echo $args['description'] ? '<p>'. $args['description'] .'</p>' : '';
+
+						echo '<p'. $style .'><label for="'. $this->get_field_id( $fieldID ) .'">'. $args['label'] .':</label>
 									<input type="text" id="'. $this->get_field_id( $fieldID ) .'" name="'. $this->get_field_name( $fieldID ) .'" value="'. esc_attr( $instance[$fieldID] ) .'" style="width:95%;" /></p>';
 
-							break;
-						
-						case 'text_small' :
-							
-							echo '<p'. $style .'><label for="'. $this->get_field_id( $fieldID ) .'">'. $args['label'] .':</label>
+						break;
+
+					case 'text_small' :
+
+						echo '<p'. $style .'><label for="'. $this->get_field_id( $fieldID ) .'">'. $args['label'] .':</label>
 									<input type="text" id="'. $this->get_field_id( $fieldID ) .'" name="'. $this->get_field_name( $fieldID ) .'" value="'. esc_attr( $instance[$fieldID] ) .'" size="2" />'. $args['description'] .'</p>';
-						
-							break;
-							
-						case 'select' :
-							
-							echo '<p'. $style .'"><label for="'. $this->get_field_id( $fieldID ) .'">'. $args['label'] .' </label>
+
+						break;
+
+					case 'select' :
+
+						echo '<p'. $style .'"><label for="'. $this->get_field_id( $fieldID ) .'">'. $args['label'] .' </label>
 								<select '. $class .'id="'. $this->get_field_id( $fieldID ) .'" name="'. $this->get_field_name( $fieldID ) .'">';
-							
-								foreach( $args['options'] as $value => $label )
-									echo '<option style="padding-right:10px;" value="'. $value .'" '. selected( $value, $instance[$fieldID], false ) .'>'. $label .'</option>';
-								
-								echo '</select></p>';
-							
-							break;
-							
-						case 'checkbox' :
-							
-							echo '<p'. $style .'><input '. $class .'id="'. $this->get_field_id( $fieldID ).'" type="checkbox" name="'. $this->get_field_name( $fieldID ) .'" value="1" '. checked( 1, $instance[$fieldID], false ) .'/> <label for="'. $this->get_field_id( $fieldID ) .'">'. $args['label'] .'</label></p>';
-							
-							break;
-						
+
+						foreach ( $args['options'] as $value => $label )
+							echo '<option style="padding-right:10px;" value="'. $value .'" '. selected( $value, $instance[$fieldID], false ) .'>'. $label .'</option>';
+
+						echo '</select></p>';
+
+						break;
+
+					case 'checkbox' :
+
+						echo '<p'. $style .'><input '. $class .'id="'. $this->get_field_id( $fieldID ).'" type="checkbox" name="'. $this->get_field_name( $fieldID ) .'" value="1" '. checked( 1, $instance[$fieldID], false ) .'/> <label for="'. $this->get_field_id( $fieldID ) .'">'. $args['label'] .'</label></p>';
+
+						break;
+
 					}
 				}
-				
+
 				echo '</div>';
 			}
-			
+
 			echo '</div>';
-				
+
 		}
-            }
+	}
 
-        }
+}
 
 
-        /**
-         *  Adds number class, and odd/even class to widget output
-         *
-         * @author Nick Croft
-         * @since 0.7
-         * @version 0.7
-         * @global integer $gfwa_counter
-         * @param array $classes
-         * @return array
-         */
-        function gfwa_post_class( $classes ) {
-        global $gfwa_counter;
-        //if (  in_array( current_filter(), array( 'gfwa_before_post_content', 'gfwa_post_content', 'gfwa_after_post_content' ) )  ) {
-            $classes[] = sprintf( 'gfwa-%s', $gfwa_counter + 1 );
-            $classes[] = $gfwa_counter + 1 & 1 ? 'gfwa-odd' : 'gfwa-even';
-        //}
+/**
+ *  Adds number class, and odd/even class to widget output
+ *
+ * @author Nick Croft
+ * @since 0.7
+ * @version 0.7
+ * @global integer $gfwa_counter
+ * @param array $classes
+ * @return array
+ */
+function gfwa_post_class( $classes ) {
+	global $gfwa_counter;
+	//if (  in_array( current_filter(), array( 'gfwa_before_post_content', 'gfwa_post_content', 'gfwa_after_post_content' ) )  ) {
+	$classes[] = sprintf( 'gfwa-%s', $gfwa_counter + 1 );
+	$classes[] = $gfwa_counter + 1 & 1 ? 'gfwa-odd' : 'gfwa-even';
+	//}
 
-        return $classes;
-    }
+	return $classes;
+}
 
-        add_action( 'gfwa_before_post_content', 'gfwa_do_post_image', 5, 1 );
-        add_action( 'gfwa_post_content', 'gfwa_do_post_image', 5, 1 );
-        add_action( 'gfwa_after_post_content', 'gfwa_do_post_image', 10, 1 );
+add_action( 'gfwa_before_post_content', 'gfwa_do_post_image', 5, 1 );
+add_action( 'gfwa_post_content', 'gfwa_do_post_image', 5, 1 );
+add_action( 'gfwa_after_post_content', 'gfwa_do_post_image', 10, 1 );
 
-        /**
-         * Inserts Post Image
-         *
-         * @author Nick Croft
-         * @since 0.1
-         * @version 0.5
-         * @param array $instance Values set in widget isntance
-         */
-        function gfwa_do_post_image( $instance ) {
-			
-			$align = $instance['image_alignment'] ? esc_attr( $instance['image_alignment'] ) : 'alignnone';
-			$link = $instance['link_image_field'] && genesis_get_custom_field( $instance['link_image_field'] ) ? genesis_get_custom_field( $instance['link_image_field'] ) : get_permalink();
-			
-            $image = !empty( $instance['show_image'] ) ? genesis_get_image( array( 'format' => 'html', 'size' => $instance['image_size'], 'attr' => array( 'class' => $align ) ) ) : '';
-            $image = $instance['link_image'] == 1 ? sprintf( '<a href="%s" title="%s" class="%s">%s</a>', $link, the_title_attribute( 'echo=0' ), $align, $image ) : $image;
-			
-            echo current_filter() == 'gfwa_before_post_content' && $instance['image_position'] == 'before-title' && !empty( $instance['show_image'] ) ? $image : '';
-            echo current_filter() == 'gfwa_post_content' && $instance['image_position'] == 'after-title' && !empty( $instance['show_image'] ) ? $image : '';
-            echo current_filter() == 'gfwa_after_post_content' && $instance['image_position'] == 'after-content' && !empty( $instance['show_image'] ) ? $image : '';
-        }
+/**
+ * Inserts Post Image
+ *
+ * @author Nick Croft
+ * @since 0.1
+ * @version 0.5
+ * @param array $instance Values set in widget isntance
+ */
+function gfwa_do_post_image( $instance ) {
 
-        add_action( 'gfwa_before_post_content', 'gfwa_do_gravatar', 10, 1 );
+	$align = $instance['image_alignment'] ? esc_attr( $instance['image_alignment'] ) : 'alignnone';
+	$link = $instance['link_image_field'] && genesis_get_custom_field( $instance['link_image_field'] ) ? genesis_get_custom_field( $instance['link_image_field'] ) : get_permalink();
 
-        /**
-         * Inserts Author Gravatar if option is selected
-         *
-         * @author Nick Croft
-         * @since 0.1
-         * @version 0.8
-         * @param array $instance Values set in widget isntance
-         */
-        function gfwa_do_gravatar( $instance ) {
-            if ( !empty( $instance['show_gravatar'] ) ) {
-				
-				switch( $instance['link_gravatar'] ) {
-					
-					case 'archive' :
-						
-						$before = 'a href="'. get_author_posts_url( get_the_author_meta( 'ID' ) ) .'"';
-						$after = 'a';
-						
-						break;
-					
-					case 'website' :
-						
-						$before = 'a href="'. get_the_author_meta( 'user_url' ) .'"';
-						$after = 'a';
-						
-						break;
-					
-					default :
-						
-						$before = 'span';
-						$after = 'span';
-						
-						break;
-					
-				}
-				
-				printf( '<%s class="%s">%s</%s>', $before, esc_attr( $instance['gravatar_alignment'] ), get_avatar( get_the_author_meta( 'ID' ), $instance['gravatar_size'] ), $after );
-				
-            }
-        }
+	$image = ! empty( $instance['show_image'] ) ? genesis_get_image( array( 'format' => 'html', 'size' => $instance['image_size'], 'attr' => array( 'class' => $align ) ) ) : '';
+	$image = $instance['link_image'] == 1 ? sprintf( '<a href="%s" title="%s" class="%s">%s</a>', $link, the_title_attribute( 'echo=0' ), $align, $image ) : $image;
 
-        add_action( 'gfwa_before_post_content', 'gfwa_do_post_title', 10, 1 );
+	echo current_filter() == 'gfwa_before_post_content' && $instance['image_position'] == 'before-title' && ! empty( $instance['show_image'] ) ? $image : '';
+	echo current_filter() == 'gfwa_post_content' && $instance['image_position'] == 'after-title' && ! empty( $instance['show_image'] ) ? $image : '';
+	echo current_filter() == 'gfwa_after_post_content' && $instance['image_position'] == 'after-content' && ! empty( $instance['show_image'] ) ? $image : '';
+}
 
-        /**
-         * Outputs Post Title if option is selects
-         *
-         * @author Nick Croft
-         * @since 0.1
-         * @version 0.2
-         * @param array $instance Values set in widget isntance
-         */
-        function gfwa_do_post_title( $instance ) {
-			
-			$link = $instance['link_title_field'] && genesis_get_custom_field( $instance['link_title_field']) ? genesis_get_custom_field( $instance['link_title_field']) : get_permalink();
+add_action( 'gfwa_before_post_content', 'gfwa_do_gravatar', 10, 1 );
 
-            $wrap_open = $instance['link_title'] == 1 ? sprintf( '<a href="%s" title="%s">', $link, the_title_attribute( 'echo=0' ) ) : '';
-            $wrap_close = $instance['link_title'] == 1 ? '</a>' : '';
+/**
+ * Inserts Author Gravatar if option is selected
+ *
+ * @author Nick Croft
+ * @since 0.1
+ * @version 0.8
+ * @param array $instance Values set in widget isntance
+ */
+function gfwa_do_gravatar( $instance ) {
+	if ( ! empty( $instance['show_gravatar'] ) ) {
 
-            if ( !empty( $instance['show_title'] ) && !empty( $instance['title_limit'] ) )
-                printf( '<h2>%s%s%s%s</h2>', $wrap_open, genesis_truncate_phrase( the_title_attribute( 'echo=0' ) , $instance['title_limit'] ), $instance['title_cutoff'], $wrap_close );
-            elseif ( !empty( $instance['show_title'] ) )
-                printf( '<h2>%s%s%s</h2>', $wrap_open, the_title_attribute( 'echo=0' ), $wrap_close );
-        }
+		switch( $instance['link_gravatar'] ) {
 
-        add_action( 'gfwa_before_post_content', 'gfwa_do_byline', 10, 1 );
+		case 'archive' :
 
-        /**
-         * Outputs byline if option is selects and anything is in the post info field
-         *
-         * @author Nick Croft
-         * @since 0.1
-         * @version 0.2
-         * @param array $instance Values set in widget isntance
-         */
-        function gfwa_do_byline( $instance ) {
-            if ( !empty( $instance['show_byline'] ) && !empty( $instance['post_info'] ) )
-                printf( '<p class="byline post-info">%s</p>', do_shortcode( esc_html( $instance['post_info'] ) ) );
-        }
+			$before = 'a href="'. get_author_posts_url( get_the_author_meta( 'ID' ) ) .'"';
+			$after = 'a';
 
-        add_action( 'gfwa_post_content', 'gfwa_do_post_content', 10, 1 );
+			break;
 
-        /**
-         * Outputs the selected content option if any
-         *
-         * @author Nick Croft
-         * @since 0.1
-         * @version 0.2
-         * @param array $instance Values set in widget isntance
-         */
-        function gfwa_do_post_content( $instance ) {
-            if ( !empty( $instance['show_content'] ) ) {
+		case 'website' :
 
-                if ( $instance['show_content'] == 'excerpt' )
-                    the_excerpt();
-                elseif ( $instance['show_content'] == 'content-limit' )
-                    the_content_limit( ( int ) $instance['content_limit'], esc_html( $instance['more_text'] ) );
-                else
-                    the_content( esc_html( $instance['more_text'] ) );
-            }
-        }
+			$before = 'a href="'. get_the_author_meta( 'user_url' ) .'"';
+			$after = 'a';
 
-        add_action( 'gfwa_after_post_content', 'gfwa_do_post_meta', 10, 1 );
+			break;
 
-        /**
-         * Outputs post meta if option is selected and anything is in the post meta field
-         *
-         * @author Nick Croft
-         * @since 0.6
-         * @version 0.6
-         * @param array $instance Values set in widget isntance
-         */
-        function gfwa_do_post_meta( $instance ) {
-            if ( !empty( $instance['show_archive_line'] ) && !empty( $instance['post_meta'] ) )
-                printf( '<p class="post-meta">%s</p>', do_shortcode( esc_html( $instance['post_meta'] ) ) );
-        }
+		default :
 
-        add_action( 'admin_print_footer_scripts', 'gfwa_form_submit' );
+			$before = 'span';
+			$after = 'span';
 
-        function gfwa_form_submit() {
-?>
-            <script type="text/javascript">
+			break;
 
-                (function(a) {
-                    a('select.widget-control-save').live('change', function(){
-                        wpWidgets.save( a(this).closest('div.widget'), 0, 1, 0 );
-                        return false;
-                    });
-                })(jQuery);
+		}
 
-            </script>
-<?php
-        }
-		
-		/**
-         * Returns "display: none;" if option and value match, or of they don't match with $standard is set to false
-         *
-         * @author Nick Croft
-         * @since 0.8
-         * @version 0.8
-         * @param array $instance Values set in widget isntance
-         * @param mixed $option instance option to test
-         * @param mixed $value value to test against
-         * @param boolean $standard echo standard return false for oposite
-         */
-		function gfwa_get_display_option( $instance, $option='', $value='', $standard=true ) {
+		printf( '<%s class="%s">%s</%s>', $before, esc_attr( $instance['gravatar_alignment'] ), get_avatar( get_the_author_meta( 'ID' ), $instance['gravatar_size'] ), $after );
+
+	}
+}
+
+add_action( 'gfwa_before_post_content', 'gfwa_do_post_title', 10, 1 );
+
+/**
+ * Outputs Post Title if option is selects
+ *
+ * @author Nick Croft
+ * @since 0.1
+ * @version 0.2
+ * @param array $instance Values set in widget isntance
+ */
+function gfwa_do_post_title( $instance ) {
+
+	$link = $instance['link_title_field'] && genesis_get_custom_field( $instance['link_title_field']) ? genesis_get_custom_field( $instance['link_title_field']) : get_permalink();
+
+	$wrap_open = $instance['link_title'] == 1 ? sprintf( '<a href="%s" title="%s">', $link, the_title_attribute( 'echo=0' ) ) : '';
+	$wrap_close = $instance['link_title'] == 1 ? '</a>' : '';
+
+	if ( ! empty( $instance['show_title'] ) && ! empty( $instance['title_limit'] ) )
+		printf( '<h2>%s%s%s%s</h2>', $wrap_open, genesis_truncate_phrase( the_title_attribute( 'echo=0' ) , $instance['title_limit'] ), $instance['title_cutoff'], $wrap_close );
+	elseif ( ! empty( $instance['show_title'] ) )
+		printf( '<h2>%s%s%s</h2>', $wrap_open, the_title_attribute( 'echo=0' ), $wrap_close );
+}
+
+add_action( 'gfwa_before_post_content', 'gfwa_do_byline', 10, 1 );
+
+/**
+ * Outputs byline if option is selects and anything is in the post info field
+ *
+ * @author Nick Croft
+ * @since 0.1
+ * @version 0.2
+ * @param array $instance Values set in widget isntance
+ */
+function gfwa_do_byline( $instance ) {
+	if ( ! empty( $instance['show_byline'] ) && ! empty( $instance['post_info'] ) )
+		printf( '<p class="byline post-info">%s</p>', do_shortcode( esc_html( $instance['post_info'] ) ) );
+}
+
+add_action( 'gfwa_post_content', 'gfwa_do_post_content', 10, 1 );
+
+/**
+ * Outputs the selected content option if any
+ *
+ * @author Nick Croft
+ * @since 0.1
+ * @version 0.2
+ * @param array $instance Values set in widget isntance
+ */
+function gfwa_do_post_content( $instance ) {
+	if ( ! empty( $instance['show_content'] ) ) {
+
+		if ( $instance['show_content'] == 'excerpt' )
+			the_excerpt();
+		elseif ( $instance['show_content'] == 'content-limit' )
+			the_content_limit( ( int ) $instance['content_limit'], esc_html( $instance['more_text'] ) );
+		else
+			the_content( esc_html( $instance['more_text'] ) );
+	}
+}
+
+add_action( 'gfwa_after_post_content', 'gfwa_do_post_meta', 10, 1 );
+
+/**
+ * Outputs post meta if option is selected and anything is in the post meta field
+ *
+ * @author Nick Croft
+ * @since 0.6
+ * @version 0.6
+ * @param array $instance Values set in widget isntance
+ */
+function gfwa_do_post_meta( $instance ) {
+	if ( ! empty( $instance['show_archive_line'] ) && ! empty( $instance['post_meta'] ) )
+		printf( '<p class="post-meta">%s</p>', do_shortcode( esc_html( $instance['post_meta'] ) ) );
+}
+
+/**
+ * Returns "display: none;" if option and value match, or of they don't match with $standard is set to false
+ *
+ * @author Nick Croft
+ * @since 0.8
+ * @version 0.8
+ * @param array $instance Values set in widget isntance
+ * @param mixed $option instance option to test
+ * @param mixed $value value to test against
+ * @param boolean $standard echo standard return false for oposite
+ */
+function gfwa_get_display_option( $instance, $option='', $value='', $standard=true ) {
+	$display = '';
+	if ( is_array( $option ) ) {
+		foreach ( $option as $key ) {
+			if ( in_array( $instance[$key], $value ) )
+				$display = 'display: none;';
+		}
+	}
+	elseif ( is_array( $value ) ) {
+		if ( in_array( $instance[$option], $value ) )
+			$display = 'display: none;';
+	}
+	else {
+		if ( $instance[$option] == $value )
+			$display = 'display: none;';
+	}
+	if ( $standard == false ) {
+		if ( $display == 'display: none;' )
 			$display = '';
-            if ( is_array( $option ) ) {
-                foreach ( $option as $key ) {
-                    if ( in_array( $instance[$key], $value ) )
-                        $display = 'display: none;';
-                }
-            }
-            elseif ( is_array( $value ) ) {
-                if ( in_array( $instance[$option], $value ) )
-                    $display = 'display: none;';
-            }
-            else {
-                if ( $instance[$option] == $value )
-                    $display = 'display: none;';
-            }
-            if ( $standard == false ) {
-                if ( $display == 'display: none;' )
-                    $display = '';
-                else
-                    $display = 'display: none;';
-            }
-            return $display;
-		}
+		else
+			$display = 'display: none;';
+	}
+	return $display;
+}
 
-        /**
-         * Outputs "display: none;" if option and value match, or of they don't match with $standard is set to false
-         *
-         * @author Nick Croft
-         * @since 0.6
-         * @version 0.6
-         * @param array $instance Values set in widget isntance
-         * @param mixed $option instance option to test
-         * @param mixed $value value to test against
-         * @param boolean $standard echo standard return false for oposite
-         */
-        function gfwa_display_option( $instance, $option='', $value='', $standard=true ) {
-            $display = '';
-            if ( is_array( $option ) ) {
-                foreach ( $option as $key ) {
-                    if ( in_array( $instance[$key], $value ) )
-                        $display = 'display: none;';
-                }
-            }
-            elseif ( is_array( $value ) ) {
-                if ( in_array( $instance[$option], $value ) )
-                    $display = 'display: none;';
-            }
-            else {
-                if ( $instance[$option] == $value )
-                    $display = 'display: none;';
-            }
-            if ( $standard == false ) {
-                if ( $display == 'display: none;' )
-                    $display = '';
-                else
-                    $display = 'display: none;';
-            }
-            echo $display;
-        }
-		
+/**
+ * Outputs "display: none;" if option and value match, or of they don't match with $standard is set to false
+ *
+ * @author Nick Croft
+ * @since 0.6
+ * @version 0.6
+ * @param array $instance Values set in widget isntance
+ * @param mixed $option instance option to test
+ * @param mixed $value value to test against
+ * @param boolean $standard echo standard return false for oposite
+ */
+function gfwa_display_option( $instance, $option='', $value='', $standard=true ) {
+	$display = '';
+	if ( is_array( $option ) ) {
+		foreach ( $option as $key ) {
+			if ( in_array( $instance[$key], $value ) )
+				$display = 'display: none;';
+		}
+	}
+	elseif ( is_array( $value ) ) {
+		if ( in_array( $instance[$option], $value ) )
+			$display = 'display: none;';
+	}
+	else {
+		if ( $instance[$option] == $value )
+			$display = 'display: none;';
+	}
+	if ( $standard == false ) {
+		if ( $display == 'display: none;' )
+			$display = '';
+		else
+			$display = 'display: none;';
+	}
+	echo $display;
+}
