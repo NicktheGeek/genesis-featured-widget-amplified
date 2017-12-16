@@ -284,4 +284,4 @@ function gfwa_post_limit() {
 }
 
 // Include files.
-require_once GFWA_PLUGIN_DIR . '/widget.php';
+require_once GFWA_PLUGIN_DIR . '/inc/classes/class-genesis-featured-widget-amplified.php';
