@@ -927,14 +927,14 @@ class Genesis_Featured_Widget_Amplified extends WP_Widget {
 
 				foreach ( $box as $field_id => $args ) {
 
-					$class = $args['save'] ? 'class="widget-control-save" ' : '';
+					$class = $args['save'] ? 'gfwa-widget-control-save' : '';
 					$style = $args['requires'] ? ' style="' . gfwa_get_display_option( $instance, $args['requires'][0], $args['requires'][1], $args['requires'][2] ) . '"' : '';
 
 					switch ( $args['type'] ) {
 
 						case 'post_type_select':
-							echo '<p><label for="' . esc_attr( $this->get_field_id( $field_id ) ) . '">' . esc_html( $args['label'] ) . ':</label>
-								<select ' . esc_attr( $class ) . ' id="' . esc_attr( $this->get_field_id( $field_id ) ) . '" name="' . esc_attr( $this->get_field_name( $field_id ) ) . '">';
+							echo '<p><label for="' . esc_attr( $this->get_field_id( $field_id ) ) . '">' . str_replace( esc_html( '<br />' ), '<br />', esc_html( $args['label'] ) ) . ':</label>
+								<select class="' . esc_html( $class ) . '" id="' . esc_attr( $this->get_field_id( $field_id ) ) . '" name="' . esc_attr( $this->get_field_name( $field_id ) ) . '">';
 
 							$args       = array(
 								'public' => true,
@@ -955,9 +955,9 @@ class Genesis_Featured_Widget_Amplified extends WP_Widget {
 							break;
 
 						case 'page_select':
-							echo '<p' . esc_attr( $style ) . '><label for="' . esc_attr( $this->get_field_id( $field_id ) ) . '">' . esc_html( $args['label'] ) . ':</label>
-								<select ' . esc_attr( $class ) . ' id="' . esc_attr( $this->get_field_id( $field_id ) ) . '" name="' . esc_attr( $this->get_field_name( $field_id ) ) . '">
-									<option value="" ' . selected( '', $instance['page_id'], false ) . '>' . esc_html__( 'Select page', 'gfwa' ) . '</option>';
+							echo '<p' . $style . '><label for="' . esc_attr( $this->get_field_id( $field_id ) ) . '">' . str_replace( esc_html( '<br />' ), '<br />', esc_html( $args['label'] ) ) . ':</label>
+								<select class="' . esc_html( $class ) . '" id="' . esc_attr( $this->get_field_id( $field_id ) ) . '" name="' . esc_attr( $this->get_field_name( $field_id ) ) . '">
+									<option value="" ' . selected( '', $instance['page_id'], false ) . '>' . esc_html__( 'Select page', 'gfwa' ) . '</option>'; // XSS ok.
 
 							$pages = get_pages();
 							foreach ( $pages as $page ) {
@@ -970,10 +970,10 @@ class Genesis_Featured_Widget_Amplified extends WP_Widget {
 							break;
 
 						case 'select_taxonomy':
-							echo '<p' . esc_attr( $style ) . '"><label for="' . esc_attr( $this->get_field_id( $field_id ) ) . '">' . esc_html( $args['label'] ) . ':</label>
+							echo '<p' . $style . '><label for="' . esc_attr( $this->get_field_id( $field_id ) ) . '">' . str_replace( esc_html( '<br />' ), '<br />', esc_html( $args['label'] ) ) . ':</label>
 
 								<select id="' . esc_attr( $this->get_field_id( $field_id ) ) . '" name="' . esc_attr( $this->get_field_name( $field_id ) ) . '">
-									<option style="padding-right:10px;" value="" ' . selected( '', $instance['posts_term'], false ) . '>' . esc_html__( 'All Taxonomies and Terms', 'gfwa' ) . '</option>';
+									<option style="padding-right:10px;" value="" ' . selected( '', $instance['posts_term'], false ) . '>' . esc_html__( 'All Taxonomies and Terms', 'gfwa' ) . '</option>'; // XSS ok.
 
 							$taxonomies = get_taxonomies( array( 'public' => true ), 'objects' );
 
@@ -1006,20 +1006,20 @@ class Genesis_Featured_Widget_Amplified extends WP_Widget {
 						case 'text':
 							echo $args['description'] ? '<p>' . esc_html( $args['description'] ) . '</p>' : '';
 
-							echo '<p' . esc_attr( $style ) . '><label for="' . esc_attr( $this->get_field_id( $field_id ) ) . '">' . esc_html( $args['label'] ) . ':</label>
-									<input type="text" id="' . esc_attr( $this->get_field_id( $field_id ) ) . '" name="' . esc_attr( $this->get_field_name( $field_id ) ) . '" value="' . esc_attr( $instance[ $field_id ] ) . '" style="width:95%;" /></p>';
+							echo '<p' . $style . '><label for="' . esc_attr( $this->get_field_id( $field_id ) ) . '">' . str_replace( esc_html( '<br />' ), '<br />', esc_html( $args['label'] ) ) . ':</label> 
+									<input type="text" id="' . esc_attr( $this->get_field_id( $field_id ) ) . '" name="' . esc_attr( $this->get_field_name( $field_id ) ) . '" value="' . esc_attr( $instance[ $field_id ] ) . '" style="width:95%;" /></p>'; // XSS ok.
 
 							break;
 
 						case 'text_small':
-							echo '<p' . esc_attr( $style ) . '><label for="' . esc_attr( $this->get_field_id( $field_id ) ) . '">' . esc_html( $args['label'] ) . ':</label>
-									<input type="text" id="' . esc_attr( $this->get_field_id( $field_id ) ) . '" name="' . esc_attr( $this->get_field_name( $field_id ) ) . '" value="' . esc_attr( $instance[ $field_id ] ) . '" size="2" />' . esc_html( $args['description'] ) . '</p>';
+							echo '<p' . $style . '><label for="' . esc_attr( $this->get_field_id( $field_id ) ) . '">' . str_replace( esc_html( '<br />' ), '<br />', esc_html( $args['label'] ) ) . ':</label>
+									<input type="text" id="' . esc_attr( $this->get_field_id( $field_id ) ) . '" name="' . esc_attr( $this->get_field_name( $field_id ) ) . '" value="' . esc_attr( $instance[ $field_id ] ) . '" size="2" />' . esc_html( $args['description'] ) . '</p>'; // XSS ok.
 
 							break;
 
 						case 'select':
-							echo '<p' . esc_attr( $style ) . '"><label for="' . esc_attr( $this->get_field_id( $field_id ) ) . '">' . esc_html( $args['label'] ) . ' </label>
-								<select ' . esc_attr( $class ) . ' id="' . esc_attr( $this->get_field_id( $field_id ) ) . '" name="' . esc_attr( $this->get_field_name( $field_id ) ) . '">';
+							echo '<p' . $style . '><label for="' . esc_attr( $this->get_field_id( $field_id ) ) . '">' . str_replace( esc_html( '<br />' ), '<br />', esc_html( $args['label'] ) ) . ' </label>
+								<select class="' . esc_html( $class ) . '" id="' . esc_attr( $this->get_field_id( $field_id ) ) . '" name="' . esc_attr( $this->get_field_name( $field_id ) ) . '">'; // XSS ok.
 
 							foreach ( $args['options'] as $value => $label ) {
 								echo '<option style="padding-right:10px;" value="' . esc_attr( $value ) . '" ' . selected( $value, $instance[ $field_id ], false ) . '>' . esc_html( $label ) . '</option>';
@@ -1030,7 +1030,7 @@ class Genesis_Featured_Widget_Amplified extends WP_Widget {
 							break;
 
 						case 'checkbox':
-							echo '<p' . esc_attr( $style ) . '><input ' . esc_attr( $class ) . ' id="' . esc_attr( $this->get_field_id( $field_id ) ) . '" type="checkbox" name="' . esc_attr( $this->get_field_name( $field_id ) ) . '" value="1" ' . checked( 1, $instance[ $field_id ], false ) . '/> <label for="' . esc_attr( $this->get_field_id( $field_id ) ) . '">' . esc_html( $args['label'] ) . '</label></p>';
+							echo '<p' . $style . '><input class="' . esc_html( $class ) . '" id="' . esc_attr( $this->get_field_id( $field_id ) ) . '" type="checkbox" name="' . esc_attr( $this->get_field_name( $field_id ) ) . '" value="1" ' . checked( 1, $instance[ $field_id ], false ) . '/> <label for="' . esc_attr( $this->get_field_id( $field_id ) ) . '">' . str_replace( esc_html( '<br />' ), '<br />', esc_html( $args['label'] ) ) . '</label></p>'; // XSS ok.
 
 							break;
 
@@ -1236,20 +1236,20 @@ function gfwa_get_display_option( $instance, $option = '', $value = '', $standar
 	$display = '';
 	if ( is_array( $option ) ) {
 		foreach ( $option as $key ) {
-			if ( in_array( $instance[ $key ], $value, true ) ) {
+			if ( in_array( $instance[ $key ], $value ) ) { // WPCS: loose comparison ok.
 				$display = 'display: none;';
 			}
 		}
 	} elseif ( is_array( $value ) ) {
-		if ( in_array( $instance[ $option ], $value, true ) ) {
+		if ( in_array( $instance[ $option ], $value ) ) { // WPCS: loose comparison ok.
 			$display = 'display: none;';
 		}
 	} else {
-		if ( $instance[ $option ] === $value ) {
+		if ( isset( $instance[ $option ] ) && $instance[ $option ] == $value ) { // WPCS: loose comparison ok.
 			$display = 'display: none;';
 		}
 	}
-	if ( false === $standard ) {
+	if ( false === (bool) $standard ) {
 		if ( 'display: none;' === $display ) {
 			$display = '';
 		} else {
@@ -1271,5 +1271,24 @@ function gfwa_get_display_option( $instance, $option = '', $value = '', $standar
  * @param boolean $standard echo standard return false for opposite.
  */
 function gfwa_display_option( $instance, $option = '', $value = '', $standard = true ) {
-	echo esc_attr( gfwa_get_display_option( $instance, $option, $value, $standard ) );
+	echo gfwa_get_display_option( $instance, $option, $value, $standard ); // XSS ok.
+}
+
+add_action( 'admin_print_footer_scripts', 'gfwa_form_submit' );
+/**
+ * Adds script that makes the widget update when certain options change.
+ */
+function gfwa_form_submit() {
+	?>
+	<script type="text/javascript">
+
+		(function(a) {
+			a( 'body' ).on( 'change', '.gfwa-widget-control-save', function() {
+				wpWidgets.save( a(this).closest('div.widget'), 0, 1, 0 );
+				return false;
+			} );
+		} )( jQuery );
+
+	</script>
+	<?php
 }
