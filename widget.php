@@ -103,7 +103,7 @@ class Genesis_Featured_Widget_Amplified extends WP_Widget {
 		);
 
 		$widget_ops = array(
-			'classname'   => 'featuredpost',
+			'classname'   => 'featured-content featuredpost',
 			'description' => __( 'Displays featured posts types with thumbnails', 'gfwa' ),
 		);
 
