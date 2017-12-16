@@ -54,7 +54,7 @@ Thanks to David Decker, this plugin is translation ready.  German translation fi
 1. gfwa_exclude_taxonomies - used to prevent taxonomies and related terms from appearing in the terms and taxonomies list in the widget form
 
 == Change Log ==
-0.8.2 (12-18-2017 : current)
+0.9 (12-18-2017 : current)
  * Huge code standard clean up that fixed white space, documentation, escaping, and several other standards issues. Plugin now passes WPCS.
  * Fixed issue where widget did not update in WP 4.9.
 
