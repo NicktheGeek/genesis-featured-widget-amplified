@@ -3,8 +3,8 @@ Contributors: Nick_theGeek
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=RGUXZDAKT7BDW
 Tags: genesis, genesiswp, studiopress, featured post, custom post type, pagination
 Requires at least: 3.3
-Tested up to: 4.8.1
-Stable tag: 0.8.2
+Tested up to: 4.9.1
+Stable tag: 0.9
 
 Genesis Featured Posts with support for custom post types, taxonomies, and so much more
 
@@ -48,11 +48,17 @@ Thanks to David Decker, this plugin is translation ready.  German translation fi
 1. gfwa_after_category_more - after the archive more conditional block
 1. gfwa_form_first_column within the widget form, end of first column
 1. gfwa_form_second_column within the widget form, end of second column
+
 = What Filters are available? =
 1. gfwa_exclude_post_types - used to prevent post types from appearing in the post type list in the widget form
 1. gfwa_exclude_taxonomies - used to prevent taxonomies and related terms from appearing in the terms and taxonomies list in the widget form
 
-0.8.2 (8-3-2017 : current)
+== Change Log ==
+0.9 (12-18-2017 : current)
+ * Huge code standard clean up that fixed white space, documentation, escaping, and several other standards issues. Plugin now passes WPCS.
+ * Fixed issue where widget did not update in WP 4.9.
+
+0.8.2 (8-3-2017 : 12-18-2017)
  * Removed script that autosaved widget settings as they updated since it conflicted with the WP script that has been added to do the same thing.
  
 0.8.1 (5-14-2012)
