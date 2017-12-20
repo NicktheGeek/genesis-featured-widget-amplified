@@ -59,7 +59,6 @@ class Genesis_Featured_Widget_Amplified extends WP_Widget {
 	 * @since 0.1.8
 	 */
 	public function __construct() {
-
 		$this->defaults = array(
 			'count'                   => 0,
 			'title'                   => '',
@@ -123,7 +122,6 @@ class Genesis_Featured_Widget_Amplified extends WP_Widget {
 		);
 
 		parent::__construct( 'featured-post', __( 'Genesis - Featured Widget Amplified', 'gfwa' ), $widget_ops, $control_ops );
-
 	}
 
 
@@ -228,7 +226,7 @@ class Genesis_Featured_Widget_Amplified extends WP_Widget {
 
 		gfwa_before_loop( $instance );
 
-		if ( 0 !== intval( $instance['posts_num'] ) ) {
+		if ( 0 !== (int) $instance['posts_num'] ) {
 			$query_args = array_merge(
 				$term_args, array(
 					'post_type'      => $instance['post_type'],
@@ -259,7 +257,6 @@ class Genesis_Featured_Widget_Amplified extends WP_Widget {
 					echo '</div><!--end post_class()-->' . "\n\n";
 
 					$gfwa_counter ++;
-
 				}
 
 				if ( ! empty( $instance['show_paged'] ) ) {
@@ -267,7 +264,6 @@ class Genesis_Featured_Widget_Amplified extends WP_Widget {
 				}
 
 				gfwa_endwhile( $instance );
-
 			}
 
 			$gfwa_counter = '';
@@ -276,12 +272,11 @@ class Genesis_Featured_Widget_Amplified extends WP_Widget {
 		}
 		// The EXTRA Posts (list).
 		if ( $instance['extra_posts'] && $instance['extra_num'] ) {
-
 			if ( ! empty( $instance['extra_title'] ) ) {
 				echo str_replace( '>', ' class="additional-posts-title">', $before_title ) . esc_html( $instance['extra_title'] ) . $after_title; // XSS ok.
 			}
 
-			$offset           = intval( $instance['posts_num'] ) + intval( $instance['posts_offset'] );
+			$offset           = (int) $instance['posts_num'] + (int) $instance['posts_offset'];
 			$extra_posts_args = array_merge(
 				$term_args, array(
 					'showposts' => $instance['extra_num'],
@@ -300,9 +295,7 @@ class Genesis_Featured_Widget_Amplified extends WP_Widget {
 			$listitems = '';
 
 			if ( $gfwa_extra_posts->have_posts() ) {
-
 				while ( $gfwa_extra_posts->have_posts() ) {
-
 					$gfwa_extra_posts->the_post();
 
 					gfwa_list_items( $instance );
@@ -322,7 +315,6 @@ class Genesis_Featured_Widget_Amplified extends WP_Widget {
 				}
 
 				gfwa_print_list_items( $instance );
-
 			}
 		}
 
@@ -371,19 +363,12 @@ class Genesis_Featured_Widget_Amplified extends WP_Widget {
 		/** Merge with defaults */
 		$instance = wp_parse_args( (array) $instance, $this->defaults );
 
-		$sizes            = get_intermediate_image_sizes();
-		$additional_sizes = wp_get_additional_image_sizes();
+		$sizes = wp_get_additional_image_sizes();
 
-		$image_size_opt = array(
-			'' => __( 'Full Size', 'gfwa' ),
-		);
+		$image_size_opt['thumbnail'] = 'thumbnail (' . get_option( 'thumbnail_size_w' ) . 'x' . get_option( 'thumbnail_size_h' ) . ')';
 
-		foreach ( $sizes as $size ) {
-			$image_size_opt[ esc_attr( $size ) ] = esc_html( sprintf( '%s (%2$sx%3$s)', $size, get_option( "{$size}_size_w" ), get_option( "{$size}_size_h" ) ) );
-		}
-
-		foreach ( (array) $additional_sizes as $name => $size ) {
-			$image_size_opt[ esc_attr( $name ) ] = esc_html( sprintf( '%1$s (%2$sx%3$s)', $name, $size['width'], $size['height'] ) );
+		foreach ( (array) $sizes as $name => $size ) {
+			$image_size_opt[ $name ] = esc_html( $name ) . ' (' . $size['width'] . 'x' . $size['height'] . ')';
 		}
 
 		$columns = array(
@@ -633,7 +618,7 @@ class Genesis_Featured_Widget_Amplified extends WP_Widget {
 						),
 					),
 					'link_image_field' => array(
-						'label'       => __( 'Custom Field for Link ( Defaults to Permalink )' ),
+						'label'       => __( 'Custom Field for Link ( Defaults to Permalink )', 'gfwa' ),
 						'description' => '',
 						'type'        => 'text',
 						'save'        => false,
@@ -735,7 +720,7 @@ class Genesis_Featured_Widget_Amplified extends WP_Widget {
 						),
 					),
 					'link_title_field'  => array(
-						'label'       => __( 'Custom Field for Link ( Defaults to Permalink )' ),
+						'label'       => __( 'Custom Field for Link ( Defaults to Permalink )', 'gfwa' ),
 						'description' => '',
 						'type'        => 'text',
 						'save'        => false,
@@ -922,41 +907,37 @@ class Genesis_Featured_Widget_Amplified extends WP_Widget {
 		foreach ( $columns as $column => $boxes ) {
 			if ( 'col1' === $column ) {
 				echo '<div style="float: left; width: 250px;">';
-
 			} else {
 				echo '<div style="float: right; width: 250px;">';
 			}
 
 			foreach ( $boxes as $box ) {
-
 				echo '<div style="background: #f1f1f1; border: 1px solid #DDD; padding: 10px 10px 0 10px; margin-bottom: 5px;">';
 
 				foreach ( $box as $field_id => $args ) {
-
 					$class = $args['save'] ? 'gfwa-widget-control-save' : '';
 					$style = $args['requires'] ? ' style="' . gfwa_get_display_option( $instance, $args['requires'][0], $args['requires'][1], $args['requires'][2] ) . '"' : '';
 
 					switch ( $args['type'] ) {
-
 						case 'post_type_select':
 							echo '<p><label for="' . esc_attr( $this->get_field_id( $field_id ) ) . '">' . str_replace( esc_html( '<br />' ), '<br />', esc_html( $args['label'] ) ) . ':</label>
-								<select class="' . esc_html( $class ) . '" id="' . esc_attr( $this->get_field_id( $field_id ) ) . '" name="' . esc_attr( $this->get_field_name( $field_id ) ) . '">';
+								<select class="' . esc_html( $class ) . '" id="' . esc_attr( $this->get_field_id( $field_id ) ) . '" name="' . esc_attr( $this->get_field_name( $field_id ) ) . '">'; // WPCS: XSS ok.
 
-							$args       = array(
+							$args                               = array(
 								'public' => true,
 							);
-							$output     = 'names';
-							$operator   = 'and';
-							$post_types = get_post_types( $args, $output, $operator );
-							$post_types = array_filter( $post_types, 'gfwa_exclude_post_types' );
+													$output     = 'names';
+													$operator   = 'and';
+													$post_types = get_post_types( $args, $output, $operator );
+													$post_types = array_filter( $post_types, 'gfwa_exclude_post_types' );
 
 							foreach ( $post_types as $post_type ) {
 								echo '<option style="padding-right:10px;" value="' . esc_attr( $post_type ) . '" ' . selected( esc_attr( $post_type ), $instance['post_type'], false ) . '>' . esc_attr( $post_type ) . '</option>';
 							}
 
-							echo '<option style="padding-right:10px;" value="any" ' . selected( 'any', $instance['post_type'], false ) . '>' . esc_html__( 'any', 'gfwa' ) . '</option>';
+													echo '<option style="padding-right:10px;" value="any" ' . selected( 'any', $instance['post_type'], false ) . '>' . esc_html__( 'any', 'gfwa' ) . '</option>';
 
-							echo '</select></p>';
+													echo '</select></p>';
 
 							break;
 
@@ -1002,7 +983,6 @@ class Genesis_Featured_Widget_Amplified extends WP_Widget {
 								}
 
 								echo '</optgroup>';
-
 							}
 
 							echo '</select></p>';
@@ -1039,7 +1019,6 @@ class Genesis_Featured_Widget_Amplified extends WP_Widget {
 							echo '<p' . $style . '><input class="' . esc_html( $class ) . '" id="' . esc_attr( $this->get_field_id( $field_id ) ) . '" type="checkbox" name="' . esc_attr( $this->get_field_name( $field_id ) ) . '" value="1" ' . checked( 1, $instance[ $field_id ], false ) . '/> <label for="' . esc_attr( $this->get_field_id( $field_id ) ) . '">' . str_replace( esc_html( '<br />' ), '<br />', esc_html( $args['label'] ) ) . '</label></p>'; // XSS ok.
 
 							break;
-
 					}
 				}
 
@@ -1047,7 +1026,6 @@ class Genesis_Featured_Widget_Amplified extends WP_Widget {
 			}
 
 			echo '</div>';
-
 		}
 	}
 
@@ -1086,19 +1064,17 @@ add_action( 'gfwa_after_post_content', 'gfwa_do_post_image', 10, 1 );
  * @param array $instance Values set in widget $instance.
  */
 function gfwa_do_post_image( $instance ) {
-
-	$align      = $instance['image_alignment'] ? esc_attr( $instance['image_alignment'] ) : 'alignnone';
-	$link       = $instance['link_image_field'] && genesis_get_custom_field( $instance['link_image_field'] ) ? genesis_get_custom_field( $instance['link_image_field'] ) : get_permalink();
-	$link_image = 1 === intval( $instance['link_image'] );
+	$align = $instance['image_alignment'] ? esc_attr( $instance['image_alignment'] ) : 'alignnone';
+	$link  = $instance['link_image_field'] && genesis_get_custom_field( $instance['link_image_field'] ) ? genesis_get_custom_field( $instance['link_image_field'] ) : get_permalink();
 
 	$image = ! empty( $instance['show_image'] ) ? genesis_get_image(
 		array(
 			'format' => 'html',
 			'size'   => $instance['image_size'],
-			'attr'   => $link_image ? '' : array( 'class' => $align ),
+			'attr'   => array( 'class' => $align ),
 		)
 	) : '';
-	$image = $link_image ? sprintf( '<a href="%s" title="%s" class="%s">%s</a>', esc_url( $link ), the_title_attribute( 'echo=0' ), esc_attr( $align ), $image ) : $image;
+	$image = 1 === (int) $instance['link_image'] ? sprintf( '<a href="%s" title="%s" class="%s">%s</a>', esc_url( $link ), the_title_attribute( 'echo=0' ), esc_attr( $align ), $image ) : $image;
 
 	echo current_filter() === 'gfwa_before_post_content' && 'before-title' === $instance['image_position'] && ! empty( $instance['show_image'] ) ? $image : ''; // XSS ok.
 	echo current_filter() === 'gfwa_post_content' && 'after-title' === $instance['image_position'] && ! empty( $instance['show_image'] ) ? $image : ''; // XSS ok.
@@ -1117,9 +1093,7 @@ add_action( 'gfwa_before_post_content', 'gfwa_do_gravatar', 10, 1 );
  */
 function gfwa_do_gravatar( $instance ) {
 	if ( ! empty( $instance['show_gravatar'] ) ) {
-
 		switch ( $instance['link_gravatar'] ) {
-
 			case 'archive':
 				$before = 'a href="' . get_author_posts_url( get_the_author_meta( 'ID' ) ) . '"';
 				$after  = 'a';
@@ -1137,11 +1111,9 @@ function gfwa_do_gravatar( $instance ) {
 				$after  = 'span';
 
 				break;
-
 		}
 
 		printf( '<%s class="%s">%s</%s>', esc_attr( $before ), esc_attr( $instance['gravatar_alignment'] ), get_avatar( get_the_author_meta( 'ID' ), $instance['gravatar_size'] ), esc_attr( $after ) );
-
 	}
 }
 
@@ -1156,11 +1128,10 @@ add_action( 'gfwa_before_post_content', 'gfwa_do_post_title', 10, 1 );
  * @param array $instance Values set in widget $instance.
  */
 function gfwa_do_post_title( $instance ) {
-
 	$link = $instance['link_title_field'] && genesis_get_custom_field( $instance['link_title_field'] ) ? genesis_get_custom_field( $instance['link_title_field'] ) : get_permalink();
 
-	$wrap_open  = 1 === intval( $instance['link_title'] ) ? sprintf( '<a href="%s" title="%s">', esc_url( $link ), the_title_attribute( 'echo=0' ) ) : '';
-	$wrap_close = 1 === intval( $instance['link_title'] ) ? '</a>' : '';
+	$wrap_open  = 1 === (int) $instance['link_title'] ? sprintf( '<a href="%s" title="%s">', esc_url( $link ), the_title_attribute( 'echo=0' ) ) : '';
+	$wrap_close = 1 === (int) $instance['link_title'] ? '</a>' : '';
 
 	if ( ! empty( $instance['show_title'] ) && ! empty( $instance['title_limit'] ) ) {
 		printf( '<h2>%s%s%s%s</h2>', $wrap_open, genesis_truncate_phrase( the_title_attribute( 'echo=0' ), $instance['title_limit'] ), esc_html( $instance['title_cutoff'] ), $wrap_close ); // XSS ok.
@@ -1197,7 +1168,6 @@ add_action( 'gfwa_post_content', 'gfwa_do_post_content', 10, 1 );
  */
 function gfwa_do_post_content( $instance ) {
 	if ( ! empty( $instance['show_content'] ) ) {
-
 		switch ( $instance['show_content'] ) {
 			case 'excerpt':
 				the_excerpt();
@@ -1228,7 +1198,7 @@ function gfwa_do_post_meta( $instance ) {
 }
 
 /**
- * Returns "display: none;" if option and value match, or of they don't match with $standard is set to false
+ * Returns "display: none;" if option and value match, or if they don't match with $standard set to false.
  *
  * @author Nick Croft
  * @since 0.8
@@ -1236,19 +1206,19 @@ function gfwa_do_post_meta( $instance ) {
  * @param array   $instance Values set in widget $instance.
  * @param mixed   $option instance option to test.
  * @param mixed   $value value to test against.
- * @param boolean $standard echo standard return false for oposite.
+ * @param boolean $standard echo standard return false for opposite.
  * @return string
  */
 function gfwa_get_display_option( $instance, $option = '', $value = '', $standard = true ) {
 	$display = '';
 	if ( is_array( $option ) ) {
 		foreach ( $option as $key ) {
-			if ( in_array( $instance[ $key ], $value ) ) { // WPCS: loose comparison ok.
+			if ( in_array( $instance[ $key ], $value, false ) ) {
 				$display = 'display: none;';
 			}
 		}
 	} elseif ( is_array( $value ) ) {
-		if ( in_array( $instance[ $option ], $value ) ) { // WPCS: loose comparison ok.
+		if ( in_array( $instance[ $option ], $value, false ) ) {
 			$display = 'display: none;';
 		}
 	} else {

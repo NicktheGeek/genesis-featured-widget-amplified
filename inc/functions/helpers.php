@@ -17,7 +17,6 @@
  * @return string
  */
 function gfwa_truncate( $str, $length = 10 ) {
-
 	if ( strlen( $str ) > $length ) {
 		return substr( $str, 0, $length );
 	} else {
@@ -214,12 +213,10 @@ function gfwa_exclude_post_types( $type ) {
 function gfwa_post_limit() {
 	global $paged, $gfwa_offset;
 	if ( empty( $paged ) ) {
-		// @codingStandardsIgnoreStart
-		$paged = 1;
-		// @codingStandardsIgnoreEnd
+		$paged = 1; // phpcs:ignore
 	}
-	$postperpage = intval( get_option( 'posts_per_page' ) );
-	$pgstrt      = ( ( intval( $paged ) - 1 ) * $postperpage ) + $gfwa_offset . ', ';
+	$postperpage = (int) get_option( 'posts_per_page' );
+	$pgstrt      = ( ( (int) $paged - 1 ) * $postperpage ) + $gfwa_offset . ', ';
 	$limit       = 'LIMIT ' . $pgstrt . $postperpage;
 	return $limit;
 }
