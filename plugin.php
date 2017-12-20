@@ -1,17 +1,22 @@
 <?php
 /**
+ * Genesis Featured Widget Amplified
+ *
+ * @package     NickTheGeek\GenesisFeaturedWidgetAmplified
+ * @author      Nick Croft
+ * @copyright   2011 Nick Croft
+ * @license     GPL-2.0+
+ *
+ * @wordpress-plugin
  * Plugin Name: Genesis Featured Widget Amplified
- * Plugin URI: http://DesignsByNicktheGeek.com
- * Version: 0.9.0
- * Author: Nick_theGeek
- * Author URI: http://DesignsByNicktheGeek.com
- * Description: Replaces Genesis Featured Post widget for additional functionality which allows support for custom post types, taxonomies, and extends the flexibility of the widget via action hooks to allow the elements to be repositioned or other elements to be added. This requires WordPress 3.5+ and Genesis 1.9+.
+ * Plugin URI:  https://github.com/NicktheGeek/genesis-featured-widget-amplified
+ * Description: Replaces Genesis Featured Post widget for additional functionality which allows support for custom post types, taxonomies, and extends the flexibility of the widget via action hooks to allow the elements to be repositioned or other elements to be added. This requires WordPress 3.3+ and Genesis 1.9+.
+ * Version:     0.9.0
+ * Author:      Nick_theGeek
+ * Author URI:  https://designsbynickthegeek.com/
  * Text Domain: gfwa
- * Domain Path /languages/
  * License:     GPL-2.0+
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
- *
- * @package gfwa
  */
 
 /*
@@ -19,7 +24,7 @@
  *      Create and setup screen shots
  */
 
-/**
+/*
  * Load textdomain for translation
  */
 load_plugin_textdomain( 'gfwa', false, basename( dirname( __FILE__ ) ) . '/languages/' );
@@ -27,7 +32,7 @@ load_plugin_textdomain( 'gfwa', false, basename( dirname( __FILE__ ) ) . '/langu
 define( 'GFWA_PLUGIN_DIR', dirname( __FILE__ ) );
 
 
-/**
+/*
  * Prevent direct access to the plugin
  */
 if ( ! defined( 'ABSPATH' ) ) {
@@ -65,7 +70,6 @@ function gfwa_activation_check() {
 }
 
 /**
- *
  * Used to cutoff a string to a set length if it exceeds the specified length
  *
  * @author Nick Croft
