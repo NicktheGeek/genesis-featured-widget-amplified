@@ -1,22 +1,45 @@
 <?xml version="1.0"?>
-<ruleset name="WordPress">
-	<description>WordPress Coding Standards</description>
+<ruleset name="Genesis Featured Widget Amplified">
+    <description>The code standard for the Genesis Featured Widget Amplified plugin.</description>
 
-	<rule ref="WordPress-Core"/>
-	<rule ref="WordPress-Docs"/>
-	<rule ref="WordPress-Extra"/>
+    <!-- What to scan -->
+    <file>.</file>
+    <exclude-pattern>vendor/</exclude-pattern>
 
-    <exclude-pattern>*style.css</exclude-pattern>
-	<exclude-pattern>*/node_modules/*</exclude-pattern>
-    <exclude-pattern>*/vendor/*</exclude-pattern>
-    <exclude-pattern>*/tests/*</exclude-pattern>
-    <exclude-pattern>*/wpcs/*</exclude-pattern>
-    <exclude-pattern>*.min.*</exclude-pattern>
-    <exclude-pattern>*gulp*</exclude-pattern>
+    <!-- How to scan -->
+    <arg value="sp"/> <!-- Show sniff and progress -->
+    <arg name="basepath" value="."/><!-- Strip the file paths down to the relevant bit -->
+    <arg name="colors" />
+    <arg name="extensions" value="php"/>
+    <arg name="report" value="full"/>
+    <arg name="report" value="summary"/>
+    <arg name="report" value="source"/>
 
-    <rule ref="WordPress.Files.FileName">
+	<!-- Rules: Check PHP version compatibility -->
+	<config name="testVersion" value="5.2-"/>
+	<rule ref="PHPCompatibility"/>
+
+    <!-- Rules: WordPress Coding Standards -->
+    <config name="minimum_supported_wp_version" value="4.7"/>
+    <rule ref="WordPress">
+        <exclude name="WordPress.VIP"/>
+        <exclude name="WordPress.PHP.StrictInArray.FoundNonStrictFalse"/>
+        <exclude name="WordPress.DB.SlowDBQuery.slow_db_query_meta_key"/>
+        <exclude name="WordPress.DB.SlowDBQuery.slow_db_query_meta_value"/>
+    </rule>
+    <rule ref="WordPress.NamingConventions.PrefixAllGlobals">
         <properties>
-            <property name="is_theme" value="true" />
+            <property name="prefixes" type="array" value="gfwa,Genesis_Featured_Widget_Amplified"/>
+        </properties>
+    </rule>
+    <rule ref="WordPress.WP.I18n">
+        <properties>
+            <property name="text_domain" type="array" value="gfwa"/>
+        </properties>
+    </rule>
+    <rule ref="WordPress.WhiteSpace.ControlStructureSpacing">
+        <properties>
+            <property name="blank_line_check" value="true"/>
         </properties>
     </rule>
 </ruleset>
