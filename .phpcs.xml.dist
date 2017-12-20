@@ -20,7 +20,7 @@
 	<rule ref="PHPCompatibility"/>
 
     <!-- Rules: WordPress Coding Standards -->
-    <config name="minimum_supported_wp_version" value="4.7"/>
+    <config name="minimum_supported_wp_version" value="3.3"/>
     <rule ref="WordPress">
         <exclude name="WordPress.VIP"/>
         <exclude name="WordPress.PHP.StrictInArray.FoundNonStrictFalse"/>
