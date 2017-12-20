@@ -371,12 +371,19 @@ class Genesis_Featured_Widget_Amplified extends WP_Widget {
 		/** Merge with defaults */
 		$instance = wp_parse_args( (array) $instance, $this->defaults );
 
-		$sizes = wp_get_additional_image_sizes();
+		$sizes            = get_intermediate_image_sizes();
+		$additional_sizes = wp_get_additional_image_sizes();
 
-		$image_size_opt['thumbnail'] = 'thumbnail (' . get_option( 'thumbnail_size_w' ) . 'x' . get_option( 'thumbnail_size_h' ) . ')';
+		$image_size_opt = array(
+			'' => __( 'Full Size', 'gfwa' ),
+		);
 
-		foreach ( (array) $sizes as $name => $size ) {
-			$image_size_opt[ $name ] = esc_html( $name ) . ' (' . $size['width'] . 'x' . $size['height'] . ')';
+		foreach ( $sizes as $size ) {
+			$image_size_opt[ esc_attr( $size ) ] = esc_html( sprintf( '%s (%2$sx%3$s)', $size, get_option( "{$size}_size_w" ), get_option( "{$size}_size_h" ) ) );
+		}
+
+		foreach ( (array) $additional_sizes as $name => $size ) {
+			$image_size_opt[ esc_attr( $name ) ] = esc_html( sprintf( '%1$s (%2$sx%3$s)', $name, $size['width'], $size['height'] ) );
 		}
 
 		$columns = array(
