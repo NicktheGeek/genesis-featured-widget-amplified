@@ -1080,17 +1080,18 @@ add_action( 'gfwa_after_post_content', 'gfwa_do_post_image', 10, 1 );
  */
 function gfwa_do_post_image( $instance ) {
 
-	$align = $instance['image_alignment'] ? esc_attr( $instance['image_alignment'] ) : 'alignnone';
-	$link  = $instance['link_image_field'] && genesis_get_custom_field( $instance['link_image_field'] ) ? genesis_get_custom_field( $instance['link_image_field'] ) : get_permalink();
+	$align      = $instance['image_alignment'] ? esc_attr( $instance['image_alignment'] ) : 'alignnone';
+	$link       = $instance['link_image_field'] && genesis_get_custom_field( $instance['link_image_field'] ) ? genesis_get_custom_field( $instance['link_image_field'] ) : get_permalink();
+	$link_image = 1 === intval( $instance['link_image'] );
 
 	$image = ! empty( $instance['show_image'] ) ? genesis_get_image(
 		array(
 			'format' => 'html',
 			'size'   => $instance['image_size'],
-			'attr'   => array( 'class' => $align ),
+			'attr'   => $link_image ? '' : array( 'class' => $align ),
 		)
 	) : '';
-	$image = 1 === intval( $instance['link_image'] ) ? sprintf( '<a href="%s" title="%s" class="%s">%s</a>', esc_url( $link ), the_title_attribute( 'echo=0' ), esc_attr( $align ), $image ) : $image;
+	$image = $link_image ? sprintf( '<a href="%s" title="%s" class="%s">%s</a>', esc_url( $link ), the_title_attribute( 'echo=0' ), esc_attr( $align ), $image ) : $image;
 
 	echo current_filter() === 'gfwa_before_post_content' && 'before-title' === $instance['image_position'] && ! empty( $instance['show_image'] ) ? $image : ''; // XSS ok.
 	echo current_filter() === 'gfwa_post_content' && 'after-title' === $instance['image_position'] && ! empty( $instance['show_image'] ) ? $image : ''; // XSS ok.
