@@ -1,4 +1,4 @@
-=== Plugin Name ===
+=== Genesis Featured Widget Amplified ===
 Contributors: Nick_theGeek
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=RGUXZDAKT7BDW
 Tags: genesis, genesiswp, studiopress, featured post, custom post type, pagination
