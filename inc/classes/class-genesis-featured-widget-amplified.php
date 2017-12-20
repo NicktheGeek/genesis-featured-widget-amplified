@@ -923,21 +923,21 @@ class Genesis_Featured_Widget_Amplified extends WP_Widget {
 							echo '<p><label for="' . esc_attr( $this->get_field_id( $field_id ) ) . '">' . str_replace( esc_html( '<br />' ), '<br />', esc_html( $args['label'] ) ) . ':</label>
 								<select class="' . esc_html( $class ) . '" id="' . esc_attr( $this->get_field_id( $field_id ) ) . '" name="' . esc_attr( $this->get_field_name( $field_id ) ) . '">'; // WPCS: XSS ok.
 
-							$args                               = array(
+							$args       = array(
 								'public' => true,
 							);
-													$output     = 'names';
-													$operator   = 'and';
-													$post_types = get_post_types( $args, $output, $operator );
-													$post_types = array_filter( $post_types, 'gfwa_exclude_post_types' );
+							$output     = 'names';
+							$operator   = 'and';
+							$post_types = get_post_types( $args, $output, $operator );
+							$post_types = array_filter( $post_types, 'gfwa_exclude_post_types' );
 
 							foreach ( $post_types as $post_type ) {
 								echo '<option style="padding-right:10px;" value="' . esc_attr( $post_type ) . '" ' . selected( esc_attr( $post_type ), $instance['post_type'], false ) . '>' . esc_attr( $post_type ) . '</option>';
 							}
 
-													echo '<option style="padding-right:10px;" value="any" ' . selected( 'any', $instance['post_type'], false ) . '>' . esc_html__( 'any', 'gfwa' ) . '</option>';
+							echo '<option style="padding-right:10px;" value="any" ' . selected( 'any', $instance['post_type'], false ) . '>' . esc_html__( 'any', 'gfwa' ) . '</option>';
 
-													echo '</select></p>';
+							echo '</select></p>';
 
 							break;
 
