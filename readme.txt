@@ -4,6 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: genesis, genesiswp, studiopress, featured post, custom post type, pagination
 Requires at least: 3.3
 Tested up to: 4.9.1
+Requires PHP: 5.2
 Stable tag: 0.9
 
 Genesis Featured Posts with support for custom post types, taxonomies, and so much more
@@ -60,7 +61,7 @@ Thanks to David Decker, this plugin is translation ready.  German translation fi
 
 0.8.2 (8-3-2017 : 12-18-2017)
  * Removed script that autosaved widget settings as they updated since it conflicted with the WP script that has been added to do the same thing.
- 
+
 0.8.1 (5-14-2012)
 
 0.8.1 (5*14-2012 : current)
@@ -80,7 +81,7 @@ Thanks to David Decker, this plugin is translation ready.  German translation fi
  * Added option for linking the gravatar
  * Fixed some strings that were not internationalized correctly
  * Added additional option for linking post title/image via custom field
- * Added title cutoff symbol 
+ * Added title cutoff symbol
 
 0.7.2 (10-3-2011)
 
