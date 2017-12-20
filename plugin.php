@@ -8,6 +8,8 @@
  * Description: Replaces Genesis Featured Post widget for additional functionality which allows support for custom post types, taxonomies, and extends the flexibility of the widget via action hooks to allow the elements to be repositioned or other elements to be added. This requires WordPress 3.5+ and Genesis 1.9+.
  * Text Domain: gfwa
  * Domain Path /languages/
+ * License:     GPL-2.0+
+ * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
  *
  * @package gfwa
  */

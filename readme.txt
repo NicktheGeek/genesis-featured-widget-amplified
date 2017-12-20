@@ -6,6 +6,8 @@ Requires at least: 3.3
 Tested up to: 4.9.1
 Requires PHP: 5.2
 Stable tag: 0.9
+License: GPLv2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 Genesis Featured Posts with support for custom post types, taxonomies, and so much more
 
