@@ -1152,7 +1152,7 @@ add_action( 'gfwa_before_post_content', 'gfwa_do_byline', 10, 1 );
  */
 function gfwa_do_byline( $instance ) {
 	if ( ! empty( $instance['show_byline'] ) && ! empty( $instance['post_info'] ) ) {
-		printf( '<p class="byline post-info">%s</p>', do_shortcode( esc_html( $instance['post_info'] ) ) );
+		printf( '<p class="byline post-info">%s</p>', do_shortcode( wp_kses_post( $instance['post_info'] ) ) );
 	}
 }
 
@@ -1193,7 +1193,7 @@ add_action( 'gfwa_after_post_content', 'gfwa_do_post_meta', 10, 1 );
  */
 function gfwa_do_post_meta( $instance ) {
 	if ( ! empty( $instance['show_archive_line'] ) && ! empty( $instance['post_meta'] ) ) {
-		printf( '<p class="post-meta">%s</p>', do_shortcode( esc_html( $instance['post_meta'] ) ) );
+		printf( '<p class="post-meta">%s</p>', do_shortcode( wp_kses_post( $instance['post_meta'] ) ) );
 	}
 }
 
