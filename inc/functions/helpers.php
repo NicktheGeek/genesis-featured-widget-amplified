@@ -1,78 +1,12 @@
 <?php
 /**
- * Genesis Featured Widget Amplified
+ * Helper functions for the GFWA widget.
  *
- * @package     NickTheGeek\GenesisFeaturedWidgetAmplified
- * @author      Nick Croft
- * @copyright   2011 Nick Croft
- * @license     GPL-2.0+
- *
- * @wordpress-plugin
- * Plugin Name:       Genesis Featured Widget Amplified
- * Plugin URI:        https://github.com/NicktheGeek/genesis-featured-widget-amplified
- * Description:       Replaces Genesis Featured Post widget for additional functionality which allows support for custom post types, taxonomies, and extends the flexibility of the widget via action hooks to allow the elements to be repositioned or other elements to be added. This requires WordPress 3.3+ and Genesis 1.9+.
- * Version:           0.9.1
- * Author:            Nick_theGeek
- * Author URI:        https://designsbynickthegeek.com/
- * Text Domain:       gfwa
- * License:           GPL-2.0+
- * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
- * GitHub Plugin URI: https://github.com/NicktheGeek/genesis-featured-widget-amplified
- * Requires PHP:      5.2
- * Requires WP:       3.3
+ * @package gfwa
  */
-
-/*
- * To Do:
- *      Create and setup screen shots
- */
-
-/*
- * Load textdomain for translation
- */
-load_plugin_textdomain( 'gfwa', false, basename( dirname( __FILE__ ) ) . '/languages/' );
-
-define( 'GFWA_PLUGIN_DIR', dirname( __FILE__ ) );
-
-
-/*
- * Prevent direct access to the plugin
- */
-if ( ! defined( 'ABSPATH' ) ) {
-	wp_die( esc_html__( 'Sorry, you are not allowed to access this page directly.', 'gfwa' ) );
-}
-
-register_activation_hook( __FILE__, 'gfwa_activation_check' );
 
 /**
- * Checks for minimum Genesis Theme version before allowing plugin to activate
  *
- * @author Nick Croft
- * @uses gfwa_truncate()
- * @since 0.1
- * @version 0.2
- */
-function gfwa_activation_check() {
-	$latest = '1.9';
-
-	if ( basename( get_template_directory() ) !== 'genesis' ) {
-		deactivate_plugins( plugin_basename( __FILE__ ) ); // Deactivate ourself.
-		// Translators: The placeholders are for HTML link wraps.
-		wp_die( sprintf( esc_html__( 'Sorry, you can\'t activate unless you have installed %1$sGenesis%2$s', 'gfwa' ), '<a href="http://designsbynickthegeek.com/go/genesis">', '</a>' ) );
-	}
-
-	$theme_info = wp_get_theme( get_template_directory() . '/style.css' );
-
-	$version = gfwa_truncate( $theme_info->get( 'Version' ), 3 );
-
-	if ( version_compare( $version, $latest, '<' ) ) {
-		deactivate_plugins( plugin_basename( __FILE__ ) ); // Deactivate ourself.
-		// Translators: The placeholders are for HTML link wraps.
-		wp_die( sprintf( esc_html__( 'Sorry, you can\'t activate without %1$sGenesis %2$s%3$s or greater', 'gfwa' ), '<a href="http://designsbynickthegeek.com/go/genesis">', esc_html( $latest ), '</a>' ) );
-	}
-}
-
-/**
  * Used to cutoff a string to a set length if it exceeds the specified length
  *
  * @author Nick Croft
@@ -279,15 +213,10 @@ function gfwa_exclude_post_types( $type ) {
 function gfwa_post_limit() {
 	global $paged, $gfwa_offset;
 	if ( empty( $paged ) ) {
-		// @codingStandardsIgnoreStart
-		$paged = 1;
-		// @codingStandardsIgnoreEnd
+		$paged = 1; // phpcs:ignore
 	}
 	$postperpage = (int) get_option( 'posts_per_page' );
 	$pgstrt      = ( ( (int) $paged - 1 ) * $postperpage ) + $gfwa_offset . ', ';
 	$limit       = 'LIMIT ' . $pgstrt . $postperpage;
 	return $limit;
 }
-
-// Include files.
-require_once GFWA_PLUGIN_DIR . '/inc/classes/class-genesis-featured-widget-amplified.php';

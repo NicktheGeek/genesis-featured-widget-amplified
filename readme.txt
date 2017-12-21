@@ -1,10 +1,13 @@
-=== Plugin Name ===
+=== Genesis Featured Widget Amplified ===
 Contributors: Nick_theGeek
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=RGUXZDAKT7BDW
 Tags: genesis, genesiswp, studiopress, featured post, custom post type, pagination
 Requires at least: 3.3
 Tested up to: 4.9.1
-Stable tag: 0.9
+Requires PHP: 5.2
+Stable tag: 0.9.1
+License: GPLv2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 Genesis Featured Posts with support for custom post types, taxonomies, and so much more
 
@@ -54,16 +57,18 @@ Thanks to David Decker, this plugin is translation ready.  German translation fi
 1. gfwa_exclude_taxonomies - used to prevent taxonomies and related terms from appearing in the terms and taxonomies list in the widget form
 
 == Change Log ==
-0.9 (12-18-2017 : current)
+0.9.1 (12-21-2017 : current)
+ * Fix issue activating with certain versions of Genesis
+ * Allow safe HTML in the post meta and byline fields
+
+0.9 (12-18-2017)
  * Huge code standard clean up that fixed white space, documentation, escaping, and several other standards issues. Plugin now passes WPCS.
  * Fixed issue where widget did not update in WP 4.9.
 
-0.8.2 (8-3-2017 : 12-18-2017)
+0.8.2 (8-3-2017)
  * Removed script that autosaved widget settings as they updated since it conflicted with the WP script that has been added to do the same thing.
- 
-0.8.1 (5-14-2012)
 
-0.8.1 (5*14-2012 : current)
+0.8.1 (5-14-2012)
 
  * Fixed thumbnail image size option
 
@@ -80,7 +85,7 @@ Thanks to David Decker, this plugin is translation ready.  German translation fi
  * Added option for linking the gravatar
  * Fixed some strings that were not internationalized correctly
  * Added additional option for linking post title/image via custom field
- * Added title cutoff symbol 
+ * Added title cutoff symbol
 
 0.7.2 (10-3-2011)
 
@@ -170,6 +175,10 @@ Thanks to David Decker, this plugin is translation ready.  German translation fi
 
 
 == Upgrade Notice ==
+
+0.9.1 Reminder, Genesis Featured Widget Amplified does not work with the HTML5 "Pro" themes. Recent versions of Foodie Pro with the built in Foodie Pro - Featured Post widget will have a conflict. The Genesis Featured Widget Amplified plugin should be deactivated if a problem occurs and use the Foodie Pro built in widget instead.
+
+0.9.0 Reminder, Genesis Featured Widget Amplified does not work with the HTML5 "Pro" themes. Recent versions of Foodie Pro with the built in Foodie Pro - Featured Post widget will have a conflict. The Genesis Featured Widget Amplified plugin should be deactivated if a problem occurs and use the Foodie Pro built in widget instead.
 
 0.6.5 Make sure you resave widget settings for terms and taxonomies
 
