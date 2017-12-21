@@ -31,13 +31,21 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Remove the current widget.
-add_action( 'widgets_init', 'gfwa_register_widgets', 20 );
+add_action( 'widgets_init', 'gfwa_unregister_widgets', 20 );
 
 /**
- * Removes Genesis Featured Post Widget and adds Genesis Featured Widget Amplified.
+ * Removes Genesis Featured Post Widget.
+ */
+function gfwa_unregister_widgets() {
+	unregister_widget( 'Genesis_Featured_Post' );
+}
+
+add_action( 'widgets_init', 'gfwa_register_widgets' );
+
+/**
+ * Adds Genesis Featured Widget Amplified.
  */
 function gfwa_register_widgets() {
-	unregister_widget( 'Genesis_Featured_Post' );
 	register_widget( 'Genesis_Featured_Widget_Amplified' );
 }
 
