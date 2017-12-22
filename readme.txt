@@ -5,7 +5,7 @@ Tags: genesis, genesiswp, studiopress, featured post, custom post type, paginati
 Requires at least: 3.3
 Tested up to: 4.9.1
 Requires PHP: 5.2
-Stable tag: 0.9.1
+Stable tag: 0.9.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -57,8 +57,11 @@ Thanks to David Decker, this plugin is translation ready.  German translation fi
 1. gfwa_exclude_taxonomies - used to prevent taxonomies and related terms from appearing in the terms and taxonomies list in the widget form
 
 == Change Log ==
-0.9.1 (12-21-2017 : current)
+0.9.1 (12-22-2017 : current)
  * Fix issue activating with certain versions of Genesis
+ * Fix issue with double align on linked images
+
+0.9.1 (12-21-2017)
  * Allow safe HTML in the post meta and byline fields
 
 0.9 (12-18-2017)
