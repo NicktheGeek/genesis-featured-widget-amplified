@@ -599,7 +599,12 @@ class Genesis_Featured_Widget_Amplified_Admin {
 	public function form() {
 		$fields = new Genesis_Featured_Widget_Amplified_Fields( $this->instance, $this->widget );
 
-		$fields->do_field( 'title', array( 'type' => 'text', 'label' => __( 'Title', 'gfwa' ) ) );
+		$fields->do_field(
+			'title', array(
+				'type'  => 'text',
+				'label' => __( 'Title', 'gfwa' ),
+			)
+		);
 
 		foreach ( $this->get_columns() as $column => $boxes ) {
 			if ( 'col1' === $column ) {
