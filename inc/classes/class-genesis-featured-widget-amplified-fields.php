@@ -92,96 +92,135 @@ class Genesis_Featured_Widget_Amplified_Fields {
 		$method = $args['type'];
 
 		if ( method_exists( $this, $method ) ) {
-			echo '<p ' . $this->style . '><label for="' . esc_attr( $this->widget->get_field_id( $this->field_id ) ) . '">' . str_replace( esc_html( '<br />' ), '<br />', esc_html( $this->args['label'] ) ) . '</label>'; // WPCS: XSS ok.
-			$this->$method();
-			echo '</p>';
+			printf(
+				'<p %1$s><label for="%2$s">%3$s</label>%4$s</p>',
+				$this->style,
+				esc_attr( $this->widget->get_field_id( $this->field_id ) ),
+				str_replace( esc_html( '<br />' ), '<br />', esc_html( $this->args['label'] ) ),
+				$this->$method()
+			); // WPCS: XSS ok.
 		}
 	}
 
 	/**
-	 * Outputs a select field.
+	 * Returns a select field.
 	 *
 	 * @author Nick Croft
 	 * @since 1.0.0
 	 * @version 1.0.0
 	 *
-	 * @return void
+	 * @return string
 	 */
 	public function select() {
-		echo '<select class="' . esc_html( $this->class ) . '" id="' . esc_attr( $this->widget->get_field_id( $this->field_id ) ) . '" name="' . esc_attr( $this->widget->get_field_name( $this->field_id ) ) . '">';
-
-		foreach ( $this->args['options'] as $value => $label ) {
-			echo '<option style="padding-right:10px;" value="' . esc_attr( $value ) . '" ' . selected( $value, $this->instance[ $this->field_id ], false ) . '>' . esc_html( $label ) . '</option>';
-		}
-
-		echo '</select>';
+		return sprintf(
+			'<select class="%1$s" id="%2$s" name="%3$s">%4$s</select>',
+			esc_html( $this->class ),
+			esc_attr( $this->widget->get_field_id( $this->field_id ) ),
+			esc_attr( $this->widget->get_field_name( $this->field_id ) ),
+			$this->get_select_opts()
+		);
 	}
 
 	/**
-	 * Outputs a select field for post types.
+	 * Gets the options HTML for a select field.
+	 *
+	 * @return string
+	 */
+	public function get_select_opts() {
+		$opt_args = $this->args['options'];
+		$opts     = '';
+
+		foreach ( $opt_args as $key => $value ) {
+			if ( is_array( $value ) ) {
+				$this->args['options'] = $value;
+
+				$opts .= sprintf(
+					'<optgroup label="%1$s">%2$s</optgroup>',
+					esc_attr( $key ),
+					$this->get_select_opts()
+				);
+			} else {
+				$opts .= sprintf(
+					'<option style="padding-right:10px;" value="%1$s" %2$s>%3$s</option>',
+					esc_attr( $key ),
+					selected( $key, $this->instance[ $this->field_id ], false ),
+					esc_html( $value )
+				);
+			}
+		}
+
+		return $opts;
+	}
+
+	/**
+	 * Returns a select field for post types.
 	 *
 	 * @author Nick Croft
 	 * @since 1.0.0
 	 * @version 1.0.0
 	 *
-	 * @return void
+	 * @return string
 	 */
 	public function post_type_select() {
-		echo '<select class="' . esc_html( $this->class ) . '" id="' . esc_attr( $this->widget->get_field_id( $this->field_id ) ) . '" name="' . esc_attr( $this->widget->get_field_name( $this->field_id ) ) . '">';
-
-		$this->args = array(
+		$args       = array(
 			'public' => true,
 		);
 		$output     = 'names';
 		$operator   = 'and';
-		$post_types = get_post_types( $this->args, $output, $operator );
+		$post_types = get_post_types( $args, $output, $operator );
 		$post_types = array_filter( $post_types, 'gfwa_exclude_post_types' );
 
+		$post_type_opts = array();
+
 		foreach ( $post_types as $post_type ) {
-			echo '<option style="padding-right:10px;" value="' . esc_attr( $post_type ) . '" ' . selected( esc_attr( $post_type ), $this->instance['post_type'], false ) . '>' . esc_attr( $post_type ) . '</option>';
+			$post_type_opts[ $post_type ] = $post_type;
 		}
 
-		echo '<option style="padding-right:10px;" value="any" ' . selected( 'any', $this->instance['post_type'], false ) . '>' . esc_html__( 'any', 'gfwa' ) . '</option>';
+		$this->args['options'] = $post_type_opts;
 
-		echo '</select>';
+		return $this->select();
 	}
 
 	/**
-	 * Outputs a select field for pages.
+	 * Returns a select field for pages.
 	 *
 	 * @author Nick Croft
 	 * @since 1.0.0
 	 * @version 1.0.0
 	 *
-	 * @return void
+	 * @return string
 	 */
 	public function page_select() {
-		echo '<select class="' . esc_html( $this->class ) . '" id="' . esc_attr( $this->widget->get_field_id( $this->field_id ) ) . '" name="' . esc_attr( $this->widget->get_field_name( $this->field_id ) ) . '">
-						<option value="" ' . selected( '', $this->instance['page_id'], false ) . '>' . esc_html__( 'Select page', 'gfwa' ) . '</option>';
+		$page_opts = array(
+			'' => __( 'Select page', 'gfwa' ),
+		);
 
 		$pages = get_pages();
+
 		foreach ( $pages as $page ) {
-			echo '<option style="padding-right:10px;" value="' . esc_attr( $page->ID ) . '" ' . selected( esc_attr( $page->ID ), $this->instance['page_id'], false ) . '>' . esc_html( $page->post_title ) . '</option>';
+			$page_opts[ $page->ID ] = $page->post_title;
 		}
 
-		echo '</select>';
+		$this->args['options'] = $page_opts;
+
+		return $this->select();
 	}
 
 	/**
-	 * Outputs a select field for taxonomies and terms.
+	 * Returns a select field for taxonomies and terms.
 	 *
 	 * @author Nick Croft
 	 * @since 1.0.0
 	 * @version 1.0.0
 	 *
-	 * @return void
+	 * @return string
 	 */
 	public function select_taxonomy() {
-		echo '<select id="' . esc_attr( $this->widget->get_field_id( $this->field_id ) ) . '" name="' . esc_attr( $this->widget->get_field_name( $this->field_id ) ) . '">
-						<option style="padding-right:10px;" value="" ' . selected( '', $this->instance['posts_term'], false ) . '>' . esc_html__( 'All Taxonomies and Terms', 'gfwa' ) . '</option>';
+		$tax_opts = array(
+			'' => __( 'All Taxonomies and Terms', 'gfwa' ),
+		);
 
 		$taxonomies = get_taxonomies( array( 'public' => true ), 'objects' );
-
 		$taxonomies = array_filter( $taxonomies, 'gfwa_exclude_taxonomies' );
 
 		foreach ( $taxonomies as $taxonomy ) {
@@ -191,19 +230,20 @@ class Genesis_Featured_Widget_Amplified_Fields {
 				$query_label = $taxonomy->name;
 			}
 
-			echo '<optgroup label="' . esc_attr( $taxonomy->labels->name ) . '">
-								<option style="margin-left: 5px; padding-right:10px;" value="' . esc_attr( $query_label ) . '" ' . selected( esc_attr( $query_label ), $this->instance['posts_term'], false ) . '>' . esc_html( $taxonomy->labels->all_items ) . '</option>';
+			$tax_opts[ $taxonomy->labels->name ] = array(
+				$query_label => $taxonomy->labels->all_items,
+			);
 
 			$terms = get_terms( $taxonomy->name, 'orderby=name&hide_empty=1' );
 
 			foreach ( $terms as $term ) {
-				echo '<option style="margin-left: 8px; padding-right:10px;" value="' . esc_attr( $query_label . ',' . $term->slug ) . '" ' . selected( esc_attr( $query_label ) . ',' . $term->slug, $this->instance['posts_term'], false ) . '>-' . esc_html( $term->name ) . '</option>';
+				$tax_opts[ $taxonomy->labels->name ][ $query_label . ',' . $term->slug ] = $term->name;
 			}
-
-			echo '</optgroup>';
 		}
 
-		echo '</select>';
+		$this->args['options'] = $tax_opts;
+
+		return $this->select();
 	}
 
 	/**
@@ -213,39 +253,56 @@ class Genesis_Featured_Widget_Amplified_Fields {
 	 * @since 1.0.0
 	 * @version 1.0.0
 	 *
-	 * @return void
+	 * @return string
 	 */
 	public function text() {
-		echo $this->args['description'] ? '<p>' . esc_html( $this->args['description'] ) . '</p>' : '';
+		$description = empty( $this->args['description'] ) ? '' : sprintf( '<p class="description">%s</p>', esc_html( $this->args['description'] ) );
 
-		echo '<input type="text" id="' . esc_attr( $this->widget->get_field_id( $this->field_id ) ) . '" name="' . esc_attr( $this->widget->get_field_name( $this->field_id ) ) . '" value="' . esc_attr( $this->instance[ $this->field_id ] ) . '" style="width:95%;" />'; // XSS ok.
-
+		return sprintf(
+			'%4$s<input type="text" id="%1$s" name="%2$s" value="%3$s" style="width:95%;" />',
+			esc_attr( $this->widget->get_field_id( $this->field_id ) ),
+			esc_attr( $this->widget->get_field_name( $this->field_id ) ),
+			esc_attr( $this->instance[ $this->field_id ] ),
+			$description
+		);
 	}
 
 	/**
-	 * Outputs a small text field.
+	 * Returns a small text field.
 	 *
 	 * @author Nick Croft
 	 * @since 1.0.0
 	 * @version 1.0.0
 	 *
-	 * @return void
+	 * @return string
 	 */
 	public function text_small() {
-		echo '<input type="text" id="' . esc_attr( $this->widget->get_field_id( $this->field_id ) ) . '" name="' . esc_attr( $this->widget->get_field_name( $this->field_id ) ) . '" value="' . esc_attr( $this->instance[ $this->field_id ] ) . '" size="2" />' . esc_html( $this->args['description'] ); // XSS ok.
-
+		return sprintf(
+			'<input type="text" id="%1$s" name="%2$s" value="%3$s" size="2" /> %4$s',
+			esc_attr( $this->widget->get_field_id( $this->field_id ) ),
+			esc_attr( $this->widget->get_field_name( $this->field_id ) ),
+			esc_attr( $this->instance[ $this->field_id ] ),
+			empty( $this->args['description'] ) ? '' : esc_html( $this->args['description'] )
+		);
 	}
 
 	/**
-	 * Outputs a checkbox.
+	 * Returns a checkbox.
 	 *
 	 * @author Nick Croft
 	 * @since 1.0.0
 	 * @version 1.0.0
 	 *
-	 * @return void
+	 * @return string
 	 */
 	public function checkbox() {
-		echo ' <input class="' . esc_html( $this->class ) . '" id="' . esc_attr( $this->widget->get_field_id( $this->field_id ) ) . '" type="checkbox" name="' . esc_attr( $this->widget->get_field_name( $this->field_id ) ) . '" value="1" ' . checked( 1, $this->instance[ $this->field_id ], false ) . '/>'; // XSS ok.
+		return sprintf(
+			' <input class="%5$s" type="checkbox" id="%1$s" name="%2$s" value="1" %3$s/> %4$s',
+			esc_attr( $this->widget->get_field_id( $this->field_id ) ),
+			esc_attr( $this->widget->get_field_name( $this->field_id ) ),
+			checked( 1, $this->instance[ $this->field_id ], false ),
+			empty( $this->args['description'] ) ? '' : esc_html( $this->args['description'] ),
+			esc_html( $this->class )
+		);
 	}
 }
