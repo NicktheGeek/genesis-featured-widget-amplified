@@ -11,7 +11,7 @@
  * Plugin Name:       Genesis Featured Widget Amplified
  * Plugin URI:        https://github.com/NicktheGeek/genesis-featured-widget-amplified
  * Description:       Replaces Genesis Featured Post widget for additional functionality which allows support for custom post types, taxonomies, and extends the flexibility of the widget via action hooks to allow the elements to be repositioned or other elements to be added. This requires WordPress 3.3+ and Genesis 1.9+.
- * Version:           0.9.2
+ * Version:           1.0.0
  * Author:            Nick_theGeek
  * Author URI:        https://designsbynickthegeek.com/
  * Text Domain:       gfwa

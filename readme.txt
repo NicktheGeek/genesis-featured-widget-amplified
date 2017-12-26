@@ -5,7 +5,7 @@ Tags: genesis, genesiswp, studiopress, featured post, custom post type, paginati
 Requires at least: 3.3
 Tested up to: 4.9.1
 Requires PHP: 5.2
-Stable tag: 0.9.2
+Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -24,8 +24,12 @@ Genesis Featured Widget Amplified adds additional functionality to the Genesis F
 * Multiple Hooks and Filters for adding additional content
 
 This plugin requires the [Genesis Theme Framework](http://studiopress.com)
-While the plugin will work on the HTML5 "Pro" themes, the HTML markup only supports the older XHTML themes at this time. It is not recommended for use on the new HTML5 themes.
 
+As of version 1.0 the HTML5 Genesis themes are fully supported. It is possible that some themes expect older XHTML markup with this plugin and are styled for that.
+
+If that is the case add this to your functions.php file
+
+`add_theme_support( 'gfwa-xhtml' );`
 
 Thanks to David Decker, this plugin is translation ready.  German translation files included.
 
@@ -178,6 +182,8 @@ Thanks to David Decker, this plugin is translation ready.  German translation fi
 
 
 == Upgrade Notice ==
+
+1.0.0 As of version 1.0 the HTML5 Genesis themes are fully supported. It is possible that some themes expect older XHTML markup with this plugin and are styled for that. If that is the case add this to your functions.php file `add_theme_support( 'gfwa-xhtml' );`
 
 0.9.1 Reminder, Genesis Featured Widget Amplified does not work with the HTML5 "Pro" themes. Recent versions of Foodie Pro with the built in Foodie Pro - Featured Post widget will have a conflict. The Genesis Featured Widget Amplified plugin should be deactivated if a problem occurs and use the Foodie Pro built in widget instead.
 
