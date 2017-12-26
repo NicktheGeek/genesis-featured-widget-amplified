@@ -599,8 +599,7 @@ class Genesis_Featured_Widget_Amplified_Admin {
 	public function form() {
 		$fields = new Genesis_Featured_Widget_Amplified_Fields( $this->instance, $this->widget );
 
-		echo '<p><label for="' . esc_attr( $this->widget->get_field_id( 'title' ) ) . '">' . esc_html__( 'Title', 'gfwa' ) . ':</label>
-            <input type="text" id="' . esc_attr( $this->widget->get_field_id( 'title' ) ) . '" name="' . esc_attr( $this->widget->get_field_name( 'title' ) ) . '" value="' . esc_attr( $this->instance['title'] ) . '" style="width:99%;" /></p>';
+		$fields->do_field( 'title', array( 'type' => 'text', 'label' => __( 'Title', 'gfwa' ) ) );
 
 		foreach ( $this->get_columns() as $column => $boxes ) {
 			if ( 'col1' === $column ) {

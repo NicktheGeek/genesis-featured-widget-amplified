@@ -86,10 +86,10 @@ class Genesis_Featured_Widget_Amplified_Fields {
 		$this->field_id = $field_id;
 		$this->args     = $args;
 
-		$this->class = $this->args['save'] ? 'gfwa-widget-control-save' : '';
-		$this->style = $this->args['requires'] ? ' style="' . gfwa_get_display_option( $this->instance, $this->args['requires'][0], $this->args['requires'][1], $this->args['requires'][2] ) . '"' : '';
+		$this->class = empty( $this->args['save'] ) ? '' : 'gfwa-widget-control-save';
+		$this->style = empty( $this->args['requires'] ) ? '' : ' style="' . gfwa_get_display_option( $this->instance, $this->args['requires'][0], $this->args['requires'][1], $this->args['requires'][2] ) . '"';
 
-		$method = $args['type'];
+		$method = empty( $args['type'] ) ? 'text' : $args['type'];
 
 		if ( method_exists( $this, $method ) ) {
 			printf(
@@ -259,7 +259,7 @@ class Genesis_Featured_Widget_Amplified_Fields {
 		$description = empty( $this->args['description'] ) ? '' : sprintf( '<p class="description">%s</p>', esc_html( $this->args['description'] ) );
 
 		return sprintf(
-			'%4$s<input type="text" id="%1$s" name="%2$s" value="%3$s" style="width:95%;" />',
+			'%4$s<input type="text" id="%1$s" name="%2$s" value="%3$s" style="width:95%%;" />',
 			esc_attr( $this->widget->get_field_id( $this->field_id ) ),
 			esc_attr( $this->widget->get_field_name( $this->field_id ) ),
 			esc_attr( $this->instance[ $this->field_id ] ),
