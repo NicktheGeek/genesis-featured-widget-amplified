@@ -47,6 +47,27 @@ add_action( 'genesis_init', 'gfwa_init' );
  * Requires the plugin files
  */
 function gfwa_init() {
+	spl_autoload_register( 'gfwa_autoload' );
+
 	require_once GFWA_PLUGIN_DIR . '/inc/functions/helpers.php';
-	require_once GFWA_PLUGIN_DIR . '/inc/classes/class-genesis-featured-widget-amplified.php';
+	require_once GFWA_PLUGIN_DIR . '/inc/functions/widget.php';
+	require_once GFWA_PLUGIN_DIR . '/inc/functions/actions.php';
+
+}
+
+/**
+ * Autoloads classes for the plugin.
+ *
+ * @param string $class The class being loaded.
+ */
+function gfwa_autoload( $class ) {
+	if ( false !== strpos( $class, 'Genesis_Featured_Widget_Amplified' ) ) {
+		$filename = sprintf( 'class-%s.php', str_replace( '_', '-', strtolower( $class ) ) );
+
+		$file = sprintf( '%s/inc/classes/%s', GFWA_PLUGIN_DIR, $filename );
+
+		if ( file_exists( $file ) && 0 === validate_file( $file ) ) {
+			require $file;
+		}
+	}
 }
