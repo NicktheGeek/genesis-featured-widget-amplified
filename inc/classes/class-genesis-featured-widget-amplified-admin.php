@@ -44,8 +44,12 @@ class Genesis_Featured_Widget_Amplified_Admin {
 		$this->widget   = $widget;
 	}
 
-	function get_columns() {
-
+	/**
+	 * Gets the columns array.
+	 *
+	 * @return array
+	 */
+	public function get_columns() {
 		$sizes = wp_get_additional_image_sizes();
 
 		$image_size_opt['thumbnail'] = 'thumbnail (' . get_option( 'thumbnail_size_w' ) . 'x' . get_option( 'thumbnail_size_h' ) . ')';
@@ -583,7 +587,6 @@ class Genesis_Featured_Widget_Amplified_Admin {
 				),
 			),
 		);
-
 	}
 	/**
 	 * Creates Widget Form
@@ -594,7 +597,6 @@ class Genesis_Featured_Widget_Amplified_Admin {
 	 * @return void
 	 */
 	public function form() {
-
 		$fields = new Genesis_Featured_Widget_Amplified_Fields( $this->instance, $this->widget );
 
 		echo '<p><label for="' . esc_attr( $this->widget->get_field_id( 'title' ) ) . '">' . esc_html__( 'Title', 'gfwa' ) . ':</label>
@@ -611,9 +613,7 @@ class Genesis_Featured_Widget_Amplified_Admin {
 				echo '<div style="background: #f1f1f1; border: 1px solid #DDD; padding: 10px 10px 0 10px; margin-bottom: 5px;">';
 
 				foreach ( $box as $field_id => $args ) {
-
 					$fields->do_field( $field_id, $args );
-
 				}
 
 				echo '</div>';

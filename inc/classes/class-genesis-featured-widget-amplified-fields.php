@@ -78,12 +78,11 @@ class Genesis_Featured_Widget_Amplified_Fields {
 	 * @since 1.0.0
 	 * @version 1.0.0
 	 *
-	 * @param string    $field_id The field ID.
-	 * @param array     $args     The field args.
+	 * @param string $field_id The field ID.
+	 * @param array  $args     The field args.
 	 * @return void
 	 */
 	public function do_field( $field_id, $args ) {
-
 		$this->field_id = $field_id;
 		$this->args     = $args;
 
@@ -97,7 +96,6 @@ class Genesis_Featured_Widget_Amplified_Fields {
 			$this->$method();
 			echo '</p>';
 		}
-
 	}
 
 	/**
@@ -129,10 +127,9 @@ class Genesis_Featured_Widget_Amplified_Fields {
 	 * @return void
 	 */
 	public function post_type_select() {
-
 		echo '<select class="' . esc_html( $this->class ) . '" id="' . esc_attr( $this->widget->get_field_id( $this->field_id ) ) . '" name="' . esc_attr( $this->widget->get_field_name( $this->field_id ) ) . '">';
 
-		$this->args       = array(
+		$this->args = array(
 			'public' => true,
 		);
 		$output     = 'names';
@@ -147,9 +144,8 @@ class Genesis_Featured_Widget_Amplified_Fields {
 		echo '<option style="padding-right:10px;" value="any" ' . selected( 'any', $this->instance['post_type'], false ) . '>' . esc_html__( 'any', 'gfwa' ) . '</option>';
 
 		echo '</select>';
-
 	}
-	
+
 	/**
 	 * Outputs a select field for pages.
 	 *
