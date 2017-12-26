@@ -52,7 +52,6 @@ function gfwa_init() {
 	require_once GFWA_PLUGIN_DIR . '/inc/functions/helpers.php';
 	require_once GFWA_PLUGIN_DIR . '/inc/functions/widget.php';
 	require_once GFWA_PLUGIN_DIR . '/inc/functions/actions.php';
-
 }
 
 /**
