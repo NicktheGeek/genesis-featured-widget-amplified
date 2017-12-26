@@ -160,8 +160,8 @@ class Genesis_Featured_Widget_Amplified extends WP_Widget {
 	 * @return void
 	 */
 	public function form( $instance ) {
-		$admin = new Genesis_Featured_Widget_Amplified_Admin( $this->defaults );
-		$admin->form( $instance );
+		$admin = new Genesis_Featured_Widget_Amplified_Admin( $instance, $this->defaults, $this );
+		$admin->form();
 
 		unset( $admin );
 	}
