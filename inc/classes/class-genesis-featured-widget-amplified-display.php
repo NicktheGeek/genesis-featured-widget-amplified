@@ -134,9 +134,11 @@ class Genesis_Featured_Widget_Amplified_Display {
 				while ( $gfwa_posts->have_posts() ) {
 					$gfwa_posts->the_post();
 
-					echo '<div ';
-					post_class();
-					echo '>';
+					genesis_markup( array(
+						'html5'   => '<article %s>',
+						'xhtml'   => sprintf( '<div class="%s">', implode( ' ', get_post_class() ) ),
+						'context' => 'entry',
+					) );
 
 					gfwa_before_post_content( $instance );
 
@@ -144,7 +146,10 @@ class Genesis_Featured_Widget_Amplified_Display {
 
 					gfwa_after_post_content( $instance );
 
-					echo '</div><!--end post_class()-->' . "\n\n";
+					genesis_markup( array(
+						'html5' => '</article>',
+						'xhtml' => '</div>',
+					) );
 
 					$gfwa_counter ++;
 				}

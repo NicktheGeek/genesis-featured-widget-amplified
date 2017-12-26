@@ -32,9 +32,9 @@ function gfwa_post_class( $classes ) {
 	return $classes;
 }
 
-add_action( 'gfwa_before_post_content', 'gfwa_do_post_image', 5, 1 );
-add_action( 'gfwa_post_content', 'gfwa_do_post_image', 5, 1 );
-add_action( 'gfwa_after_post_content', 'gfwa_do_post_image', 10, 1 );
+add_action( 'gfwa_before_post_content', 'gfwa_do_post_image', 5 );
+add_action( 'gfwa_post_content', 'gfwa_do_post_image', 5 );
+add_action( 'gfwa_after_post_content', 'gfwa_do_post_image', 10 );
 
 /**
  * Inserts Post Image
@@ -64,7 +64,7 @@ function gfwa_do_post_image( $instance ) {
 	echo current_filter() === 'gfwa_after_post_content' && 'after-content' === $instance['image_position'] && ! empty( $instance['show_image'] ) ? $image : ''; // XSS ok.
 }
 
-add_action( 'gfwa_before_post_content', 'gfwa_do_gravatar', 10, 1 );
+add_action( 'gfwa_before_post_content', 'gfwa_do_gravatar', 10 );
 
 /**
  * Inserts Author Gravatar if option is selected
@@ -100,7 +100,38 @@ function gfwa_do_gravatar( $instance ) {
 	}
 }
 
-add_action( 'gfwa_before_post_content', 'gfwa_do_post_title', 10, 1 );
+add_action( 'gfwa_before_post_content', 'gfwa_do_header_open', 10 );
+add_action( 'gfwa_before_post_content', 'gfwa_do_header_close', 11 );
+
+/**
+ * Outputs header markup open if post title selected
+ *
+ * @author Nick Croft
+ * @since 1.0.0
+ * @version 1.0.0
+ * @param array $instance Values set in widget $instance.
+ */
+function gfwa_do_header_open( $instance ) {
+	if ( ! empty( $instance['show_title'] ) ) {
+		echo '<header class="entry-header">';
+	}
+}
+
+/**
+ * Outputs header markup close if post title selected
+ *
+ * @author Nick Croft
+ * @since 1.0.0
+ * @version 1.0.0
+ * @param array $instance Values set in widget $instance.
+ */
+function gfwa_do_header_close( $instance ) {
+	if ( ! empty( $instance['show_title'] ) ) {
+		echo '</header>';
+	}
+}
+
+add_action( 'gfwa_before_post_content', 'gfwa_do_post_title', 10 );
 
 /**
  * Outputs Post Title if option is selects
@@ -117,13 +148,13 @@ function gfwa_do_post_title( $instance ) {
 	$wrap_close = 1 === (int) $instance['link_title'] ? '</a>' : '';
 
 	if ( ! empty( $instance['show_title'] ) && ! empty( $instance['title_limit'] ) ) {
-		printf( '<h2>%s%s%s%s</h2>', $wrap_open, genesis_truncate_phrase( the_title_attribute( 'echo=0' ), $instance['title_limit'] ), esc_html( $instance['title_cutoff'] ), $wrap_close ); // XSS ok.
+		printf( '<h2 class="entry-title">%s%s%s%s</h2>', $wrap_open, genesis_truncate_phrase( the_title_attribute( 'echo=0' ), $instance['title_limit'] ), esc_html( $instance['title_cutoff'] ), $wrap_close ); // XSS ok.
 	} elseif ( ! empty( $instance['show_title'] ) ) {
-		printf( '<h2>%s%s%s</h2>', $wrap_open, the_title_attribute( 'echo=0' ), $wrap_close ); // XSS ok.
+		printf( '<h2 class="entry-title">%s%s%s</h2>', $wrap_open, the_title_attribute( 'echo=0' ), $wrap_close ); // XSS ok.
 	}
 }
 
-add_action( 'gfwa_before_post_content', 'gfwa_do_byline', 10, 1 );
+add_action( 'gfwa_before_post_content', 'gfwa_do_byline', 10 );
 
 /**
  * Outputs byline if option is selects and anything is in the post info field
@@ -135,11 +166,11 @@ add_action( 'gfwa_before_post_content', 'gfwa_do_byline', 10, 1 );
  */
 function gfwa_do_byline( $instance ) {
 	if ( ! empty( $instance['show_byline'] ) && ! empty( $instance['post_info'] ) ) {
-		printf( '<p class="byline post-info">%s</p>', do_shortcode( wp_kses_post( $instance['post_info'] ) ) );
+		printf( '<p class="byline post-info entry-meta">%s</p>', do_shortcode( wp_kses_post( $instance['post_info'] ) ) );
 	}
 }
 
-add_action( 'gfwa_post_content', 'gfwa_do_post_content', 10, 1 );
+add_action( 'gfwa_post_content', 'gfwa_do_post_content', 10 );
 
 /**
  * Outputs the selected content option if any
@@ -151,6 +182,8 @@ add_action( 'gfwa_post_content', 'gfwa_do_post_content', 10, 1 );
  */
 function gfwa_do_post_content( $instance ) {
 	if ( ! empty( $instance['show_content'] ) ) {
+		echo '<div class="entry-content">';
+
 		switch ( $instance['show_content'] ) {
 			case 'excerpt':
 				the_excerpt();
@@ -161,10 +194,12 @@ function gfwa_do_post_content( $instance ) {
 			default:
 				the_content( esc_html( $instance['more_text'] ) );
 		}
+
+		echo '</div>';
 	}
 }
 
-add_action( 'gfwa_after_post_content', 'gfwa_do_post_meta', 10, 1 );
+add_action( 'gfwa_after_post_content', 'gfwa_do_post_meta', 10 );
 
 /**
  * Outputs post meta if option is selected and anything is in the post meta field
