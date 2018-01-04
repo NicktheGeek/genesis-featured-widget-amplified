@@ -1,0 +1,22 @@
+version: 2
+
+jobs:
+  standards:
+      docker:
+        - image: notnoopci/php:7.0-apache-node
+      steps:
+        - checkout
+        - run:
+            name: Install WPCS
+            command: |
+              sudo composer self-update
+              composer install
+        - run:
+            name: CS Theme
+            command: vendor/bin/phpcs
+
+workflows:
+  version: 2
+  test_and_standards:
+    jobs:
+      - standards
